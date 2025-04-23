@@ -7,4 +7,4 @@ Laboratory of Advanced Programming project.
 - Ragaglia Serena
 - Spagnoli Valerio
 - Grasso Pierluca
-- De Lullo Federicos
+- De Lullo Federico
