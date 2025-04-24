@@ -32,7 +32,7 @@ USER STORIES
 
 - As a driver I want to rate parking spots so that I can share my parking experience with other drivers.
 
-- As an administrator I want to access to a user dashboard so that I'm able to see and manage their and accounts
+- As an administrator I want to access to a user dashboard so that I'm able to see and manage their accounts
 
 - As a resident I want a real time parking spot dashboard so that I’m able to monitor the current status of my sharings.
 
