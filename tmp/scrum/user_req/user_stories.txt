@@ -1,3 +1,4 @@
+# USER STORIES
 1.  As a user I want to register to the system so that I can access to the application.
 
 2.  As a user I want to login into the system so that I can authenticate myself to the platform and use app’s functionalities.
@@ -32,22 +33,24 @@
 
 17. As a driver I want to rate the parking service so that I can share my parking experience with other drivers.
 
-18. As a resident I want to insert into the system my parking space (individual or collective) so that I can share it with other users and gain revenues.
+18. As a driver I want to be notified when a parking is available near me so that I can book it quickly.
 
-19. As a resident I want to assign labels to my parking spots so that drivers can easily find them.
+19. As a resident I want to insert into the system my parking space (individual or collective) so that I can share it with other users and gain revenues.
 
-20. As a resident I want a real time parking spot dashboard so that I’m able to monitor the current status of my sharings.
+20. As a resident I want to assign labels to my parking spots so that drivers can easily find them.
 
-21. As a resident I want to delete a reservation so that I can have the full control of my parking space.
+21. As a resident I want a real time parking spot dashboard so that I’m able to monitor the current status of my sharings.
 
-22. As a resident I want to set a reputation treshold for reserve a parking spot so that I can give priority to higher reputation users.
+22. As a resident I want to delete a reservation so that I can have the full control of my parking space.
 
-23. As a resident I want to have a booking queue for my parking spot so that I can authorize a specific driver.
+23. As a resident I want to set a reputation treshold for reserve a parking spot so that I can give priority to higher reputation users.
 
-24. As a resident I want to receive notifications when a driver asks for a booking so that I’m informed about it.
+24. As a resident I want to have a booking queue for my parking spot so that I can authorize a specific driver.
 
-25. As a resident I want to rate the driver so that I can share the related experience.
+25. As a resident I want to receive notifications when a driver asks for a booking so that I’m informed about it.
 
-26. As a resident I want to change the status of the parking spot so that I can manage its availability.
+26. As a resident I want to rate the driver so that I can share the related experience.
 
-27. As a driver I want to access my reputation score so I can know which parking spaces I can book.
+27. As a resident I want to change the status of the parking spot so that I can manage its availability.
+
+28. As a driver I want to access my reputation score so I can know which parking spaces I can book.
