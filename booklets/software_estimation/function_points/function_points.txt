@@ -1,0 +1,112 @@
+Files:
+    - User:                 1 RET 8 DET         7   FP
+    - Review:               1 RET 6 DET         7   FP
+    - Reservation:          1 RET 6 DET         7   FP
+    - Parking spots:        2 RET 6 DET         10  FP
+    - Labels:               1 RET 2 DET         7   FP
+    - Slots available:      1 RET 3 DET         7   FP
+    - Payments:             1 RET 4 DET         7   FP
+
+Operations:
+
+- Account registration: EI
+    1 FTR 
+    8 DET
+    3 FP
+
+- Account authentication: EI
+    1 FTR
+    3 DET
+    3 FP
+
+- Account logout: EI
+    1 FTR
+    1 DET
+    3 FP
+
+- Account's data modification: EI
+    1 FTR
+    5 DET
+    3 FP
+
+- Admin dashboard: EQ
+    1 FTR
+    7 DET
+    4 FP
+
+- Search parking spots available: EO
+    3 FTR
+    9 DET
+    7 FP
+
+- Parking spot reservation: EI
+    4 FTR
+    5 DET
+    6 FP
+
+- Notification to reservation: EQ
+    2 FTR
+    6 DET
+    4 FP
+
+- Delete a reservation by driver: EI
+    1 FTR
+    1 DET
+    3 FP
+
+- Rate a parking service offered by a resident as a driver: EI
+    1 FTR
+    5 DET
+    3 FP
+
+- Notification when a near parking spot is available: EQ
+    1 FTR
+    5 DET
+    3 FP
+
+- Insert a new parking spot into the system: EI
+    1 FTR
+    6 DET
+    3 FP
+
+- Insert slot availability for a parking spot: EI
+    1 FTR
+    3 DET
+    3 FP
+
+- Assign a label to a parking spot: EI
+    1 FTR
+    1 DET
+    3 FP
+
+- Resident dashboard: EO
+    4 FTR
+    13 DET
+    7 FP
+
+- Delete reservation request: EI
+    1 FTR
+    1 DET
+    3 FP
+
+- Notification for a new reservation request: EQ
+    1 FTR
+    5 DET
+    3 FP
+
+- Rate a driver: EI
+    1 FTR
+    5 DET
+    3 FP
+
+- Change slot availability for a parking spot: EI
+    1 FTR
+    3 DET
+    3 FP
+
+- Access to driver reputation score: EQ
+    2 FTR
+    5 DET
+    3 FP
+
+TOTAL FP: 125
