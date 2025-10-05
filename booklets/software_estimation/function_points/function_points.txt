@@ -113,5 +113,11 @@ Operations:
     4 FTR
    12 DET
     6 FP
+
+- Getting notification of successfully payment: EQ
+    3 FTR
+    9 DET
+    5 FP
+   
     
-TOTAL FP: 133
+TOTAL FP: 138
