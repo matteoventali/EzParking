@@ -1,8 +1,8 @@
 Files:
-    - User:                 1 RET 8 DET         7   FP
+    - User:                 1 RET 9 DET         7   FP
     - Review:               1 RET 6 DET         7   FP
     - Reservation:          1 RET 6 DET         7   FP
-    - Parking spots:        2 RET 6 DET         10  FP
+    - Parking spots:        1 RET 6 DET         7   FP
     - Labels:               1 RET 2 DET         7   FP
     - Slots available:      1 RET 3 DET         7   FP
     - Payments:             1 RET 4 DET         7   FP
@@ -11,12 +11,12 @@ Operations:
 
 - Account registration: EI
     1 FTR 
-    8 DET
+    7 DET
     3 FP
 
 - Account authentication: EI
     1 FTR
-    3 DET
+    2 DET
     3 FP
 
 - Account logout: EI
@@ -39,6 +39,11 @@ Operations:
     9 DET
     7 FP
 
+- Search parking spots availables trough filters: EO
+    4 FTR
+   10 DET
+    7 FP
+    
 - Parking spot reservation: EI
     4 FTR
     5 DET
@@ -59,10 +64,10 @@ Operations:
     5 DET
     3 FP
 
-- Notification when a near parking spot is available: EQ
-    1 FTR
-    5 DET
-    3 FP
+- Notification when a near parking spot is available: EO
+    3 FTR
+    7 DET
+    4 FP
 
 - Insert a new parking spot into the system: EI
     1 FTR
@@ -79,7 +84,7 @@ Operations:
     1 DET
     3 FP
 
-- Resident dashboard: EO
+- Resident/Driver dashboard: EO
     4 FTR
     13 DET
     7 FP
@@ -104,9 +109,9 @@ Operations:
     3 DET
     3 FP
 
-- Access to driver reputation score: EQ
-    2 FTR
-    5 DET
-    3 FP
-
-TOTAL FP: 125
+- Access to details of a parking spot: EO
+    4 FTR
+   12 DET
+    6 FP
+    
+TOTAL FP: 133
