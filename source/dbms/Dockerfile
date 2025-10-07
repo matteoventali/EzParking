@@ -5,8 +5,8 @@ FROM mariadb:11.4
 ENV MARIADB_CHARACTER_SET_SERVER=utf8mb4
 ENV MARIADB_COLLATION_SERVER=utf8mb4_unicode_ci
 
-# Copia gli script di inizializzazione
+# Init script executed only the first time the container is created
 COPY init/ /docker-entrypoint-initdb.d/
 
-# Espone la porta
+# Expose the port
 EXPOSE 3306

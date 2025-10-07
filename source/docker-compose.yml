@@ -1,14 +1,28 @@
 services:
   dbms:
-    build: ./dbms/
-    container_name: mariadb-server
+    build: ./dbms
+    container_name: dbms
     environment:
       MARIADB_ROOT_PASSWORD: ezparking
+      TZ: Europe/Rome
     volumes:
       - mariadb_data:/var/lib/mysql  # Persistenza dei dati
       - ./dbms/init:/docker-entrypoint-initdb.d  # Script di inizializzazione
     ports:
-      - "5000:3306"
+      - "3306:3306"
+    networks:
+      - ezparking_network
+
+  account_ms:
+    build:
+      context: ./account_ms
+    container_name: account_ms
+    depends_on:
+      - dbms
+    volumes:
+      - ./account_ms:/app  # <- monta il codice
+    ports:
+      - "5000:5000"
     networks:
       - ezparking_network
 

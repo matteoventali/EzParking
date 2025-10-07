@@ -13,3 +13,10 @@ GRANT ALL PRIVILEGES ON microservizio2.* TO 'user2'@'%';
 GRANT ALL PRIVILEGES ON microservizio3.* TO 'user3'@'%';
 
 FLUSH PRIVILEGES;
+
+USE microservizio1;
+CREATE TABLE A(
+    campo integer not null,
+    primary key (campo)
+);
+INSERT INTO A (campo) VALUES (10);
