@@ -1,0 +1,15 @@
+-- init.sql
+
+CREATE DATABASE IF NOT EXISTS microservizio1;
+CREATE DATABASE IF NOT EXISTS microservizio2;
+CREATE DATABASE IF NOT EXISTS microservizio3;
+
+CREATE USER IF NOT EXISTS 'user1'@'%' IDENTIFIED BY 'password1';
+CREATE USER IF NOT EXISTS 'user2'@'%' IDENTIFIED BY 'password2';
+CREATE USER IF NOT EXISTS 'user3'@'%' IDENTIFIED BY 'password3';
+
+GRANT ALL PRIVILEGES ON microservizio1.* TO 'user1'@'%';
+GRANT ALL PRIVILEGES ON microservizio2.* TO 'user2'@'%';
+GRANT ALL PRIVILEGES ON microservizio3.* TO 'user3'@'%';
+
+FLUSH PRIVILEGES;

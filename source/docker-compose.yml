@@ -1,0 +1,20 @@
+services:
+  dbms:
+    build: ./dbms/
+    container_name: mariadb-server
+    environment:
+      MARIADB_ROOT_PASSWORD: ezparking
+    volumes:
+      - mariadb_data:/var/lib/mysql  # Persistenza dei dati
+      - ./dbms/init:/docker-entrypoint-initdb.d  # Script di inizializzazione
+    ports:
+      - "5000:3306"
+    networks:
+      - ezparking_network
+
+networks:
+  ezparking_network:
+    driver: bridge
+
+volumes:
+  mariadb_data:
