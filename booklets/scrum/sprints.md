@@ -106,8 +106,6 @@ The following section describes the sprint-based organization of the EzParking p
 
 - Reputation score visualizable into the user's dashboard (#28)
 
-Dipendenze: storico transazioni (Sprint 3) per calcolare reputazione; base resident attiva (Sprint 4).
-
 **Dependencies:** User sessions must be available and functional (_Sprint 1_), Parking spots must be bookable and residents can accept the reservation's requests (_Sprint 3, Sprint 4_).
 
 ---
