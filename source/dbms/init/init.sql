@@ -1,22 +1,24 @@
 -- init.sql
+-- This script will be executed only when the container is built
+-- automatically by Docker
 
-CREATE DATABASE IF NOT EXISTS microservizio1;
-CREATE DATABASE IF NOT EXISTS microservizio2;
-CREATE DATABASE IF NOT EXISTS microservizio3;
+-- Each microservice of the system will have a dedicated database and and account
+-- to access into the dbms. Each microservice will be allowed to interact only with
+-- its own database
 
-CREATE USER IF NOT EXISTS 'user1'@'%' IDENTIFIED BY 'password1';
-CREATE USER IF NOT EXISTS 'user2'@'%' IDENTIFIED BY 'password2';
-CREATE USER IF NOT EXISTS 'user3'@'%' IDENTIFIED BY 'password3';
+CREATE DATABASE IF NOT EXISTS db_account_ms;
+CREATE DATABASE IF NOT EXISTS db_park_ms;
+CREATE DATABASE IF NOT EXISTS db_payment_ms;
+CREATE DATABASE IF NOT EXISTS db_notification_ms;
 
-GRANT ALL PRIVILEGES ON microservizio1.* TO 'user1'@'%';
-GRANT ALL PRIVILEGES ON microservizio2.* TO 'user2'@'%';
-GRANT ALL PRIVILEGES ON microservizio3.* TO 'user3'@'%';
+CREATE USER IF NOT EXISTS 'user_account_ms'@'%' IDENTIFIED BY 'ezparking';
+CREATE USER IF NOT EXISTS 'user_park_ms'@'%' IDENTIFIED BY 'ezparking';
+CREATE USER IF NOT EXISTS 'user_payment_ms'@'%' IDENTIFIED BY 'ezparking';
+CREATE USER IF NOT EXISTS 'user_notification_ms'@'%' IDENTIFIED BY 'ezparking';
+
+GRANT ALL PRIVILEGES ON db_account_ms.* TO 'user_account_ms'@'%';
+GRANT ALL PRIVILEGES ON db_park_ms.* TO 'user_park_ms'@'%';
+GRANT ALL PRIVILEGES ON db_payment_ms.* TO 'user_payment_ms'@'%';
+GRANT ALL PRIVILEGES ON db_notification_ms.* TO 'user_notification_ms'@'%';
 
 FLUSH PRIVILEGES;
-
-USE microservizio1;
-CREATE TABLE A(
-    campo integer not null,
-    primary key (campo)
-);
-INSERT INTO A (campo) VALUES (10);

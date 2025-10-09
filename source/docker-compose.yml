@@ -1,30 +1,82 @@
 services:
-  dbms:
+  dbms: # DBMS service implementing an image of MariaDB
     build: ./dbms
     container_name: dbms
     environment:
       MARIADB_ROOT_PASSWORD: ezparking
       TZ: Europe/Rome
     volumes:
-      - mariadb_data:/var/lib/mysql  # Persistenza dei dati
-      - ./dbms/init:/docker-entrypoint-initdb.d  # Script di inizializzazione
+      - mariadb_data:/var/lib/mysql
+      - ./dbms/init:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
     networks:
       - ezparking_network
 
-  account_ms:
+  account_ms: # Account microservice
     build:
       context: ./account_ms
     container_name: account_ms
     depends_on:
       - dbms
     volumes:
-      - ./account_ms:/app  # <- monta il codice
+      - ./account_ms:/app
     ports:
       - "5000:5000"
     networks:
       - ezparking_network
+
+  #notification_ms: # Notification microservice
+  #  build:
+  #    context: ./notification_ms
+  #  container_name: notification_ms
+  #  depends_on:
+  #    - dbms
+  #  volumes:
+  #    - ./notification_ms:/app
+  #  ports:
+  #    - "5001:5001"
+  #  networks:
+  #    - ezparking_network
+  #
+  #park_ms: # Parking microservice
+  #  build:
+  #    context: ./park_ms
+  #  container_name: park_ms
+  #  depends_on:
+  #    - dbms
+  #  volumes:
+  #    - ./park_ms:/app
+  #  ports:
+  #    - "5002:5002"
+  #  networks:
+  #    - ezparking_network
+#
+  #payment_ms: # Payments microservice
+  #  build:
+  #    context: ./payment_ms
+  #  container_name: payment_ms
+  #  depends_on:
+  #    - dbms
+  #  volumes:
+  #    - ./payment_ms:/app
+  #  ports:
+  #    - "5003:5003"
+  #  networks:
+  #    - ezparking_network
+#
+  #ui_ms: # UI microservice
+  #  build:
+  #    context: ./ui_ms
+  #  container_name: ui_ms
+  #  depends_on:
+  #    - dbms
+  #  volumes:
+  #    - ./ui_ms:/app
+  #  ports:
+  #    - "5004:5004"
+  #  networks:
+  #    - ezparking_network
 
 networks:
   ezparking_network:
