@@ -64,20 +64,17 @@ services:
   #    - "5003:5003"
   #  networks:
   #    - ezparking_network
-#
-  #ui_ms: # UI microservice
-  #  build:
-  #    context: ./ui_ms
-  #  container_name: ui_ms
-  #  depends_on:
-  #    - dbms
-  #  volumes:
-  #    - ./ui_ms:/app
-  #  ports:
-  #    - "5004:5004"
-  #  networks:
-  #    - ezparking_network
 
+  ui_ms:
+    image: php:8.2-apache
+    container_name: ui_ms
+    ports:
+      - "8080:80"
+    volumes:
+      - ./ui_ms:/var/www/html
+    networks:
+      - ezparking_network
+      
 networks:
   ezparking_network:
     driver: bridge
