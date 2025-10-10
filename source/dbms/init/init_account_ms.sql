@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS Users (
     password_hash               VARCHAR(255) NOT NULL,
     email                       VARCHAR(100) NOT NULL UNIQUE,
     lastlogin_ts                TIMESTAMP DEFAULT NULL,
+    logged                      BOOLEAN DEFAULT FALSE,
     phone                       VARCHAR(15) NOT NULL UNIQUE,
     user_role                   ENUM('admin', 'user') DEFAULT 'user'
 );
