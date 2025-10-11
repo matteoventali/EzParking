@@ -66,26 +66,18 @@ services:
   #    - ezparking_network
 
   ui_ms:
-    build:
-      context: ./ui_ms
+    image: php:8.2-apache
     container_name: ui_ms
     ports:
-      - "80:80"     # HTTP
-      - "443:443"    # HTTPS
+      - "8080:80"
     volumes:
       - ./ui_ms:/var/www/html
-    environment:
-      TZ: Europe/Rome
     networks:
       - ezparking_network
-        
-    
+      
 networks:
   ezparking_network:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.25.0.0/16
 
 volumes:
   mariadb_data:
