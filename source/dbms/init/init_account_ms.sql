@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS Users (
     name                        VARCHAR(50) NOT NULL,
     surname                     VARCHAR(50) NOT NULL,
     password_hash               VARCHAR(255) NOT NULL,
+    session_token               VARCHAR(255) NOT NULL,
     email                       VARCHAR(100) NOT NULL UNIQUE,
     lastlogin_ts                TIMESTAMP DEFAULT NULL,
     logged                      BOOLEAN DEFAULT FALSE,
