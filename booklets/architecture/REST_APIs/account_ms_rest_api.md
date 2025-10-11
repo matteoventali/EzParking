@@ -15,5 +15,3 @@
 | **POST** | `/reservations/{res_id}/review` | Add a review to a terminated reservation |
 | **DELETE** | `/reservations/{res_id}/review` | Delete the review done to a specific reservation |
 | **GET** | `/users/{user_id}` | Get the dashboard of the selected user **_ONLY FOR ADMIN_** |
-
-
