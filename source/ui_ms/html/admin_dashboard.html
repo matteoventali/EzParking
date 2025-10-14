@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/homepage.css">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  
+</head>
+
+<body>
+  <!-- === HEADER === -->
+  <header>
+    <div class="logo">
+      <a href="index.html" style="color: white; text-decoration: none;">EzParking Admin</a>
+    </div>
+    <nav>
+      <a href="#" class="user-icon" title="Calendar"><img src="../images/calendar.svg" alt="Calendar"></a>
+      <a href="#" class="user-icon" title="Parking"><img src="../images/parking.svg" alt="Parking"></a>
+
+      <div class="dropdown">
+        <button class="dropdown-toggle user-icon" id="account-btn" aria-label="Account">
+          <img src="../images/account.svg" alt="Account">
+        </button>
+
+        <div class="dropdown-menu" id="dropdown-menu">
+          <a href="index.html">Home</a>
+          <a href="#">Manage Users</a>
+          <a href="#">Manage Reservations</a>
+          <hr>
+          <a href="#">Log Out</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- === MAIN CONTENT === -->
+  <main class="dashboard-grid">
+
+    <!-- Admin Info Section -->
+    <div class="dashboard-card user-data-card">
+      <div class="user-header">
+        <img src="../images/account.svg" alt="Admin Avatar" class="user-avatar">
+        <div>
+          <h2 class="user-name">Federico De Lullo</h2>
+          <p class="user-email">admin@ezparking.com</p>
+          <p class="user-role"><strong>Role:</strong> Admin</p>
+        </div>
+      </div>
+
+      <div class="user-info">
+        <div class="info-item">
+          <i class="fas fa-user"></i>
+          <span><strong>Name:</strong> Federico</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-user"></i>
+          <span><strong>Surname:</strong> De Lullo</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-envelope"></i>
+          <span><strong>Email:</strong> admin@ezparking.com</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-phone"></i>
+          <span><strong>Phone:</strong> +39 333 1234567</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-lock"></i>
+          <span><strong>Password:</strong> ********</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-id-badge"></i>
+          <span class="role"><strong>Role:</strong> Admin</span>
+        </div>
+      </div>
+
+      <button class="edit-btn" onclick="window.location.href='edit_profile.php'">
+        <i class="fas fa-user-edit"></i> Edit Profile
+      </button>
+    </div>
+
+    <!-- Registered Users Section -->
+    <div class="dashboard-card reservations-card">
+      <div class="section-title">Registered Users</div>
+
+      <div class="reservation-list-container">
+        <ul class="reservation-list">
+          <!-- User solo Driver -->
+          <li>
+            <a href="user_details.php?id=1" class="user-list-item">
+              <div class="user-item-content">
+                <div class="user-name-badges">
+                  <strong>Federico De Lullo</strong>
+                  <img src="../images/driver-icon.svg" alt="Driver">
+                </div>
+                <div class="user-details">
+                  <small>Email: delullo.1935510@studenti.uniroma1.it</small>
+                  <small>Role: Driver</small>
+                </div>
+              </div>
+              <div class="user-name-delete">
+                <a href="#"><img src="../images/delete.svg" alt="Delete"></a>
+              </div>
+            </a>
+          </li>
+
+          <!-- User Driver + Resident -->
+          <li>
+            <a href="user_details.php?id=2" class="user-list-item">
+              <div class="user-item-content">
+                <div class="user-name-badges">
+                  <strong>Maria Rossi</strong>
+                  <img src="../images/driver-icon.svg" alt="Driver">
+                  <img src="../images/resident-icon.svg" alt="Resident">
+                </div>
+                <div class="user-details">
+                  <small>Email: m.rossi@unimi.it</small>
+                  <small>Role: Driver + Resident</small>
+                </div>
+              </div>
+              <div class="user-name-delete">
+                <a href="#"><img src="../images/delete.svg" alt="Delete"></a>
+              </div>
+            </a>
+          </li>
+
+          <!-- User solo Driver -->
+          <li>
+            <a href="user_details.php?id=3" class="user-list-item">
+              <div class="user-item-content">
+                <div class="user-name-badges">
+                  <strong>Giuseppe Bianchi</strong>
+                  <img src="../images/driver-icon.svg" alt="Driver">
+                </div>
+                <div class="user-details">
+                  <small>Email: g.bianchi@studenti.uniroma1.it</small>
+                  <small>Role: Driver</small>
+                </div>
+              </div>
+              <div class="user-name-delete">
+                <a href="#"><img src="../images/delete.svg" alt="Delete"></a>
+              </div>
+            </a>
+          </li>
+
+          <!-- User Driver + Resident -->
+          <li>
+            <a href="user_details.php?id=4" class="user-list-item">
+              <div class="user-item-content">
+                <div class="user-name-badges">
+                  <strong>Luca Verdi</strong>
+                  <img src="../images/driver-icon.svg" alt="Driver">
+                  <img src="../images/resident-icon.svg" alt="Resident">
+                </div>
+                <div class="user-details">
+                  <small>Email: l.verdi@uniroma1.it</small>
+                  <small>Role: Driver + Resident</small>
+                </div>
+              </div>
+              <div class="user-name-delete">
+                <a href="#"><img src="../images/delete.svg" alt="Delete"></a>
+              </div>
+            </a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- === FOOTER === -->
+  <footer>
+    <p>© 2025 EzParking — All rights reserved</p>
+  </footer>
+
+</body>
+</html>

@@ -1,61 +1,66 @@
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #5e25a5, rgba(113,89,182));
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+/* === GLOBAL === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #5e25a5, rgba(113,89,182));
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* === LOGIN PAGE === */
 .login-container {
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    width: 300px;
-    text-align: center;
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  width: 300px;
+  text-align: center;
+  margin: auto;
 }
 
 .input-group {
-    margin-bottom: 1rem;
-    text-align: left;
+  margin-bottom: 1rem;
+  text-align: left;
 }
 
 .login-input {
-    width: 100%;
-    padding: 0.5rem;
-    margin-top: 0.3rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .login-button {
-    width: 100%;
-    padding: 0.6rem;
-    border: none;
-    border-radius: 5px;
-    background-color: rgba(113,89,182);
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
+  width: 100%;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 5px;
+  background-color: rgba(113,89,182);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
 button:hover {
-    background-color: #5e25a5;
+  background-color: #5e25a5;
 }
 
 .error-message {
-    color: red;
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
 }
 
-/* Responsive */
 @media (max-width: 390px) {
-    .login-container {
-        width: 90%;
-        padding: 1.5rem;
-    }
+  .login-container {
+    width: 90%;
+    padding: 1.5rem;
+  }
 }

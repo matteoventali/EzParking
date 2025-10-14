@@ -78,8 +78,8 @@ services:
       TZ: Europe/Rome
     networks:
       - ezparking_network
-        
-    
+
+
 networks:
   ezparking_network:
     driver: bridge

@@ -1,0 +1,277 @@
+/* === GLOBAL === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  background: linear-gradient(to right, #5e25a5, rgba(113,89,182));
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #333;
+}
+
+/* === DASHBOARD LAYOUT === */
+.dashboard-grid {
+  margin-top: 9rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.upper-row, .lower-row {
+  display: none;
+}
+
+/* === CARDS === */
+.dashboard-card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 700px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.section-title {
+  color: #5e25a5;
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+  font-weight: bold;
+}
+
+/* === USER DATA CARD === */
+.user-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.user-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #f3f0fa;
+  padding: 10px;
+  border: 2px solid #d8c9f0;
+}
+
+.user-name {
+  color: #4a1b8c;
+  margin-bottom: 0.3rem;
+}
+
+.user-email {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.user-info {
+  margin-top: 1rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+  color: #444;
+}
+
+.info-item i {
+  color: #5e25a5;
+  font-size: 1.1rem;
+}
+
+/* === BUTTONS === */
+.edit-btn {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #5e25a5, rgba(113,89,182));
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.25s;
+}
+
+.edit-btn i {
+  margin-right: 6px;
+}
+
+.edit-btn:hover {
+  background: linear-gradient(90deg, #4a1b8c, #5e25a5);
+}
+
+/* === REPUTATION === */
+.reputation-score {
+  font-size: 1.6rem;
+  color: rgba(113,89,182);
+  font-weight: bold;
+}
+
+/* === RESERVATIONS === */
+.reservations-card {
+  width: 95%;
+  max-width: 1000px;
+}
+
+.reservation-list-container {
+  max-height: 250px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background: #f6f4fa;
+  scrollbar-width: thin;
+  scrollbar-color: #c4b6e0 transparent;
+}
+
+/* Scrollbar per Chrome/Edge/Safari */
+.reservation-list-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.reservation-list-container::-webkit-scrollbar-thumb {
+  background-color: #c4b6e0;
+  border-radius: 10px;
+}
+
+.reservation-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.reservation-list li {
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid #e0e0e0;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.reservation-list li:hover {
+  background: #eae6f7;
+  transform: translateX(4px);
+}
+
+.reservation-list li strong {
+  color: #5e25a5;
+}
+
+.reservation-list li small {
+  color: #555;
+}
+
+.reservation-list li:last-child {
+  border-bottom: none;
+}
+
+/* === FOOTER === */
+footer {
+  width: 100%;
+  background: #5e25a5;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: auto;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 500px) {
+  header {
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 1rem;
+  }
+
+  .dashboard-card {
+    width: 95vw;
+    padding: 1.5rem;
+  }
+
+  .user-avatar {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+
+/* === Admin Dashboard: User List === */
+
+.user-list-item {
+  display: flex;                  /* flex per distribuire contenuto e delete icon */
+  justify-content: space-between; /* contenuto a sinistra, delete icon a destra */
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  transition: background 0.2s;
+}
+
+.user-list-item:last-child {
+  border-bottom: none;
+}
+
+.user-list-item:hover {
+  background: #eae6f7;
+}
+
+.user-item-content {
+  display: flex;
+  flex-direction: column; /* nome+badge sopra, dettagli sotto */
+}
+
+.user-name-badges {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+}
+
+.user-name-badges img {
+  width: 20px;
+  height: 20px;
+}
+
+.user-details small {
+  display: block;
+  color: #555;
+  margin-top: 2px;
+}
+
+.user-name-delete {
+  flex-shrink: 0; /* non ridurre mai l'icona delete */
+}
+
+.user-name-delete img {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* Ruolo nei dettagli utente */
+.user-info .info-item span.role {
+  display: block;
+  margin-top: 0.2rem;
+  color: #5e25a5;
+  font-weight: 500;
+}

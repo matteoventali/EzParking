@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Dashboard</title>
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/homepage.css">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <!-- === HEADER === -->
+  <header>
+    <div class="logo">
+      <a href="index.html" style="color: white; text-decoration: none;">EzParking</a>
+    </div>
+    <nav>
+      <a href="#" class="user-icon" title="Calendar"><img src="../images/calendar.svg" alt="Calendar"></a>
+      <a href="#" class="user-icon" title="Parking"><img src="../images/parking.svg" alt="Parking"></a>
+
+      <div class="dropdown">
+        <button class="dropdown-toggle user-icon" id="account-btn" aria-label="Account">
+          <img src="../images/account.svg" alt="Account">
+        </button>
+
+        <div class="dropdown-menu" id="dropdown-menu">
+          <a href="index.html">Home</a>
+          <a href="#">My Reservations</a>
+          <a href="#">My Bookings</a>
+          <hr>
+          <a href="#">Log Out</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- === MAIN CONTENT === -->
+  <main class="dashboard-grid">
+
+    <!-- User Data Section -->
+    <div class="dashboard-card user-data-card">
+      <div class="user-header">
+        <img src="../images/account.svg" alt="User Avatar" class="user-avatar">
+        <div>
+          <h2 class="user-name">John Doe</h2>
+          <p class="user-email">johndoe@email.com</p>
+        </div>
+      </div>
+
+      <div class="user-info">
+        <div class="info-item">
+          <i class="fas fa-phone"></i>
+          <span><strong>Name:</strong>Federico</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-phone"></i>
+          <span><strong>Surname:</strong>De Lullo</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-phone"></i>
+          <span><strong>Email</strong>delullo.1935510@studenti.uniroma1.it</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-phone"></i>
+          <span><strong>Phone:</strong> +39 333 1234567</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-lock"></i>
+          <span><strong>Password:</strong> ********</span>
+        </div>
+      </div>
+
+      <button class="edit-btn" onclick="window.location.href='edit_profile.php'">
+        <i class="fas fa-user-edit"></i> Edit Profile
+      </button>
+    </div>
+
+    <!-- Reputation Section -->
+    <div class="dashboard-card reputation-card">
+      <div class="section-title">Reputation</div>
+      <div class="reputation-score">⭐ 4.2/5</div>
+      <p style="margin-top: 0.5rem; color:#666; font-size:0.95rem;">
+        Keep contributing to improve your score!
+      </p>
+    </div>
+
+    <!-- Reservations Section -->
+    <div class="dashboard-card reservations-card">
+      <div class="section-title">Your Parking Reservations</div>
+
+      <div class="reservation-list-container">
+        <ul class="reservation-list">
+          <li onclick="window.location.href='reservation_details.php?id=1'">
+            <strong>Parking Lot A</strong><br>
+            <small>Date: 2025-10-18 | Time: 09:00 | Cost: €5 | Status: Confirmed</small>
+          </li>
+          <li onclick="window.location.href='reservation_details.php?id=2'">
+            <strong>Parking Garage B</strong><br>
+            <small>Date: 2025-10-22 | Time: 11:00 | Cost: €7 | Status: Pending</small>
+          </li>
+          <li onclick="window.location.href='reservation_details.php?id=3'">
+            <strong>Open Lot C</strong><br>
+            <small>Date: 2025-10-29 | Time: 15:30 | Cost: €4 | Status: Cancelled</small>
+          </li>
+          <li onclick="window.location.href='reservation_details.php?id=4'">
+            <strong>Central Parking</strong><br>
+            <small>Date: 2025-11-03 | Time: 08:30 | Cost: €6 | Status: Confirmed</small>
+          </li>
+          <li onclick="window.location.href='reservation_details.php?id=5'">
+            <strong>Underground Lot D</strong><br>
+            <small>Date: 2025-11-12 | Time: 17:00 | Cost: €5 | Status: Pending</small>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- === FOOTER === -->
+  <footer>
+    <p>© 2025 EzParking — All rights reserved</p>
+  </footer>
+
+  <script src="../js/dropdown.js" crossorigin="anonymous"></script>
+</body>
+</html>
