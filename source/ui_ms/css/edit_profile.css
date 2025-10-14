@@ -1,0 +1,88 @@
+ /* ===== RESET ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #5e25a5, #8c4de8);
+      color: #333;
+    }
+
+.edit-profile-card {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.13);
+}
+
+.edit-profile-card .section-title {
+  color: #5e25a5;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.edit-user-form label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: #5e25a5;
+  font-weight: 500;
+}
+
+.edit-user-form input {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.edit-user-form input:focus {
+  outline: none;
+  border-color: #5e25a5;
+  box-shadow: 0 0 5px rgba(94, 37, 165, 0.3);
+}
+
+.save-btn {
+  width: 100%;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 6px;
+  background-color: rgba(113,89,182);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.save-btn:hover {
+  background-color: #5e25a5;
+}
+
+/* ===== FOOTER ===== */
+    footer {
+      background: linear-gradient(135deg, #5e25a5, #7b3fd3);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 4rem;
+    }
+
+    footer p {
+      font-size: 0.9rem;
+    }
+
+/* Responsive */
+@media (max-width: 500px) {
+  .edit-profile-card {
+    width: 95vw;
+    padding: 1.5rem;
+  }
+}

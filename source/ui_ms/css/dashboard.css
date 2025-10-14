@@ -235,7 +235,14 @@ footer {
   background: #eae6f7;
 }
 
-.user-item-content {
+.user-item-content-with-delete {
+  display: flex;
+  justify-content: space-between; /* nome + dettagli a sinistra, delete a destra */
+  align-items: center;
+  width: 100%;
+}
+
+.user-info-left {
   display: flex;
   flex-direction: column; /* nome+badge sopra, dettagli sotto */
 }
@@ -245,6 +252,7 @@ footer {
   align-items: center;
   gap: 5px;
   font-weight: bold;
+  margin-bottom: 3px;
 }
 
 .user-name-badges img {
@@ -256,16 +264,19 @@ footer {
   display: block;
   color: #555;
   margin-top: 2px;
+  font-size: 0.9rem;
 }
 
-.user-name-delete {
-  flex-shrink: 0; /* non ridurre mai l'icona delete */
-}
-
-.user-name-delete img {
+/* Icona delete */
+.user-delete-link img {
   width: 20px;
   height: 20px;
   cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.user-delete-link img:hover {
+  transform: scale(1.2); /* effetto hover leggero */
 }
 
 /* Ruolo nei dettagli utente */

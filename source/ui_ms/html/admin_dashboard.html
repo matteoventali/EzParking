@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="../css/dashboard.css">
   <link rel="stylesheet" href="../css/homepage.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/navbar.css">
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  
 </head>
 
 <body>
@@ -87,21 +87,24 @@
 
       <div class="reservation-list-container">
         <ul class="reservation-list">
+
           <!-- User solo Driver -->
           <li>
             <a href="user_details.php?id=1" class="user-list-item">
-              <div class="user-item-content">
-                <div class="user-name-badges">
-                  <strong>Federico De Lullo</strong>
-                  <img src="../images/driver-icon.svg" alt="Driver">
+              <div class="user-item-content-with-delete">
+                <div class="user-info-left">
+                  <div class="user-name-badges">
+                    <strong>Federico De Lullo</strong>
+                    <img src="../images/driver-icon.svg" alt="Driver">
+                  </div>
+                  <div class="user-details">
+                    <small>Email: delullo.1935510@studenti.uniroma1.it</small>
+                    <small>Role: Driver</small>
+                  </div>
                 </div>
-                <div class="user-details">
-                  <small>Email: delullo.1935510@studenti.uniroma1.it</small>
-                  <small>Role: Driver</small>
-                </div>
-              </div>
-              <div class="user-name-delete">
-                <a href="#"><img src="../images/delete.svg" alt="Delete"></a>
+                <a href="#" class="user-delete-link">
+                  <img src="../images/delete.svg" alt="Delete">
+                </a>
               </div>
             </a>
           </li>
@@ -109,19 +112,21 @@
           <!-- User Driver + Resident -->
           <li>
             <a href="user_details.php?id=2" class="user-list-item">
-              <div class="user-item-content">
-                <div class="user-name-badges">
-                  <strong>Maria Rossi</strong>
-                  <img src="../images/driver-icon.svg" alt="Driver">
-                  <img src="../images/resident-icon.svg" alt="Resident">
+              <div class="user-item-content-with-delete">
+                <div class="user-info-left">
+                  <div class="user-name-badges">
+                    <strong>Maria Rossi</strong>
+                    <img src="../images/driver-icon.svg" alt="Driver">
+                    <img src="../images/resident-icon.svg" alt="Resident">
+                  </div>
+                  <div class="user-details">
+                    <small>Email: m.rossi@unimi.it</small>
+                    <small>Role: Driver + Resident</small>
+                  </div>
                 </div>
-                <div class="user-details">
-                  <small>Email: m.rossi@unimi.it</small>
-                  <small>Role: Driver + Resident</small>
-                </div>
-              </div>
-              <div class="user-name-delete">
-                <a href="#"><img src="../images/delete.svg" alt="Delete"></a>
+                <a href="#" class="user-delete-link">
+                  <img src="../images/delete.svg" alt="Delete">
+                </a>
               </div>
             </a>
           </li>
@@ -129,18 +134,20 @@
           <!-- User solo Driver -->
           <li>
             <a href="user_details.php?id=3" class="user-list-item">
-              <div class="user-item-content">
-                <div class="user-name-badges">
-                  <strong>Giuseppe Bianchi</strong>
-                  <img src="../images/driver-icon.svg" alt="Driver">
+              <div class="user-item-content-with-delete">
+                <div class="user-info-left">
+                  <div class="user-name-badges">
+                    <strong>Giuseppe Bianchi</strong>
+                    <img src="../images/driver-icon.svg" alt="Driver">
+                  </div>
+                  <div class="user-details">
+                    <small>Email: g.bianchi@studenti.uniroma1.it</small>
+                    <small>Role: Driver</small>
+                  </div>
                 </div>
-                <div class="user-details">
-                  <small>Email: g.bianchi@studenti.uniroma1.it</small>
-                  <small>Role: Driver</small>
-                </div>
-              </div>
-              <div class="user-name-delete">
-                <a href="#"><img src="../images/delete.svg" alt="Delete"></a>
+                <a href="#" class="user-delete-link">
+                  <img src="../images/delete.svg" alt="Delete">
+                </a>
               </div>
             </a>
           </li>
@@ -148,19 +155,21 @@
           <!-- User Driver + Resident -->
           <li>
             <a href="user_details.php?id=4" class="user-list-item">
-              <div class="user-item-content">
-                <div class="user-name-badges">
-                  <strong>Luca Verdi</strong>
-                  <img src="../images/driver-icon.svg" alt="Driver">
-                  <img src="../images/resident-icon.svg" alt="Resident">
+              <div class="user-item-content-with-delete">
+                <div class="user-info-left">
+                  <div class="user-name-badges">
+                    <strong>Luca Verdi</strong>
+                    <img src="../images/driver-icon.svg" alt="Driver">
+                    <img src="../images/resident-icon.svg" alt="Resident">
+                  </div>
+                  <div class="user-details">
+                    <small>Email: l.verdi@uniroma1.it</small>
+                    <small>Role: Driver + Resident</small>
+                  </div>
                 </div>
-                <div class="user-details">
-                  <small>Email: l.verdi@uniroma1.it</small>
-                  <small>Role: Driver + Resident</small>
-                </div>
-              </div>
-              <div class="user-name-delete">
-                <a href="#"><img src="../images/delete.svg" alt="Delete"></a>
+                <a href="#" class="user-delete-link">
+                  <img src="../images/delete.svg" alt="Delete">
+                </a>
               </div>
             </a>
           </li>
@@ -176,5 +185,6 @@
     <p>© 2025 EzParking — All rights reserved</p>
   </footer>
 
+<script src="../js/dropdown.js" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Profile</title>
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/edit_profile.css">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <!-- === HEADER === -->
+  <header>
+    <div class="logo">
+      <a href="index.html" style="color: white; text-decoration: none;">EzParking</a>
+    </div>
+    <nav>
+      <a href="#" class="user-icon" title="Calendar"><img src="../images/calendar.svg" alt="Calendar"></a>
+      <a href="#" class="user-icon" title="Parking"><img src="../images/parking.svg" alt="Parking"></a>
+
+      <div class="dropdown">
+        <button class="dropdown-toggle user-icon" id="account-btn" aria-label="Account">
+          <img src="../images/account.svg" alt="Account">
+        </button>
+
+        <div class="dropdown-menu" id="dropdown-menu">
+          <a href="index.html">Home</a>
+          <a href="#">My Reservations</a>
+          <a href="#">My Bookings</a>
+          <hr>
+          <a href="#">Log Out</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- === MAIN CONTENT === -->
+  <main class="dashboard-grid">
+
+    <div class="dashboard-card edit-profile-card">
+      <div class="section-title">Edit Your Profile</div>
+
+      <form class="edit-user-form" action="save_profile.php" method="post">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" value="Federico">
+
+        <label for="surname">Surname</label>
+        <input type="text" id="surname" name="surname" value="De Lullo">
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="delullo.1935510@studenti.uniroma1.it">
+
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone" value="+39 333 1234567">
+
+        <label for="password">Insert old Password</label>
+        <input type="password" id="password" name="password" value="">
+
+        <label for="password">Insert new Password</label>
+        <input type="password" id="password" name="password" value="">
+
+        <label for="password">Confirm new Password</label>
+        <input type="password" id="password" name="password" value="">
+
+        <button type="submit" class="save-btn">
+          <i class="fas fa-check"></i> Save Changes
+        </button>
+      </form>
+    </div>
+
+  </main>
+
+  <!-- === FOOTER === -->
+  <footer>
+    <p>© 2025 EzParking — All rights reserved</p>
+  </footer>
+    <script src="../js/dropdown.js" crossorigin="anonymous"></script>
+
+</body>
+</html>
