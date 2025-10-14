@@ -5,31 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/navbar.css">
+    <!--<link rel="stylesheet" href="../css/navbar.css">-->
 
 </head>
 <body>
-    <header>
-    <div class="logo"><a href="index.html" style="color: white; text-decoration: none;">EzParking</a></div>
-    <nav>
-      <a href="#" class="user-icon" title="Account"><img src="../images/calendar.svg"></a>
-      <a href="#" class="user-icon" title="Account"><img src="../images/parking.svg"></a>
-      <div class="dropdown">
-        <button class="dropdown-toggle user-icon" id="account-btn" aria-label="Account">
-          <img src="../images/account.svg" alt="Account">
-        </button>
-
-        <!-- Dropdown menu -->
-        <div class="dropdown-menu" id="dropdown-menu">
-          <a href="dashboard.html">Profile</a>
-          <a href="#">My Reservation</a>
-          <a href="#">My Bookings</a>
-          <hr>
-          <a href="#">Log In</a>
-        </div>
-      </div>
-    </nav>
-  </header>
+  <?php
+  require_once './config.php';
+    $navbar = file_get_contents(NAVBAR);
+    echo $navbar;
+  ?>
     <div class="login-container">
         <h2>Login into your account</h2>
         <form id="login-form">
@@ -48,5 +32,9 @@
     </div>
     <script src="../js/script.js"></script>
     <script src="../js/dropdown.js" crossorigin="anonymous"></script>
+    <?php
+        $footer = file_get_contents(FOOTER);
+        echo $footer;
+    ?>
 </body>
 </html>

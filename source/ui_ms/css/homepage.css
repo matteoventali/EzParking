@@ -11,7 +11,6 @@
       color: #333;
     }
 
-    /* ===== NAVBAR ===== */
 
     /* ===== HERO ===== */
     .hero {
@@ -100,101 +99,12 @@
       margin-bottom: 0.8rem;
     }
 
-    /* ===== FOOTER ===== */
-    footer {
-      background: linear-gradient(135deg, #5e25a5, #7b3fd3);
-      color: white;
-      text-align: center;
-      padding: 2rem;
-      margin-top: 4rem;
-    }
-
-    footer p {
-      font-size: 0.9rem;
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 2.2rem;
-      }
-      .hero p {
-        font-size: 1rem;
-      }
-    }
-
-
-  .user-icon img {
-  vertical-align: middle;
-  transition: transform 0.3s ease, stroke 0.3s ease;
-  width: 40px;
-  height: 40px;
+@media (max-width: 390px) {
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+  .hero p {
+    font-size: 1rem;
+  }
 }
 
-.user-icon:hover img {
-  transform: scale(1.5);
-  stroke: #d4b5ff;
-}
-
-
-/* ===== DROPDOWN MENU ===== */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin-left: 1.5rem;
-}
-
-.dropdown-toggle svg {
-  transition: transform 0.3s ease, stroke 0.3s ease;
-}
-
-.dropdown-toggle:hover svg {
-  transform: scale(1.1);
-  stroke: #d4b5ff;
-}
-
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 40px;
-  background: white;
-  min-width: 180px;
-  border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-  animation: fadeIn 0.3s ease;
-  z-index: 10;
-}
-
-.dropdown-menu a {
-  display: block;
-  padding: 0.8rem 1rem;
-  color: #5e25a5;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background 0.2s ease;
-}
-
-.dropdown-menu a:hover {
-  background: #f3e9ff;
-}
-
-.dropdown-menu hr {
-  margin: 0;
-  border: none;
-  border-top: 1px solid #eee;
-}
-
-/* Animazione morbida */
-@keyframes fadeIn {
-  from {opacity: 0; transform: translateY(-5px);}
-  to {opacity: 1; transform: translateY(0);}
-}

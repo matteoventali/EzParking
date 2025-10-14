@@ -1,6 +1,6 @@
 header {
       background: #5e25a5;
-      border-bottom: 2.5px solid black;
+      border-bottom: 2.5px solid white;
       color: white;
       display: flex;
       justify-content: space-between;
@@ -11,41 +11,35 @@ header {
       z-index: 100;
     }
 
-    .logo {
-      font-size: 1.6rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
+  .logo {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-left: 1.5rem;
-      font-weight: 500;
-      transition: 0.3s;
-    }
-
-    nav a:hover {
-      color: #d4b5ff;
-    }
-
+  nav  {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+  }
 
   .user-icon img {
   vertical-align: middle;
   transition: transform 0.3s ease, stroke 0.3s ease;
   width: 40px;
   height: 40px;
-}
+  }
 
-.user-icon:hover img {
-  transform: scale(1.5);
-  stroke: #d4b5ff;
-}
+  .user-icon:hover img {
+    transform: scale(1.5);
+    stroke: #d4b5ff;
+  }
+
 
 
 /* ===== DROPDOWN MENU ===== */
 .dropdown {
-  position: relative;
   display: inline-block;
 }
 
@@ -97,4 +91,9 @@ header {
   margin: 0;
   border: none;
   border-top: 1px solid #eee;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(-5px);}
+  to {opacity: 1; transform: translateY(0);}
 }
