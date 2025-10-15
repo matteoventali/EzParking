@@ -11,7 +11,8 @@ services:
     ports:
       - "3306:3306"
     networks:
-      - ezparking_network
+      ezparking_network:
+        ipv4_address: 10.5.0.10
 
   account_ms: # Account microservice
     build:
@@ -24,7 +25,8 @@ services:
     ports:
       - "5000:5000"
     networks:
-      - ezparking_network
+      ezparking_network:
+        ipv4_address: 10.5.0.11
 
   #notification_ms: # Notification microservice
   #  build:
@@ -77,7 +79,8 @@ services:
     environment:
       TZ: Europe/Rome
     networks:
-      - ezparking_network
+      ezparking_network:
+        ipv4_address: 10.5.0.16
 
 
 networks:
@@ -85,7 +88,7 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.25.0.0/16
+        - subnet: 10.5.0.0/16
 
 volumes:
   mariadb_data:
