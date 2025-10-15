@@ -40,81 +40,92 @@ def signup():
     phone = data['phone']
     password = data['password']
 
-    if User.query.filter_by(email=email).first():
-        return jsonify({'desc': 'Email already registered',
-                        'code': '1'}), 409
-
-    if User.query.filter_by(phone=phone).first():
-        return jsonify({'desc': 'Phone already registered',
-                        'code': '2'}), 409
-
     hashed_password = generate_password_hash(password)
 
-    new_user = User(
-        name=name,
-        surname=surname,
-        email=email,
-        password_hash=hashed_password,
-        phone=phone,
-        user_role='user'
-    )
+    try:
+        with db.session.begin():
+            if User.query.filter_by(email=email).with_for_update(read=True).first():
+                return jsonify({'desc': 'Email already registered',
+                                'code': '1'}), 409
 
-    db.session.add(new_user)
-    db.session.commit()
+            if User.query.filter_by(phone=phone).with_for_update(read=True).first():
+                return jsonify({'desc': 'Phone already registered',
+                                'code': '2'}), 409
 
-    return jsonify({
-        'desc': 'User registered successfully',
-        'code': '0',
-        'user': {
-            'id': new_user.id,
-            'name': new_user.name,
-            'surname': new_user.surname,
-            'email': new_user.email,
-            'phone': new_user.phone,
-            'role': new_user.user_role
-        }
-    }), 201
+            new_user = User(
+                name=name,
+                surname=surname,
+                email=email,
+                password_hash=hashed_password,
+                phone=phone,
+                user_role='user'
+            )
+
+            db.session.add(new_user)
+
+        return jsonify({
+            'desc': 'User registered successfully',
+            'code': '0',
+            'user': {
+                'id': new_user.id,
+                'name': new_user.name,
+                'surname': new_user.surname,
+                'email': new_user.email,
+                'phone': new_user.phone,
+                'role': new_user.user_role
+            }
+        }), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'desc': 'Database error', 'code': '99', 'details': str(e)}), 500
+
 
 @app.route('/auth/login', methods=['POST'])
 def login():
     data = request.get_json()
 
     if not data or 'email' not in data or 'password' not in data:
-        return jsonify({'desc': 'Missing email or password', 
+        return jsonify({'desc': 'Missing email or password',
                         'code': '1'}), 400
 
     email = data['email']
     password = data['password']
 
-    user = User.query.filter_by(email=email).first()
-    if not user or not check_password_hash(user.password_hash, password):
-        return jsonify({'desc': 'Invalid email or password', 
-                        'code': '2'}), 401
-    
-    if user.session_token:
-        return jsonify({'desc': 'User already logged', 
-                        'code': '3'}), 401
+    try:
+        with db.session.begin():
+            user = User.query.filter_by(email=email).with_for_update().first()
 
-    user.lastlogin_ts = db.func.current_timestamp()
+            if not user or not check_password_hash(user.password_hash, password):
+                return jsonify({'desc': 'Invalid email or password',
+                                'code': '2'}), 401
 
-    session_token = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
-    user.session_token = session_token
+            if user.session_token:
+                return jsonify({'desc': 'User already logged',
+                                'code': '3'}), 401
 
-    db.session.commit()
+            user.lastlogin_ts = db.func.current_timestamp()
+            session_token = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
+            user.session_token = session_token
 
-    return jsonify({
-        'desc': 'Login successful',
-        'code': '0',
-        'user': {
-            'id': user.id,
-            'name': user.name,
-            'surname': user.surname,
-            'email': user.email,
-            'phone': user.phone,
-            'role': user.user_role,
-            'session_token': session_token
-        }
-    }), 200
+        return jsonify({
+            'desc': 'Login successful',
+            'code': '0',
+            'user': {
+                'id': user.id,
+                'name': user.name,
+                'surname': user.surname,
+                'email': user.email,
+                'phone': user.phone,
+                'role': user.user_role,
+                'session_token': user.session_token
+            }
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'desc': 'Database error', 'code': '99', 'details': str(e)}), 500
+
 
 @app.route("/auth/logout", methods=["GET"])
 def logout():
@@ -137,6 +148,7 @@ def logout():
 
     return jsonify({'desc': 'Logout successful',
                     'code': '0'}), 200
+
 
 @app.route("/auth/status", methods=["GET"])
 def status():
@@ -161,68 +173,188 @@ def status():
 
 @app.route("/pdata", methods=["GET"])
 def get_personal_data():
-    # TODO: implement get personal data logic
-    return jsonify({"message": "get personal data handler"}), 200
+    auth_header = request.headers.get('Authorization')
+
+    if not auth_header:
+        return jsonify({'desc': 'Missing or invalid Authorization header',
+                        'code': '1'}), 400
+
+    session_token = auth_header
+    user = User.query.filter_by(session_token=session_token).first()
+
+    if not user:
+        return jsonify({'desc': 'Invalid session token',
+                        'code': '2'}), 401
+
+    score = None
+
+    return jsonify({
+        'desc': 'User data retrieved successfully',
+        'code': '0',
+        'user': {
+            'name': user.name,
+            'surname': user.surname,
+            'email': user.email,
+            'phone': user.phone,
+            'score': score
+        }
+    }), 200
 
 
 @app.route("/pdata", methods=["PUT"])
 def update_personal_data():
-    # TODO: implement update personal data logic
-    return jsonify({"message": "update personal data handler"}), 200
+    auth_header = request.headers.get('Authorization')
 
+    if not auth_header:
+        return jsonify({'desc': 'Missing or invalid Authorization header',
+                        'code': '1'}), 400
 
-# -------- RESERVATIONS --------
+    session_token = auth_header
+    user = User.query.filter_by(session_token=session_token).first()
 
-@app.route("/reservations", methods=["GET"])
-def get_reservations():
-    # TODO: implement get all personal reservations
-    return jsonify({"message": "get reservations handler"}), 200
+    if not user:
+        return jsonify({'desc': 'Invalid session token',
+                        'code': '2'}), 401
 
+    data = request.get_json()
+    if not data:
+        return jsonify({'desc': 'Missing request body',
+                        'code': '3'}), 400
 
-@app.route("/reservations", methods=["POST"])
-def add_reservation():
-    # TODO: implement add confirmed reservation
-    return jsonify({"message": "add reservation handler"}), 200
+    updated = False
+    updated_pwd = False
 
+    if 'name' in data:
+        user.name = data['name']
+        updated = True
 
-@app.route("/reservations/<int:res_id>", methods=["GET"])
-def get_reservation(res_id):
-    # TODO: implement get details of a specific reservation
-    return jsonify({"message": f"get reservation handler for {res_id}"}), 200
+    if 'surname' in data:
+        user.surname = data['surname']
+        updated = True
 
+    if 'password' in data and (data['password'] != None):
+        user.password = generate_password_hash(data['password'])
+        updated_pwd = True
 
-@app.route("/reservations/<int:res_id>", methods=["DELETE"])
-def delete_reservation(res_id):
-    # TODO: implement delete specific reservation
-    return jsonify({"message": f"delete reservation handler for {res_id}"}), 200
+    if 'phone' in data:
+        existing_user = User.query.filter_by(phone=data['phone']).first()
+        if existing_user and existing_user.id != user.id:
+            return jsonify({'desc': 'Phone already registered',
+                            'code': '4'}), 409
+        user.phone = data['phone']
+        updated = True
+
+    if not (updated or updated_pwd):
+        return jsonify({'desc': 'No valid fields to update',
+                        'code': '5'}), 400
+
+    db.session.commit()
+
+    return jsonify({
+        'desc': 'User data updated successfully',
+        'code': '0',
+        'user': {
+            'id': user.id,
+            'name': user.name,
+            'surname': user.surname,
+            'email': user.email,
+            'phone': user.phone,
+            'password': updated_pwd
+        }
+    }), 200
 
 
 # -------- REVIEWS --------
 
-@app.route("/reservations/<int:res_id>/review", methods=["GET"])
+@app.route("/reviews", methods=["GET"])
 def get_review(res_id):
-    # TODO: implement get review of specific reservation
+    # TODO: implement get reviews that hit me
     return jsonify({"message": f"get review handler for reservation {res_id}"}), 200
 
 
-@app.route("/reservations/<int:res_id>/review", methods=["POST"])
+@app.route("/reviews", methods=["POST"])
 def add_review(res_id):
-    # TODO: implement add review to terminated reservation
+    # TODO: implement add review that I write on a reservation
     return jsonify({"message": f"add review handler for reservation {res_id}"}), 200
 
 
-@app.route("/reservations/<int:res_id>/review", methods=["DELETE"])
-def delete_review(res_id):
-    # TODO: implement delete review of specific reservation
-    return jsonify({"message": f"delete review handler for reservation {res_id}"}), 200
-
-
 # -------- ADMIN --------
+@app.route("/users", methods=["GET"])
+def get_users_list():
+    auth_header = request.headers.get('Authorization')
 
+    if not auth_header:
+        return jsonify({'desc': 'Missing or invalid Authorization header',
+                        'code': '1'}), 400
+
+    session_token = auth_header
+    admin_user = User.query.filter_by(session_token=session_token).first()
+
+    if not admin_user:
+        return jsonify({'desc': 'Invalid session token',
+                        'code': '2'}), 401
+
+    if admin_user.user_role != 'admin':
+        return jsonify({'desc': 'Access denied: admin only',
+                        'code': '3'}), 403
+
+    users = User.query.all()
+
+    users_list = [{
+        'id': user.id,
+        'name': user.name,
+        'surname': user.surname,
+        'email': user.email,
+        'role': user.user_role
+    } for user in users]
+
+    return jsonify({
+        'desc': 'Users list retrieved successfully',
+        'code': '0',
+        'users': users_list
+    }), 200
+
+# TODO
 @app.route("/users/<int:user_id>", methods=["GET"])
 def get_user_dashboard(user_id):
-    # TODO: implement admin dashboard logic
-    return jsonify({"message": f"user dashboard handler for user {user_id}"}), 200
+    auth_header = request.headers.get('Authorization')
+
+    if not auth_header:
+        return jsonify({'desc': 'Missing or invalid Authorization header',
+                        'code': '1'}), 400
+
+    session_token = auth_header
+    admin_user = User.query.filter_by(session_token=session_token).first()
+
+    if not admin_user:
+        return jsonify({'desc': 'Invalid session token',
+                        'code': '2'}), 401
+
+    if admin_user.user_role != 'admin':
+        return jsonify({'desc': 'Access denied: admin only',
+                        'code': '3'}), 403
+
+    target_user = User.query.filter_by(id=user_id).first()
+
+    if not target_user:
+        return jsonify({'desc': 'User not found',
+                        'code': '4'}), 404
+
+    score = None
+    # TODO: add reviews list
+    return jsonify({
+        'desc': 'User dashboard retrieved successfully',
+        'code': '0',
+        'user': {
+            'id': target_user.id,
+            'name': target_user.name,
+            'surname': target_user.surname,
+            'email': target_user.email,
+            'phone': target_user.phone,
+            'role': target_user.user_role,
+            'score': score
+        }
+    }), 200
 
 
 # -------------------------------
