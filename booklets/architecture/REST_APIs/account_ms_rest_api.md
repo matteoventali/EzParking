@@ -4,7 +4,8 @@
 |:------------|:-------------|:----------------|
 | **POST** | `/auth/signup` | Signup of a new user |
 | **POST** | `/auth/login` | Login |
-| **POST** | `/auth/logout` | Logout |
+| **GET** | `/auth/logout` | Logout |
+| **GET** | `/auth/status` | Get status of the current session |
 | **PUT** | `/pdata` | Update personal user's data |
 | **GET** | `/pdata` | Obtain personal user's data |
 | **GET** | `/reservations` | Get previews of all personal reservations |
