@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import date
 
 db = SQLAlchemy()
 
@@ -19,45 +19,53 @@ class User(db.Model):
     phone = db.Column(db.String(15), nullable=False, unique=True)
     user_role = db.Column(db.Enum('admin', 'user'), default='user')
 
-    reviews = db.relationship("Review", back_populates="user", cascade="all, delete-orphan")
+    written_reviews = db.relationship(
+        "Review",
+        foreign_keys="Review.writer_id",
+        back_populates="writer",
+        cascade="all, delete-orphan"
+    )
+
+    received_reviews = db.relationship(
+        "Review",
+        foreign_keys="Review.target_id",
+        back_populates="target",
+        cascade="all, delete-orphan"
+    )
 
     def __repr__(self):
-        return f"<User {self.id}: {self.name} {self.surname}>"
+        return f"<User {self.id}: {self.name} {self.surname} ({self.user_role})>"
 
 
 # -------------------------------
-#           RESERVATIONS
-# -------------------------------
-class Reservation(db.Model):
-    __tablename__ = 'Reservation'
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    resident_name = db.Column(db.String(50), nullable=False)
-    resident_surname = db.Column(db.String(50), nullable=False)
-    reservation_ts = db.Column(db.TIMESTAMP, nullable=False)
-
-    reviews = db.relationship("Review", back_populates="reservation", cascade="all, delete-orphan")
-
-    def __repr__(self):
-        return f"<Reservation {self.id} - {self.resident_name} {self.resident_surname}>"
-
-
-# -------------------------------
-#            REVIEWS
+#             REVIEWS
 # -------------------------------
 class Review(db.Model):
     __tablename__ = 'Review'
 
-    from datetime import datetime, timezone
-    review_date = db.Column(db.Date, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    review_date = db.Column(db.Date, nullable=False, default=date.today)
     star = db.Column(db.Integer, nullable=False)
     review_description = db.Column(db.Text, nullable=False)
+    writer_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
+    target_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
+    reservation_id = db.Column(db.Integer, nullable=False)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), primary_key=True)
-    reservation_id = db.Column(db.Integer, db.ForeignKey('Reservation.id'), primary_key=True)
+    __table_args__ = (
+        db.UniqueConstraint('writer_id', 'target_id', 'reservation_id', name='unique_review'),
+    )
 
-    user = db.relationship("User", back_populates="reviews")
-    reservation = db.relationship("Reservation", back_populates="reviews")
+    writer = db.relationship(
+        "User",
+        foreign_keys=[writer_id],
+        back_populates="written_reviews"
+    )
+
+    target = db.relationship(
+        "User",
+        foreign_keys=[target_id],
+        back_populates="received_reviews"
+    )
 
     def __repr__(self):
-        return f"<Review user={self.user_id}, reservation={self.reservation_id}, stars={self.star}>"
+        return f"<Review id={self.id}, writer={self.writer_id}, target={self.target_id}, stars={self.star}>"
