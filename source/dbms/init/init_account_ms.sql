@@ -16,20 +16,15 @@ CREATE TABLE IF NOT EXISTS Users (
     user_role                   ENUM('admin', 'user') DEFAULT 'user'
 );
 
-CREATE TABLE IF NOT EXISTS Reservation (
-    id                          INT AUTO_INCREMENT PRIMARY KEY,
-    resident_name               VARCHAR(50) NOT NULL,
-    resident_surname            VARCHAR(50) NOT NULL,
-    reservation_ts              TIMESTAMP NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS Review (
+    id                          INT AUTO_INCREMENT PRIMARY KEY,
     review_date                 DATE NOT NULL,
     star                        INT NOT NULL CHECK (star >= 1 AND star <= 5),
     review_description          TEXT NOT NULL,
-    user_id                     INT NOT NULL,
+    writer_id                   INT NOT NULL,
+    target_id                   INT NOT NULL,
     reservation_id              INT NOT NULL,
-    PRIMARY KEY (user_id, reservation_id),
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES Users(id),
-    CONSTRAINT fk_reservation FOREIGN KEY (reservation_id) REFERENCES Reservation(id)
+    CONSTRAINT fk_writer FOREIGN KEY (writer_id) REFERENCES Users(id),
+    CONSTRAINT fk_target FOREIGN KEY (target_id) REFERENCES Users(id),
+    UNIQUE (writer_id, target_id, reservation_id)
 );
