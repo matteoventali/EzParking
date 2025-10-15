@@ -1,6 +1,10 @@
 from flask import Flask, jsonify, request
 from config import DB_CONFIG
-from models import db
+from models import db, User
+from werkzeug.security import generate_password_hash, check_password_hash
+import string
+import random
+
 
 # -------------------------------
 # Init
@@ -21,27 +25,138 @@ db.init_app(app)
 def index():
     return jsonify({"message": "Service is active"}), 200
 
-
 # -------- AUTH --------
-
-@app.route("/auth/signup", methods=["POST"])
+@app.route('/auth/signup', methods=['POST'])
 def signup():
-    # TODO: implement user registration
-    return jsonify({"message": "signup handler"}), 200
+    data = request.get_json()
 
+    required_fields = ['name', 'surname', 'email', 'password', 'phone']
+    if not all(field in data for field in required_fields):
+        return jsonify({'error': 'Missing required fields'}), 400
 
-@app.route("/auth/login", methods=["POST"])
+    name = data['name']
+    surname = data['surname']
+    email = data['email']
+    phone = data['phone']
+    password = data['password']
+
+    if User.query.filter_by(email=email).first():
+        return jsonify({'desc': 'Email already registered',
+                        'code': '1'}), 409
+
+    if User.query.filter_by(phone=phone).first():
+        return jsonify({'desc': 'Phone already registered',
+                        'code': '2'}), 409
+
+    hashed_password = generate_password_hash(password)
+
+    new_user = User(
+        name=name,
+        surname=surname,
+        email=email,
+        password_hash=hashed_password,
+        phone=phone,
+        user_role='user'
+    )
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({
+        'desc': 'User registered successfully',
+        'code': '0',
+        'user': {
+            'id': new_user.id,
+            'name': new_user.name,
+            'surname': new_user.surname,
+            'email': new_user.email,
+            'phone': new_user.phone,
+            'role': new_user.user_role
+        }
+    }), 201
+
+@app.route('/auth/login', methods=['POST'])
 def login():
-    # TODO: implement login logic
-    return jsonify({"message": "login handler"}), 200
+    data = request.get_json()
 
+    if not data or 'email' not in data or 'password' not in data:
+        return jsonify({'desc': 'Missing email or password', 
+                        'code': '1'}), 400
 
-@app.route("/auth/logout", methods=["POST"])
+    email = data['email']
+    password = data['password']
+
+    user = User.query.filter_by(email=email).first()
+    if not user or not check_password_hash(user.password_hash, password):
+        return jsonify({'desc': 'Invalid email or password', 
+                        'code': '2'}), 401
+    
+    if user.session_token:
+        return jsonify({'desc': 'User already logged', 
+                        'code': '3'}), 401
+
+    user.lastlogin_ts = db.func.current_timestamp()
+
+    session_token = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
+    user.session_token = session_token
+
+    db.session.commit()
+
+    return jsonify({
+        'desc': 'Login successful',
+        'code': '0',
+        'user': {
+            'id': user.id,
+            'name': user.name,
+            'surname': user.surname,
+            'email': user.email,
+            'phone': user.phone,
+            'role': user.user_role,
+            'session_token': session_token
+        }
+    }), 200
+
+@app.route("/auth/logout", methods=["GET"])
 def logout():
-    # TODO: implement logout logic
-    return jsonify({"message": "logout handler"}), 200
 
+    auth_header = request.headers.get('Authorization')
 
+    if not auth_header:
+        return jsonify({'desc': 'Missing or invalid Authorization header', 
+                        'code': '1'}), 400
+    
+    session_token = auth_header
+    user = User.query.filter_by(session_token=session_token).first()
+
+    if not user:
+        return jsonify({'desc': 'Invalid session token', 
+                        'code': '2'}), 401
+
+    user.session_token = None
+    db.session.commit()
+
+    return jsonify({'desc': 'Logout successful',
+                    'code': '0'}), 200
+
+@app.route("/auth/status", methods=["GET"])
+def status():
+
+    auth_header = request.headers.get('Authorization')
+
+    if not auth_header:
+        return jsonify({'desc': 'Missing or invalid Authorization header', 
+                        'code': '1'}), 400
+    
+    session_token = auth_header
+    user = User.query.filter_by(session_token=session_token).first()
+
+    if not user:
+        return jsonify({'desc': 'Invalid session token', 
+                        'code': '2'}), 401
+
+    return jsonify({'desc': 'Online',
+                    'code': '0'}), 200
+    
 # -------- PERSONAL DATA --------
 
 @app.route("/pdata", methods=["GET"])
