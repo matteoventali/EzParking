@@ -16,7 +16,7 @@
 
 /* === CARDS === */
 .dashboard-card {
-  background: #fff;
+  background: white;
   padding: 2rem;
   border-radius: 20px;
   box-shadow: 0 8px 25px rgba(0,0,0,0.1);

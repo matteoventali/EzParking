@@ -23,6 +23,7 @@ function renderParkingTable(data) {
   parkingTableBody.innerHTML = "";
   data.forEach(spot => {
     const row = document.createElement("tr");
+
     row.innerHTML = `
       <td>${spot.id}</td>
       <td>${spot.location}</td>
@@ -30,10 +31,23 @@ function renderParkingTable(data) {
       <td>${spot.rep_treshold}</td>
       <td>${spot.slot_price.toFixed(2)}</td>
       <td>${spot.user_id}</td>
+      <td><img src="../images/delete.svg" class="delete-icon" style = "width:20px"></td>
     `;
+
+    row.addEventListener("click", (e) => {
+      if (e.target.classList.contains("delete-icon")) {
+        e.stopPropagation();
+        window.location.href = `parking_delete.php?id=${spot.id}`;
+        return;
+      }
+      window.location.href = `parking_details.html?id=${spot.id}`;
+      });
+    
+    row.style.cursor = "pointer";
     parkingTableBody.appendChild(row);
-  });
-}
+    });
+  }
+
 
 // === Gestione paginazione ===
 function paginateParking() {

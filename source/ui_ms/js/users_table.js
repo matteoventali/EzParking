@@ -23,6 +23,7 @@ function renderUsersTable(data) {
   userTableBody.innerHTML = "";
   data.forEach(user => {
     const row = document.createElement("tr");
+
     row.innerHTML = `
       <td>${user.id}</td>
       <td>${user.nome}</td>
@@ -30,7 +31,23 @@ function renderUsersTable(data) {
       <td>${user.email}</td>
       <td>${user.telefono}</td>
       <td>${user.ruolo}</td>
+      <td><img src="../images/delete.svg" class="fas fa-trash delete-icon" style = "width:20px"></td>
     `;
+
+
+    row.addEventListener("click", (e) => {
+      if (e.target.classList.contains("delete-icon")) {
+        window.location.href = `user_delete.php?id=${user.id}`;
+      }
+
+      else {
+        window.location.href = `user_details.html?id=${user.id}`;
+      }
+    });
+
+    // Aggiunge un piccolo effetto hover
+    row.style.cursor = "pointer";
+
     userTableBody.appendChild(row);
   });
 }

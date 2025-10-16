@@ -90,3 +90,14 @@ tbody tr:hover {
 #pageInfo {
   font-weight: bold;
 }
+
+
+.delete-icon {
+  color: #d9534f;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.delete-icon:hover {
+  color: #b52b27;
+}
