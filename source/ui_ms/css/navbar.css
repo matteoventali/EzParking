@@ -1,63 +1,67 @@
 header {
-      background: #5e25a5;
-      border-bottom: 2.5px solid white;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-  .logo {
-    font-size: 1.6rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-  }
-
-  nav  {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-    transition: 0.3s;
-  }
-
-  .user-icon img {
-  vertical-align: middle;
-  transition: transform 0.3s ease, stroke 0.3s ease;
-  width: 40px;
-  height: 40px;
-  }
-
-  .user-icon:hover img {
-    transform: scale(1.5);
-    stroke: #d4b5ff;
-  }
-
-
-
-/* ===== DROPDOWN MENU ===== */
-.dropdown {
-  display: inline-block;
+  background: #5e25a5;
+  border-bottom: 2.5px solid white;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
+.logo {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* --- Nuovo contenitore per le icone --- */
+.icons-container {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem; /* distanza uniforme tra le icone */
+}
+
+/* Stili per i bottoni icona */
 .dropdown-toggle {
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
-  margin-left: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dropdown-toggle svg {
+  width: 28px;
+  height: 28px;
   transition: transform 0.3s ease, stroke 0.3s ease;
 }
 
 .dropdown-toggle:hover svg {
   transform: scale(1.1);
   stroke: #d4b5ff;
+}
+
+/* Icona utente */
+.user-icon img {
+  vertical-align: middle;
+  transition: transform 0.3s ease, stroke 0.3s ease;
+  width: 40px;
+  height: 40px;
+}
+
+.user-icon:hover img {
+  transform: scale(1.1);
+  stroke: #d4b5ff;
+}
+
+/* Dropdown */
+.dropdown {
+  position: relative;
 }
 
 .dropdown-menu {
