@@ -1,47 +1,144 @@
- /* ===== RESET ===== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
 
-    body {
-      background: linear-gradient(135deg, #5e25a5, #8c4de8);
-      color: #333;
-    }
+/* ===== BASE ===== */
+body {
+  background: linear-gradient(135deg, #5e25a5, #8c4de8);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+header {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+header .logo a {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.icons-container {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.user-icon img {
+  width: 26px;
+  height: 26px;
+  transition: transform 0.2s;
+}
+
+.user-icon:hover img {
+  transform: scale(1.1);
+}
+
+/* ===== DROPDOWN ===== */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 110%;
+  background: white;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  min-width: 160px;
+  padding: 0.5rem 0;
+}
+
+.dropdown-menu a {
+  display: block;
+  text-decoration: none;
+  color: #333;
+  padding: 0.6rem 1rem;
+  transition: background 0.2s;
+}
+
+.dropdown-menu a:hover {
+  background: #f0ebfa;
+  color: #5e25a5;
+}
+
+.dropdown.open .dropdown-menu {
+  display: block;
+}
+
+/* ===== MAIN CONTENT ===== */
+.dashboard-grid {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 7rem;
+  padding: 1rem;
+}
 
 .edit-profile-card {
-  max-width: 500px;
-  margin: 2rem auto;
-  padding: 2rem;
-  border-radius: 12px;
+  width: 100%;
+  max-width: 650px; /* 🔹 più grande */
   background: white;
+  border-radius: 12px;
+  padding: 2.5rem; /* 🔹 più spazioso */
   box-shadow: 0 8px 20px rgba(0,0,0,0.13);
 }
 
+/* ===== FORM ===== */
 .edit-profile-card .section-title {
   color: #5e25a5;
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   font-weight: bold;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.8rem;
   text-align: center;
 }
 
 .edit-user-form label {
   display: block;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.4rem;
   color: #5e25a5;
   font-weight: 500;
+  font-size: 1.05rem;
 }
 
 .edit-user-form input {
   width: 100%;
-  padding: 0.6rem;
-  margin-bottom: 1rem;
+  padding: 0.9rem;
+  margin-bottom: 1.2rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 1.05rem;
+  transition: border 0.2s, box-shadow 0.2s;
 }
 
 .edit-user-form input:focus {
@@ -52,24 +149,101 @@
 
 .save-btn {
   width: 100%;
-  padding: 0.7rem;
+  padding: 1rem;
   border: none;
   border-radius: 6px;
-  background-color: rgba(113,89,182);
+  background: linear-gradient(90deg, #5e25a5, rgba(113,89,182));
   color: white;
-  font-size: 1rem;
+  font-size: 1.1rem;
   cursor: pointer;
-  transition: background 0.2s;
+  font-weight: 500;
+  transition: background 0.25s;
+}
+
+.save-btn i {
+  margin-right: 6px;
 }
 
 .save-btn:hover {
-  background-color: #5e25a5;
+  background: linear-gradient(90deg, #4a1b8c, #5e25a5);
 }
 
-/* Responsive */
-@media (max-width: 500px) {
+/* ===== FOOTER ===== */
+footer {
+  background: linear-gradient(135deg, #5e25a5, #7b3fd3);
+  color: white;
+  text-align: center;
+  padding: 2rem;
+  margin-top: 4rem;
+}
+
+footer p {
+  font-size: 0.9rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 390px) {
+  /* Header */
+  header {
+    flex-direction: column;
+    padding: 0.8rem 1rem;
+    text-align: center;
+  }
+
+  header .logo a {
+    font-size: 1.2rem;
+  }
+
+  .icons-container {
+    margin-top: 0.5rem;
+    gap: 1rem;
+  }
+
+  .user-icon img {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* Main card */
+  .dashboard-grid {
+    margin-top: 6rem;
+    padding: 0.8rem;
+  }
+
   .edit-profile-card {
     width: 95vw;
-    padding: 1.5rem;
+    padding: 1.8rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+  }
+
+  .edit-user-form label {
+    font-size: 1rem;
+  }
+
+  .edit-user-form input {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+
+  .save-btn {
+    font-size: 1rem;
+    padding: 0.9rem;
+  }
+
+  /* Dropdown menu */
+  .dropdown-menu {
+    right: 50%;
+    transform: translateX(50%);
+    min-width: 140px;
+  }
+
+  .dropdown-menu a {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.8rem;
   }
 }
