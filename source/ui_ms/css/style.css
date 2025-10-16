@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   background: linear-gradient(to right, #5e25a5, rgba(113,89,182));
   min-height: 100vh;
   display: flex;
@@ -78,87 +78,7 @@ header {
       z-index: 100;
     }
 
-  .logo {
-    font-size: 1.6rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-  }
-
-  nav  {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-    transition: 0.3s;
-  }
-
-  .user-icon img {
-  vertical-align: middle;
-  transition: transform 0.3s ease, stroke 0.3s ease;
-  width: 40px;
-  height: 40px;
-  }
-
-  .user-icon:hover img {
-    transform: scale(1.5);
-    stroke: #d4b5ff;
-  }
-
-
-
-/* ===== DROPDOWN MENU ===== */
-.dropdown {
-  display: inline-block;
-}
-
-.dropdown-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin-left: 1.5rem;
-}
-
-.dropdown-toggle svg {
-  transition: transform 0.3s ease, stroke 0.3s ease;
-}
-
-.dropdown-toggle:hover svg {
-  transform: scale(1.1);
-  stroke: #d4b5ff;
-}
-
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 40px;
-  background: white;
-  min-width: 180px;
-  border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-  animation: fadeIn 0.3s ease;
-  z-index: 10;
-}
-
-.dropdown-menu a {
-  display: block;
-  padding: 0.8rem 1rem;
-  color: #5e25a5;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background 0.2s ease;
-}
-
-.dropdown-menu a:hover {
-  background: #f3e9ff;
-}
-
-.dropdown-menu hr {
-  margin: 0;
-  border: none;
-  border-top: 1px solid #eee;
-}
+ 
 
 @keyframes fadeIn {
   from {opacity: 0; transform: translateY(-5px);}
