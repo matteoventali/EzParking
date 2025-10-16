@@ -1,9 +1,12 @@
 from flask import Flask, jsonify, request
 from config import DB_CONFIG
-from models import db, User
+from models import db, User, Review
 from werkzeug.security import generate_password_hash, check_password_hash
 import string
 import random
+from datetime import date
+import statistics
+
 
 
 # -------------------------------
@@ -17,15 +20,18 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
+
+
 # -------------------------------
 # ROUTES
 # -------------------------------
-
 @app.route("/")
 def index():
     return jsonify({"message": "Service is active"}), 200
 
-# -------- AUTH --------
+
+
+# ------------ AUTH ------------
 @app.route('/auth/signup', methods=['POST'])
 def signup():
     data = request.get_json()
@@ -168,9 +174,10 @@ def status():
 
     return jsonify({'desc': 'Online',
                     'code': '0'}), 200
-    
-# -------- PERSONAL DATA --------
 
+
+
+# ------------ PERSONAL DATA ------------
 @app.route("/pdata", methods=["GET"])
 def get_personal_data():
     auth_header = request.headers.get('Authorization')
@@ -186,7 +193,9 @@ def get_personal_data():
         return jsonify({'desc': 'Invalid session token',
                         'code': '2'}), 401
 
-    score = None
+    reviews = list_reviews(user)
+    received_reviews = reviews["received_reviews"]
+    score = statistics.mean([r["star"] for r in received_reviews])
 
     return jsonify({
         'desc': 'User data retrieved successfully',
@@ -264,21 +273,149 @@ def update_personal_data():
     }), 200
 
 
-# -------- REVIEWS --------
+
+# ------------ REVIEWS ------------
+def list_reviews(user):
+        
+    written = Review.query.filter_by(writer_id=user.id).all()
+    received = Review.query.filter_by(target_id=user.id).all()
+
+    written_reviews = [{
+        'id': r.id,
+        'review_date': str(r.review_date),
+        'star': r.star,
+        'review_description': r.review_description,
+        'reservation_id': r.reservation_id,
+        'other_side_id': r.target.id, 
+        'other_side_name': r.target.name,
+        'other_side_surname': r.target.surname
+
+    } for r in written]
+
+    received_reviews = [{
+        'id': r.id,
+        'review_date': str(r.review_date),
+        'star': r.star,
+        'review_description': r.review_description,
+        'other_side_id': r.writer.id, 
+        'other_side_name': r.writer.name,
+        'other_side_surname': r.writer.surname,
+        'reservation_id': r.reservation_id
+    } for r in received]
+
+    return {
+            'desc': 'Reviews retrieved successfully',
+            'code': '0',
+            'written_reviews': written_reviews,
+            'received_reviews': received_reviews
+            }
 
 @app.route("/reviews", methods=["GET"])
-def get_review(res_id):
-    # TODO: implement get reviews that hit me
-    return jsonify({"message": f"get review handler for reservation {res_id}"}), 200
+def get_review():
+
+    auth_header = request.headers.get('Authorization')
+    if not auth_header:
+        return jsonify({'desc': 'Missing or invalid Authorization header',
+                        'code': '1'}), 400
+
+    session_token = auth_header
+    user = User.query.filter_by(session_token=session_token).first()
+
+    if not user:
+        return jsonify({'desc': 'Invalid session token',
+                        'code': '2'}), 401
+
+    try:
+        return jsonify(list_reviews(user)), 200
+    except Exception as e:
+        return jsonify({'desc': f'Database error: {e}',
+                        'code': '99'}), 500
 
 
 @app.route("/reviews", methods=["POST"])
-def add_review(res_id):
-    # TODO: implement add review that I write on a reservation
-    return jsonify({"message": f"add review handler for reservation {res_id}"}), 200
+def add_review():
+
+    try:
+        with db.session.begin():
+
+            auth_header = request.headers.get('Authorization')
+            if not auth_header:
+                return jsonify({'desc': 'Missing or invalid Authorization header',
+                                'code': '1'}), 400
+
+            session_token = auth_header
+            writer = User.query.filter_by(session_token=session_token).first()
+            if not writer:
+                return jsonify({'desc': 'Invalid session token',
+                                'code': '2'}), 401
+
+            data = request.get_json()
+            required_fields = ["target_id", "reservation_id", "star", "review_description"]
+            if not data or not all(f in data for f in required_fields):
+                return jsonify({'desc': 'Missing required fields',
+                                'code': '3'}), 400
+
+            target_id = data["target_id"]
+            reservation_id = data["reservation_id"]
+            star = data["star"]
+            review_description = data["review_description"]
+
+            if not isinstance(star, int) or star < 1 or star > 5:
+                return jsonify({'desc': 'Star must be an integer between 1 and 5',
+                                'code': '4'}), 400
+
+            if writer.id == int(target_id):
+                return jsonify({'desc': 'User cannot review themselves',
+                                'code': '5'}), 400
+
+            target = User.query.get(target_id)
+            if not target:
+                return jsonify({'desc': 'Target user not found',
+                                'code': '6'}), 404
+
+            existing_review = Review.query.filter_by(
+                writer_id=writer.id,
+                target_id=target_id,
+                reservation_id=reservation_id
+            ).with_for_update(read=True).first()
+
+            if existing_review:
+                return jsonify({'desc': 'Review already exists for this reservation',
+                                'code': '7'}), 409
+
+            new_review = Review(
+                review_date=date.today(),
+                star=star,
+                review_description=review_description,
+                writer_id=writer.id,
+                target_id=target_id,
+                reservation_id=reservation_id
+            )
+
+            db.session.add(new_review)
+
+        return jsonify({
+            'desc': 'Review added successfully',
+            'code': '0',
+            'review': {
+                'id': new_review.id,
+                'writer_id': new_review.writer_id,
+                'target_id': new_review.target_id,
+                'reservation_id': new_review.reservation_id,
+                'star': new_review.star,
+                'review_description': new_review.review_description,
+                'review_date': str(new_review.review_date)
+            }
+        }), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'desc': f'Database error : {e}', 
+                        'code': '99'}), 500
 
 
-# -------- ADMIN --------
+
+# ------------ ADMIN ------------
 @app.route("/users", methods=["GET"])
 def get_users_list():
     auth_header = request.headers.get('Authorization')
@@ -314,7 +451,6 @@ def get_users_list():
         'users': users_list
     }), 200
 
-# TODO
 @app.route("/users/<int:user_id>", methods=["GET"])
 def get_user_dashboard(user_id):
     auth_header = request.headers.get('Authorization')
@@ -340,8 +476,10 @@ def get_user_dashboard(user_id):
         return jsonify({'desc': 'User not found',
                         'code': '4'}), 404
 
-    score = None
-    # TODO: add reviews list
+    reviews = list_reviews(target_user)
+    received_reviews = reviews["received_reviews"]
+    score = statistics.mean([r["star"] for r in received_reviews])
+    
     return jsonify({
         'desc': 'User dashboard retrieved successfully',
         'code': '0',
@@ -353,13 +491,16 @@ def get_user_dashboard(user_id):
             'phone': target_user.phone,
             'role': target_user.user_role,
             'score': score
-        }
+        },
+        'received_reviews': reviews["received_reviews"],
+        'written_reviews': reviews["written_reviews"]
     }), 200
+
+
 
 
 # -------------------------------
 # MAIN
 # -------------------------------
-
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
