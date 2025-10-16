@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   background: linear-gradient(to right, #5e25a5, rgba(113,89,182));
   min-height: 100vh;
   display: flex;
