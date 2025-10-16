@@ -7,7 +7,9 @@
   <link rel="stylesheet" href="../css/dashboard.css">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/table.css">
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  
 </head>
 
 <body>
@@ -83,101 +85,65 @@
     </div>
 
     <!-- Registered Users Section -->
-    <div class="dashboard-card reservations-card">
-      <div class="section-title">Registered Users</div>
+  <div class="container">
+  <h1>Manage Users</h1>
 
-      <div class="reservation-list-container">
-        <ul class="reservation-list">
+  <div class="search-container">
+    <input type="text" id="userSearchInput" placeholder="Cerca utente...">
+  </div>
 
-          <!-- User solo Driver -->
-          <li>
-            <a href="user_details.php?id=1" class="user-list-item">
-              <div class="user-item-content-with-delete">
-                <div class="user-info-left">
-                  <div class="user-name-badges">
-                    <strong>Federico De Lullo</strong>
-                    <img src="../images/driver-icon.svg" alt="Driver">
-                  </div>
-                  <div class="user-details">
-                    <small>Email: delullo.1935510@studenti.uniroma1.it</small>
-                    <small>Role: Driver</small>
-                  </div>
-                </div>
-                <a href="#" class="user-delete-link">
-                  <img src="../images/delete.svg" alt="Delete">
-                </a>
-              </div>
-            </a>
-          </li>
+  <table id="userTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Surname</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Role</th>
+      </tr>
+    </thead>
+    <tbody id="userTableBody">
+      <!-- Popolato con JS -->
+    </tbody>
+  </table>
 
-          <!-- User Driver + Resident -->
-          <li>
-            <a href="user_details.php?id=2" class="user-list-item">
-              <div class="user-item-content-with-delete">
-                <div class="user-info-left">
-                  <div class="user-name-badges">
-                    <strong>Maria Rossi</strong>
-                    <img src="../images/driver-icon.svg" alt="Driver">
-                    <img src="../images/resident-icon.svg" alt="Resident">
-                  </div>
-                  <div class="user-details">
-                    <small>Email: m.rossi@unimi.it</small>
-                    <small>Role: Driver + Resident</small>
-                  </div>
-                </div>
-                <a href="#" class="user-delete-link">
-                  <img src="../images/delete.svg" alt="Delete">
-                </a>
-              </div>
-            </a>
-          </li>
+  <div class="pagination">
+    <button id="userPrevBtn">←</button>
+    <span id="userPageInfo"></span>
+    <button id="userNextBtn">→</button>
+  </div>
+</div>
 
-          <!-- User solo Driver -->
-          <li>
-            <a href="user_details.php?id=3" class="user-list-item">
-              <div class="user-item-content-with-delete">
-                <div class="user-info-left">
-                  <div class="user-name-badges">
-                    <strong>Giuseppe Bianchi</strong>
-                    <img src="../images/driver-icon.svg" alt="Driver">
-                  </div>
-                  <div class="user-details">
-                    <small>Email: g.bianchi@studenti.uniroma1.it</small>
-                    <small>Role: Driver</small>
-                  </div>
-                </div>
-                <a href="#" class="user-delete-link">
-                  <img src="../images/delete.svg" alt="Delete">
-                </a>
-              </div>
-            </a>
-          </li>
+<div class="container">
+  <h1>List of Parking Spots</h1>
 
-          <!-- User Driver + Resident -->
-          <li>
-            <a href="user_details.php?id=4" class="user-list-item">
-              <div class="user-item-content-with-delete">
-                <div class="user-info-left">
-                  <div class="user-name-badges">
-                    <strong>Luca Verdi</strong>
-                    <img src="../images/driver-icon.svg" alt="Driver">
-                    <img src="../images/resident-icon.svg" alt="Resident">
-                  </div>
-                  <div class="user-details">
-                    <small>Email: l.verdi@uniroma1.it</small>
-                    <small>Role: Driver + Resident</small>
-                  </div>
-                </div>
-                <a href="#" class="user-delete-link">
-                  <img src="../images/delete.svg" alt="Delete">
-                </a>
-              </div>
-            </a>
-          </li>
+  <div class="search-container">
+    <input type="text" id="parkingSearchInput" placeholder="Cerca parcheggio...">
+  </div>
 
-        </ul>
-      </div>
-    </div>
+  <table id="parkingTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Location</th>
+        <th>Capacity</th>
+        <th>Reputation Threshold</th>
+        <th>Slot Price (€)</th>
+        <th>User ID</th>
+      </tr>
+    </thead>
+    <tbody id="parkingTableBody">
+      <!-- Popolato con JS -->
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button id="parkingPrevBtn">←</button>
+    <span id="parkingPageInfo"></span>
+    <button id="parkingNextBtn">→</button>
+  </div>
+</div>
 
   </main>
 
@@ -187,5 +153,7 @@
   </footer>
 
 <script src="../js/dropdown.js" crossorigin="anonymous"></script>
+<script src="../js/users_table.js" crossorigin="anonymous"></script>
+<script src="../js/parking_table.js"></script>
 </body>
 </html>
