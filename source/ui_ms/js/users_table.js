@@ -5,7 +5,6 @@ const userPrevBtn = document.getElementById("userPrevBtn");
 const userNextBtn = document.getElementById("userNextBtn");
 const userPageInfo = document.getElementById("userPageInfo");
 
-// === Dati di esempio (simula fetch da DB) ===
 let usersData = [
   { id: 1, nome: "Federico", cognome: "De Lullo", email: "federico@example.com", telefono: "+39 333 1234567", ruolo: "Admin" },
   { id: 2, nome: "Luca", cognome: "Bianchi", email: "luca@example.com", telefono: "+39 333 9876543", ruolo: "User" },
@@ -14,11 +13,9 @@ let usersData = [
   { id: 5, nome: "Alessio", cognome: "Neri", email: "alessio@example.com", telefono: "+39 350 7788990", ruolo: "User" },
 ];
 
-// === Paginazione ===
 let userCurrentPage = 1;
 const userRowsPerPage = 3;
 
-// === Funzione per mostrare utenti ===
 function renderUsersTable(data) {
   userTableBody.innerHTML = "";
   data.forEach(user => {
@@ -45,14 +42,12 @@ function renderUsersTable(data) {
       }
     });
 
-    // Aggiunge un piccolo effetto hover
     row.style.cursor = "pointer";
 
     userTableBody.appendChild(row);
   });
 }
 
-// === Gestione paginazione ===
 function paginateUsers() {
   const start = (userCurrentPage - 1) * userRowsPerPage;
   const end = start + userRowsPerPage;
@@ -70,7 +65,6 @@ function paginateUsers() {
   userNextBtn.disabled = end >= filteredData.length;
 }
 
-// === Eventi ===
 userSearchInput.addEventListener("input", () => {
   userCurrentPage = 1;
   paginateUsers();
@@ -91,5 +85,4 @@ userNextBtn.addEventListener("click", () => {
   }
 });
 
-// === Inizializzazione ===
 paginateUsers();

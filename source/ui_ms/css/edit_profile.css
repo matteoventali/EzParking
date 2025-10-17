@@ -15,86 +15,6 @@ body {
   flex-direction: column;
 }
 
-/* ===== HEADER ===== */
-header {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-}
-
-header .logo a {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-  text-decoration: none;
-}
-
-.icons-container {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.user-icon img {
-  width: 26px;
-  height: 26px;
-  transition: transform 0.2s;
-}
-
-.user-icon:hover img {
-  transform: scale(1.1);
-}
-
-/* ===== DROPDOWN ===== */
-.dropdown {
-  position: relative;
-}
-
-.dropdown-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 110%;
-  background: white;
-  color: #333;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  min-width: 160px;
-  padding: 0.5rem 0;
-}
-
-.dropdown-menu a {
-  display: block;
-  text-decoration: none;
-  color: #333;
-  padding: 0.6rem 1rem;
-  transition: background 0.2s;
-}
-
-.dropdown-menu a:hover {
-  background: #f0ebfa;
-  color: #5e25a5;
-}
-
-.dropdown.open .dropdown-menu {
-  display: block;
-}
-
 /* ===== MAIN CONTENT ===== */
 .dashboard-grid {
   flex: 1;
@@ -107,10 +27,10 @@ header .logo a {
 
 .edit-profile-card {
   width: 100%;
-  max-width: 650px; /* 🔹 più grande */
+  max-width: 650px; 
   background: white;
   border-radius: 12px;
-  padding: 2.5rem; /* 🔹 più spazioso */
+  padding: 2.5rem; 
   box-shadow: 0 8px 20px rgba(0,0,0,0.13);
 }
 

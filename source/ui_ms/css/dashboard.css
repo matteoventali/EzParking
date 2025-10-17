@@ -241,12 +241,11 @@
   font-weight: 500;
 }
 
-/* === RESPONSIVE (max-width: 390px) === */
 @media (max-width: 390px) {
   .dashboard-grid {
     margin-top: 6rem;
     gap: 1.5rem;
-    width: 95%;
+    width: 90%;
     padding: 0.8rem;
   }
 

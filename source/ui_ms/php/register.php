@@ -33,10 +33,6 @@
                 <input type="email" id="email" class="login-input" name="email" placeholder="example@youremail.it" required>
             </div>
             <div class="input-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" class="login-input" name="username" required>
-            </div>
-            <div class="input-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" class="login-input" name="password" required>
             </div>

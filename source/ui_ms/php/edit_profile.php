@@ -2,41 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Profile</title>
-
-
   <link rel="stylesheet" href="../css/edit_profile.css">
-   <link rel="stylesheet" href="../css/navbar.css">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
-  <!-- === HEADER === -->
-  <header>
-    <div class="logo">
-      <a href="index.html" style="color: white; text-decoration: none;">EzParking</a>
-    </div>
-    <nav class="icons-container">
-      <a href="#" class="user-icon" title="Calendar"><img src="../images/calendar.svg" alt="Calendar"></a>
-      <a href="#" class="user-icon" title="Parking"><img src="../images/parking.svg" alt="Parking"></a>
+  <?php
+    require_once './config.php';
+    $navbar = file_get_contents(NAVBAR);
+    echo $navbar;
+  ?>
 
-      <div class="dropdown">
-        <button class="dropdown-toggle user-icon" id="account-btn" aria-label="Account">
-          <img src="../images/account.svg" alt="Account">
-        </button>
-
-        <div class="dropdown-menu" id="dropdown-menu">
-          <a href="../php/homepage.php">Home</a>
-          <a href="#">My Reservations</a>
-          <a href="#">My Bookings</a>
-          <hr>
-          <a href="#">Log Out</a>
-        </div>
-      </div>
-    </nav>
-  </header>
-
-  <!-- === MAIN CONTENT === -->
   <main class="dashboard-grid">
 
     <div class="dashboard-card edit-profile-card">
@@ -71,12 +49,12 @@
     </div>
 
   </main>
-
-  <!-- === FOOTER === -->
-  <footer>
-    <p>© 2025 EzParking — All rights reserved</p>
-  </footer>
     <script src="../js/dropdown.js" crossorigin="anonymous"></script>
+  <?php
+    $footer = file_get_contents(FOOTER);
+    echo $footer;
+  ?>
+  
 
 </body>
 </html>

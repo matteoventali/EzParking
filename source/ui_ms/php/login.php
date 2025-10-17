@@ -10,7 +10,7 @@
 </head>
 <body>
   <?php
-  require_once './config.php';
+    require_once './config.php';
     $navbar = file_get_contents(NAVBAR);
     echo $navbar;
   ?>
@@ -18,8 +18,8 @@
         <h2>Login into your account</h2>
         <form id="login-form">
             <div class="input-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" class="login-input"  name="username" required>
+                <label for="email">Email</label>
+                <input type="text" id="email" class="login-input"  name="email" required>
             </div>
             <div class="input-group">
                 <label for="password">Password</label>
