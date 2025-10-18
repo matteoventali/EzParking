@@ -54,7 +54,7 @@
     $footer = file_get_contents(FOOTER);
     echo $footer;
   ?>
-  
+
 
 </body>
 </html>

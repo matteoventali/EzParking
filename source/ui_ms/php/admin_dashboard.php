@@ -114,7 +114,7 @@
             </tr>
           </thead>
           <tbody id="parkingTableBody">
-        
+
           </tbody>
         </table>
 

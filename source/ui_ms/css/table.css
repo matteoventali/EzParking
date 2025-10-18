@@ -97,13 +97,13 @@ tbody tr:hover {
 
 @media (max-width: 390px) {
   .container {
-    overflow-x: auto;              
-    -webkit-overflow-scrolling: touch; 
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .container table {
-    min-width: 300px;             
-    white-space: nowrap;        
+    min-width: 300px;
+    white-space: nowrap;
   }
 
   th, td {
