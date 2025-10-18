@@ -30,11 +30,9 @@
       <table id="userTable">
         <thead>
           <tr>
-
             <th>Email</th>
             <th>Status</th>
-        
-
+    
           </tr>
         </thead>
         <tbody id="userTableBody"></tbody>

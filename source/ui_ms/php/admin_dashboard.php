@@ -48,10 +48,7 @@
           <i class="fas fa-phone"></i>
           <span><strong>Phone:</strong> +39 333 1234567</span>
         </div>
-        <div class="info-item">
-          <i class="fas fa-lock"></i>
-          <span><strong>Password:</strong> ********</span>
-        </div>
+
         <div class="info-item">
           <i class="fas fa-id-badge"></i>
           <span class="role"><strong>Role:</strong> Admin</span>

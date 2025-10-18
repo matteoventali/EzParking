@@ -1,3 +1,5 @@
+
+
 const userTableBody = document.getElementById("userTableBody");
 const userSearchInput = document.getElementById("userSearchInput");
 const userPrevBtn = document.getElementById("userPrevBtn");
@@ -5,26 +7,11 @@ const userNextBtn = document.getElementById("userNextBtn");
 const userPageInfo = document.getElementById("userPageInfo");
 
 let usersData = [
-  { nome: "Federico", email: "federico@example.com", status: "active" },
-  {  nome: "Luca",  email: "luca@example.com",status: "deactivated" },
-  {  nome: "Giulia",  email: "giulia@example.com",active: "active" },
-  {  nome: "Marta",  email: "marta@example.com", status: "active" },
-  {  nome: "Alessio",  email: "alessio@example.com", status: "deactivated" },
-    { nome: "Federico", email: "federico@example.com", status: "active" },
-  {  nome: "Luca",  email: "luca@example.com",status: "deactivated" },
-  {  nome: "Giulia",  email: "giulia@example.com",active: "active" },
-  {  nome: "Marta",  email: "marta@example.com", status: "active" },
-  {  nome: "Alessio",  email: "alessio@example.com", status: "deactivated" },
-    { nome: "Federico", email: "federico@example.com", status: "active" },
-  {  nome: "Luca",  email: "luca@example.com",status: "deactivated" },
-  {  nome: "Giulia",  email: "giulia@example.com",active: "active" },
-  {  nome: "Marta",  email: "marta@example.com", status: "active" },
-  {  nome: "Alessio",  email: "alessio@example.com", status: "deactivated" },
-    { nome: "Federico", email: "federico@example.com", status: "active" },
-  {  nome: "Luca",  email: "luca@example.com",status: "deactivated" },
-  {  nome: "Giulia",  email: "giulia@example.com",active: "active" },
-  {  nome: "Marta",  email: "marta@example.com", status: "active" },
-  {  nome: "Alessio",  email: "alessio@example.com", status: "deactivated" },
+  { id: 1, nome: "Federico", email: "federico@example.com", status: "active" },
+  { id: 2, nome: "Luca",  email: "luca@example.com",status: "deactivated" },
+  { id: 3, nome: "Giulia",  email: "giulia@example.com",active: "active" },
+  { id: 4, nome: "Marta",  email: "marta@example.com", status: "active" },
+  { id: 5, nome: "Alessio",  email: "alessio@example.com", status: "deactivated" },
 ];
 
 let userCurrentPage = 1;
@@ -35,14 +22,13 @@ function renderUsersTable(data) {
 
   data.forEach(user => {
     const row = document.createElement("tr");
-
+    const userId = user.id;
     // Scegli l'icona in base allo stato
     const statusIcon = user.status === "active"
       ? "../images/active.svg"
-      : "../images/deactivated.svg";
+      : "../images/disabled.svg";
 
     row.innerHTML = `
-      
       <td>${user.email}</td>
       <td>
         <img src="${statusIcon}" alt="${user.status}" style="width:20px">
@@ -51,7 +37,7 @@ function renderUsersTable(data) {
 
     // Clic sulla riga → vai ai dettagli dell’utente
     row.addEventListener("click", () => {
-      window.location.href = `user_details.html?id=${user.id}`;
+      window.location.href = `user_details.php?id=${userId}`;
     });
 
     row.style.cursor = "pointer";
