@@ -1,37 +1,53 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>User Dashboard</title>
-  <link rel="stylesheet" href="../css/navbar.css">
-
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EzParking</title>
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./fontawesome-free-6.4.0-web/css/all.css">
+    <link rel="website icon" type="png" href="/Img/lego-icon-12.ico">
 </head>
 <body>
+    <!-- Sezione Navbar-->
+    <nav class="navbar">
+        <div class="navbar__container">
+            <a href="/" id="navbar__logo">EzParking</a>
+            <div class="navbar__toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="navbar__menu">
+              <li class="navbar__item">
+                <a href="#" class="navbar__links">
+                  <img src="../images/calendar.svg" style="width: 50px; height: 50px;">
+                  <h3 id="link-togle-bar" style="display: none;">See Your Parking Spot</h3>
+                </a>
+              </li>
+              <li class="navbar__item">
+                <a href="#" class="navbar__links">
+                  <img src="../images/parking.svg" style="width: 50px; height: 50px;">
+                  <h3 id="link-togle-bar" style="display: none;">Book a Parking Spot</h3>
+                </a>
+              </li>
+              <li class="navbar__item">
+                <a href="../php/admin_dashboard.php" class="navbar__links">
+                  <img src="../images/account.svg" style="width: 50px; height: 50px;">
+                  <h3 id="link-togle-bar" style="display: none;">Account</h3>
+                </a>
+              </li>
+            </ul>
 
-
-  <header>
-    <div class="logo"><a href="../php/homepage.php" style="color: white; text-decoration: none;">EzParking</a></div>
-    <nav class="icons-container">
-      <a href="#" class="user-icon" title="Account"><img src="../images/calendar.svg"></a>
-      <a href="#" class="user-icon" title="Account"><img src="../images/parking.svg"></a>
-      <div class="dropdown">
-        <button class="dropdown-toggle user-icon" id="account-btn" aria-label="Account">
-          <img src="../images/account.svg" alt="Account">
-        </button>
-
-        <!-- Dropdown menu -->
-        <div class="dropdown-menu" id="dropdown-menu">
-          <a href="../html/dashboard.html">Profile</a>
-          <a href="#">My Reservation</a>
-          <a href="#">My Bookings</a>
-          <hr>
-          <a href="#">Log In</a>
         </div>
-      </div>
     </nav>
-  </header>
 
 
- </body>
+
+</body>
+
+    <script src="../js/toggle-bar.js"></script>
 </html>

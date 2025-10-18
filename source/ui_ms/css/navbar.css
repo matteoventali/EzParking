@@ -1,103 +1,267 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Kumbh Sans',sans-serif;
+}
+
 header {
-  background: #5e25a5;
-  border-bottom: 2.5px solid white;
-  color: white;
+  display: flex;              /* imposta layout flessibile */
+  justify-content: flex-start; /* di default, ma puoi cambiare */
+}
+
+
+.navbar {
+      background: #5e25a5;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+      border-bottom: 2.5px solid white;
+}
+
+.navbar__container{
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    z-index: 1;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 50px;
+
+}
+
+
+
+#navbar__logo{
+    color: #fff;
+    background-size: 100%;
+    background-clip: border-box;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 2.5rem;
+    font-family: 'Kumbh Sans',sans-serif;
+}
+
+#logo{
+    width: 40%;
+    height: 40%;
+    margin-right: 0.5rem;
+}
+
+.fa-gem{
+    margin-right: 0.5rem;
+}
+
+
+.navbar__menu {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  list-style: none;
+  text-align: center;
+  margin-left: 800px; /* <-- sposta tutto il blocco di icone verso destra */
 }
 
-.logo {
-  font-size: 1.6rem;
-  font-weight: 700;
-  letter-spacing: 1px;
+.navbar__item{
+    height: 80px;
 }
 
-/* --- Nuovo contenitore per le icone --- */
-.icons-container {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem; /* distanza uniforme tra le icone */
+
+.navbar__links{
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    padding: 0 1rem;
+    height: 100%;
 }
 
-/* Stili per i bottoni icona */
-.dropdown-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+.navbar__btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1rem;
+    width: 100%;
 }
 
-.dropdown-toggle svg {
-  width: 28px;
-  height: 28px;
-  transition: transform 0.3s ease, stroke 0.3s ease;
+
+.button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    padding: 10px 20px;
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    background: #f77062;
+    color: #fff;
 }
 
-.dropdown-toggle:hover svg {
-  transform: scale(1.1);
-  stroke: #d4b5ff;
+
+.button:hover{
+    background: blue;
+    transition: all 0.3s ease;
 }
 
-/* Icona utente */
-.user-icon img {
-  vertical-align: middle;
-  transition: transform 0.3s ease, stroke 0.3s ease;
-  width: 40px;
-  height: 40px;
+
+
+@media screen and (max-width: 960px){
+    .navbar__container{
+        display: flex;
+        justify-content: space-between;
+        height: 80px;
+        z-index: 1;
+        width: 100%;
+        max-width: 1300px;
+        padding: 0;
+    }
+
+    .navbar__menu{
+        display: grid;
+        grid-template-columns: auto;
+        margin: 0;
+        width: 100%;
+        position: absolute;
+        top : -1000px;
+        opacity: 0;
+        transition: all 0.5s ease;
+        height: 50vh;
+        z-index: -1;
+        background: #5e25a5;
+    }
+
+    .navbar__menu.active{
+        background: #5e25a5;
+        top: 100%;
+        opacity: 1;
+        transition: all 0.5 ease;
+        height: 50vh;
+        font-size: 1.6rem;
+        z-index: 99;
+        border-top: 2.5px solid white;
+        border-bottom: 4px solid black;
+        height: fit-content;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+    
+    #navbar__logo{
+        padding-left: 25px;
+    }
+
+    .navbar__toggle .bar{
+        width: 25px;
+        height: 3px;
+        margin: 5px auto;
+        transition: all 0.3s ease-in-out;
+        background: #fff;
+    }
+
+   /* contenitore menu: voci in colonna */
+    .navbar__menu {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    margin: 0;
+    list-style: none;
+    width: 100%;
+
+    }
+
+    /* ogni voce (li) - opzionale per controllo larghezza */
+    .navbar__item {
+    width: 100%;
+    }
+
+    /* link: grid con due colonne: immagine fissa e testo flessibile */
+    .navbar__links {
+    display: grid;
+    grid-template-columns: 50px 1fr; /* 50px per l'icona, testo prende il resto */
+    align-items: center;             /* centra verticalmente */
+    gap: 12px;                       /* spazio tra icona e testo */
+    color: #fff;
+    text-decoration: none;
+    padding: 0.25rem 0;
+    width: 100%;
+    box-sizing: border-box;
+    }
+
+    /* forza dimensione uniforme dell'immagine e gestione ritagli */
+    .navbar__links img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain; /* mantiene proporzioni e centra l'icona nella cella */
+    display: block;      /* rimuove spacing inline */
+    margin: 0;
+    align-self: center;
+    }
+
+    /* titolo testo */
+    .navbar__links h3 {
+    margin: 0;
+    font-size: medium;
+    line-height: 1.2;
+    align-self: center;
+    white-space: nowrap; 
+    }
+
+
+@media (min-width: 768px) {
+  .link-toggle { display: block; }
 }
 
-.user-icon:hover img {
-  transform: scale(1.1);
-  stroke: #d4b5ff;
+
+    #mobile-menu{
+        position: absolute;
+        top: 20%;
+        right: 5%;
+        transform: translate(5%,20%);
+    
+
+    }
+
+    .navbar__btn{
+        padding-bottom: 2rem;
+    }
+
+    .button{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80%;
+        height: 60px;
+        margin: 0;
+    }
+
+    .navbar__toggle .bar{
+        display: block;
+        cursor: pointer;    
+    }
+
+    #mobile-menu.is-active .bar:nth-child(2) {
+        opacity: 0;   
+    }  
+
+    #mobile-menu.is-active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    } 
+    
+    #mobile-menu.is-active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
 }
 
-/* Dropdown */
-.dropdown {
-  position: relative;
-}
-
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 40px;
-  background: white;
-  min-width: 180px;
-  border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-  animation: fadeIn 0.3s ease;
-  z-index: 10;
-}
-
-.dropdown-menu a {
-  display: block;
-  padding: 0.8rem 1rem;
-  color: #5e25a5;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background 0.2s ease;
-}
-
-.dropdown-menu a:hover {
-  background: #f3e9ff;
-}
-
-.dropdown-menu hr {
-  margin: 0;
-  border: none;
-  border-top: 1px solid #eee;
-}
-
-@keyframes fadeIn {
-  from {opacity: 0; transform: translateY(-5px);}
-  to {opacity: 1; transform: translateY(0);}
-}

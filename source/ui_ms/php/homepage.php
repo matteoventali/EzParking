@@ -42,7 +42,6 @@
   </div>
 </section>
 
-<script src="../js/dropdown.js" crossorigin="anonymous"></script>
 
     <?php
         $footer = file_get_contents(FOOTER);
