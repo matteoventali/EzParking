@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS Users (
     lastlogin_ts                TIMESTAMP DEFAULT NULL,
     session_token               CHAR(32) DEFAULT NULL,
     phone                       VARCHAR(15) NOT NULL UNIQUE,
-    user_role                   ENUM('admin', 'user') DEFAULT 'user'
+    user_role                   ENUM('admin', 'user') DEFAULT 'user',
+    account_status              BOOLEAN DEFAULT true
 );
 
 CREATE TABLE IF NOT EXISTS Review (

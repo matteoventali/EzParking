@@ -18,6 +18,7 @@ class User(db.Model):
     session_token = db.Column(db.String(32), default=None)
     phone = db.Column(db.String(15), nullable=False, unique=True)
     user_role = db.Column(db.Enum('admin', 'user'), default='user')
+    account_status = db.Column(db.Boolean, default=True)
 
     written_reviews = db.relationship(
         "Review",

@@ -105,10 +105,14 @@ def login():
             if not user or not check_password_hash(user.password_hash, password):
                 return jsonify({'desc': 'Invalid email or password',
                                 'code': '2'}), 401
+            
+            if not user.account_status:
+                return jsonify({ 'desc': 'Account disabled',
+                                 'code': '3'}), 403
 
             if user.session_token:
                 return jsonify({'desc': 'User already logged',
-                                'code': '3'}), 401
+                                'code': '4'}), 401
 
             user.lastlogin_ts = db.func.current_timestamp()
             session_token = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
@@ -124,7 +128,8 @@ def login():
                 'email': user.email,
                 'phone': user.phone,
                 'role': user.user_role,
-                'session_token': user.session_token
+                'session_token': user.session_token,
+                'account_status' : user.account_status
             }
         }), 200
 
@@ -171,6 +176,10 @@ def status():
     if not user:
         return jsonify({'desc': 'Invalid session token', 
                         'code': '2'}), 401
+    
+    if not user.account_status:
+        return jsonify({ 'desc': 'Account disabled',
+                            'code': '3'}), 403
 
     return jsonify({'desc': 'Online',
                     'code': '0'}), 200
@@ -415,7 +424,7 @@ def add_review():
 
 
 
-# ------------ ADMIN ------------
+# ------------ ADMIN ------------+
 @app.route("/users", methods=["GET"])
 def get_users_list():
     auth_header = request.headers.get('Authorization')
@@ -496,6 +505,115 @@ def get_user_dashboard(user_id):
         'written_reviews': reviews["written_reviews"]
     }), 200
 
+@app.route("/users/<int:user_id>/enable", methods=["GET"])
+def enable_user_account(user_id):
+    auth_header = request.headers.get('Authorization')
+
+    if not auth_header:
+        return jsonify({'desc': 'Missing or invalid Authorization header',
+                        'code': '1'}), 400
+
+    session_token = auth_header
+    
+    try:
+        with db.session.begin():
+            admin_user = User.query.filter_by(session_token=session_token).first()
+
+            if not admin_user:
+                return jsonify({'desc': 'Invalid session token',
+                                'code': '2'}), 401
+
+            if admin_user.user_role != 'admin':
+                return jsonify({'desc': 'Access denied: admin only',
+                                'code': '3'}), 403
+
+            user = User.query.filter_by(id=user_id).with_for_update().first()
+
+            if not user:
+                return jsonify({'desc': 'User not found',
+                                'code': '4'}), 404
+
+            if user.user_role != 'user':
+                return jsonify({'desc': 'Admin account cannot be re-enabled',
+                                'code': '5'}), 403
+
+            if user.account_status:
+                return jsonify({'desc': 'User account already enabled',
+                                'code': '6'}), 200
+
+            user.account_status = True
+
+        return jsonify({
+            'desc': 'User account enabled successfully',
+            'code': '0',
+            'user': {
+                'id': user.id,
+                'name': user.name,
+                'surname': user.surname,
+                'email': user.email,
+                'account_status': user.account_status
+            }
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'desc': f'{str(e)}',
+                        'code': '99',}), 500
+
+@app.route("/users/<int:user_id>/disable", methods=["GET"])
+def disable_user_account(user_id):
+    auth_header = request.headers.get('Authorization')
+
+    if not auth_header:
+        return jsonify({'desc': 'Missing or invalid Authorization header',
+                        'code': '1'}), 400
+
+    session_token = auth_header
+    
+    try:
+        with db.session.begin():
+            admin_user = User.query.filter_by(session_token=session_token).first()
+
+            if not admin_user:
+                return jsonify({'desc': 'Invalid session token',
+                                'code': '2'}), 401
+
+            if admin_user.user_role != 'admin':
+                return jsonify({'desc': 'Access denied: admin only',
+                                'code': '3'}), 403
+
+            user = User.query.filter_by(id=user_id).with_for_update().first()
+
+            if not user:
+                return jsonify({'desc': 'User not found',
+                                'code': '4'}), 404
+
+            if user.user_role != 'user':
+                return jsonify({'desc': 'Admin account cannot be re-disbaled',
+                                'code': '5'}), 403
+
+            if not user.account_status:
+                return jsonify({'desc': 'User account already disabled',
+                                'code': '6'}), 200
+
+            user.account_status = False
+
+        return jsonify({
+            'desc': 'User account disabled successfully',
+            'code': '0',
+            'user': {
+                'id': user.id,
+                'name': user.name,
+                'surname': user.surname,
+                'email': user.email,
+                'account_status': user.account_status
+            }
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'desc': f'{str(e)}',
+                        'code': '99',}), 500 
 
 
 

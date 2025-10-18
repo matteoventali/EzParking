@@ -12,5 +12,5 @@
 | **POST** | `/reviews` | Add a new review from the invoker  |
 | **GET** | `/users` | Get the list of all users in the system **_ONLY FOR ADMIN_** |
 | **GET** | `/users/{user_id}` | Get the dashboard of the selected user **_ONLY FOR ADMIN_** |
-
-
+| **GET** | `/users/{user_id}/enable` | Enable the account of the selected user **_ONLY FOR ADMIN_** |
+| **GET** | `/users/{user_id}/disable` | Disable the account of the selected user **_ONLY FOR ADMIN_** |
