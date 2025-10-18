@@ -1,4 +1,3 @@
-
 const userTableBody = document.getElementById("userTableBody");
 const userSearchInput = document.getElementById("userSearchInput");
 const userPrevBtn = document.getElementById("userPrevBtn");
@@ -6,44 +5,56 @@ const userNextBtn = document.getElementById("userNextBtn");
 const userPageInfo = document.getElementById("userPageInfo");
 
 let usersData = [
-  { id: 1, nome: "Federico", cognome: "De Lullo", email: "federico@example.com", telefono: "+39 333 1234567", ruolo: "Admin" },
-  { id: 2, nome: "Luca", cognome: "Bianchi", email: "luca@example.com", telefono: "+39 333 9876543", ruolo: "User" },
-  { id: 3, nome: "Giulia", cognome: "Rossi", email: "giulia@example.com", telefono: "+39 331 5552233", ruolo: "User" },
-  { id: 4, nome: "Marta", cognome: "Verdi", email: "marta@example.com", telefono: "+39 345 1122334", ruolo: "User" },
-  { id: 5, nome: "Alessio", cognome: "Neri", email: "alessio@example.com", telefono: "+39 350 7788990", ruolo: "User" },
+  { nome: "Federico", email: "federico@example.com", status: "active" },
+  {  nome: "Luca",  email: "luca@example.com",status: "deactivated" },
+  {  nome: "Giulia",  email: "giulia@example.com",active: "active" },
+  {  nome: "Marta",  email: "marta@example.com", status: "active" },
+  {  nome: "Alessio",  email: "alessio@example.com", status: "deactivated" },
+    { nome: "Federico", email: "federico@example.com", status: "active" },
+  {  nome: "Luca",  email: "luca@example.com",status: "deactivated" },
+  {  nome: "Giulia",  email: "giulia@example.com",active: "active" },
+  {  nome: "Marta",  email: "marta@example.com", status: "active" },
+  {  nome: "Alessio",  email: "alessio@example.com", status: "deactivated" },
+    { nome: "Federico", email: "federico@example.com", status: "active" },
+  {  nome: "Luca",  email: "luca@example.com",status: "deactivated" },
+  {  nome: "Giulia",  email: "giulia@example.com",active: "active" },
+  {  nome: "Marta",  email: "marta@example.com", status: "active" },
+  {  nome: "Alessio",  email: "alessio@example.com", status: "deactivated" },
+    { nome: "Federico", email: "federico@example.com", status: "active" },
+  {  nome: "Luca",  email: "luca@example.com",status: "deactivated" },
+  {  nome: "Giulia",  email: "giulia@example.com",active: "active" },
+  {  nome: "Marta",  email: "marta@example.com", status: "active" },
+  {  nome: "Alessio",  email: "alessio@example.com", status: "deactivated" },
 ];
 
 let userCurrentPage = 1;
-const userRowsPerPage = 3;
+const userRowsPerPage = 10;
 
 function renderUsersTable(data) {
   userTableBody.innerHTML = "";
+
   data.forEach(user => {
     const row = document.createElement("tr");
 
+    // Scegli l'icona in base allo stato
+    const statusIcon = user.status === "active"
+      ? "../images/active.svg"
+      : "../images/deactivated.svg";
+
     row.innerHTML = `
-      <td>${user.id}</td>
-      <td>${user.nome}</td>
-      <td>${user.cognome}</td>
+      
       <td>${user.email}</td>
-      <td>${user.telefono}</td>
-      <td>${user.ruolo}</td>
-      <td><img src="../images/delete.svg" class="fas fa-trash delete-icon" style = "width:20px"></td>
+      <td>
+        <img src="${statusIcon}" alt="${user.status}" style="width:20px">
+      </td>
     `;
 
-
-    row.addEventListener("click", (e) => {
-      if (e.target.classList.contains("delete-icon")) {
-        window.location.href = `user_delete.php?id=${user.id}`;
-      }
-
-      else {
-        window.location.href = `user_details.html?id=${user.id}`;
-      }
+    // Clic sulla riga → vai ai dettagli dell’utente
+    row.addEventListener("click", () => {
+      window.location.href = `user_details.html?id=${user.id}`;
     });
 
     row.style.cursor = "pointer";
-
     userTableBody.appendChild(row);
   });
 }
@@ -52,8 +63,7 @@ function paginateUsers() {
   const start = (userCurrentPage - 1) * userRowsPerPage;
   const end = start + userRowsPerPage;
   const filteredData = usersData.filter(u =>
-    u.nome.toLowerCase().includes(userSearchInput.value.toLowerCase()) ||
-    u.cognome.toLowerCase().includes(userSearchInput.value.toLowerCase()) ||
+
     u.email.toLowerCase().includes(userSearchInput.value.toLowerCase())
   );
   const pageData = filteredData.slice(start, end);

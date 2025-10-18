@@ -63,68 +63,6 @@
       </button>
     </div>
 
-    <!-- Registered Users Section -->
-    <div class="container">
-      <h1>Manage Users</h1>
-
-      <div class="search-container">
-        <input type="text" id="userSearchInput" placeholder="Cerca utente...">
-      </div>
-
-      <table id="userTable">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Surname</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Role</th>
-            <th>Action</th>
-
-          </tr>
-        </thead>
-        <tbody id="userTableBody"></tbody>
-      </table>
-
-        <div class="pagination">
-          <button id="userPrevBtn">←</button>
-          <span id="userPageInfo"></span>
-          <button id="userNextBtn">→</button>
-        </div>
-    </div>
-
-    <div class="container">
-      <h1>List of Parking Spots</h1>
-
-      <div class="search-container">
-        <input type="text" id="parkingSearchInput" placeholder="Cerca parcheggio...">
-      </div>
-
-        <table id="parkingTable">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Location</th>
-              <th>Capacity</th>
-              <th>Reputation Threshold</th>
-              <th>Slot Price (€)</th>
-              <th>User ID</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="parkingTableBody">
-
-          </tbody>
-        </table>
-
-        <div class="pagination">
-          <button id="parkingPrevBtn">←</button>
-          <span id="parkingPageInfo"></span>
-          <button id="parkingNextBtn">→</button>
-        </div>
-    </div>
-
   </main>
 
   <!-- === FOOTER === -->
