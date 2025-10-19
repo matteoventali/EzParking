@@ -16,12 +16,11 @@ menu.addEventListener('click', function() {
     });
 });
 
-// 🔹 Quando la finestra viene ridimensionata
+
 window.addEventListener('resize', function() {
-    // Se torna sopra la soglia mobile (es. 960px)
     if (window.innerWidth > 960) {
         toggleBarLinks.forEach(link => {
-            link.style.display = 'none'; // nasconde i link
+            link.style.display = 'none';
         });
         menu.classList.remove('is-active');
         menuLinks.classList.remove('active');

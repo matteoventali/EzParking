@@ -7,23 +7,24 @@
   <link rel="stylesheet" href="../css/homepage.css">
   <link rel="stylesheet" href="../css/dashboard.css">
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/navbar.css">
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./fontawesome-free-6.4.0-web/css/all.css">
+  <link rel="website icon" type="png" href="/Img/lego-icon-12.ico">
 </head>
 
 <body>
-  <!-- === HEADER === -->
-  <?php
-      require_once './config.php';
-      $navbar = file_get_contents(NAVBAR);
-      echo $navbar;
-    ?>
+    <?php include './functions.php';
+      $nav = generate_navbar('admin');
+      echo $nav;
+     ?>
 
-
-  <!-- === MAIN CONTENT === -->
   <main class="dashboard-grid">
 
-    <!-- User Data Section -->
     <div class="dashboard-card user-data-card">
       <div class="user-header">
         <div class="avatar-wrapper">
@@ -67,7 +68,6 @@
       </button>
     </div>
 
-    <!-- Reputation Section -->
     <div class="dashboard-card reputation-card">
       <div class="section-title">Reputation</div>
       <div class="reputation-score">⭐ 4.2/5</div>
@@ -80,12 +80,11 @@
     
 
   </main>
+    <?php
+      require_once './config.php';
+      $footer = file_get_contents(FOOTER);
+      echo $footer;
+    ?>
 
-  <!-- === FOOTER === -->
-  <footer>
-    <p>© 2025 EzParking — All rights reserved</p>
-  </footer>
-
-  <script src="../js/dropdown.js" crossorigin="anonymous"></script>
 </body>
 </html>

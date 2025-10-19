@@ -6,8 +6,8 @@
 }
 
 header {
-  display: flex;              /* imposta layout flessibile */
-  justify-content: flex-start; /* di default, ma puoi cambiare */
+  display: flex;            
+  justify-content: flex-start;
 }
 
 
@@ -219,7 +219,7 @@ header {
     }
 
 
-@media (min-width: 768px) {
+@media (min-width: 390px) {
   .link-toggle { display: block; }
 }
 

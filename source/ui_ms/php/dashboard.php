@@ -8,36 +8,20 @@
   <link rel="stylesheet" href="../css/dashboard.css">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./fontawesome-free-6.4.0-web/css/all.css">
+  <link rel="website icon" type="png" href="/Img/lego-icon-12.ico">  
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-  <!-- === HEADER === -->
-  <header>
-    <div class="logo">
-      <a href="index.html" style="color: white; text-decoration: none;">EzParking</a>
-    </div>
-    <nav class="icons-container">
-      <a href="#" class="user-icon" title="Calendar"><img src="../images/calendar.svg" alt="Calendar"></a>
-      <a href="#" class="user-icon" title="Parking"><img src="../images/parking.svg" alt="Parking"></a>
+    <?php include './functions.php';
+      $nav = generate_navbar('user');
+      echo $nav;
+     ?>
 
-      <div class="dropdown">
-        <button class="dropdown-toggle user-icon" id="account-btn" aria-label="Account">
-          <img src="../images/account.svg" alt="Account">
-        </button>
-
-        <div class="dropdown-menu" id="dropdown-menu">
-          <a href="../php/homepage.php">Home</a>
-          <a href="#">My Reservations</a>
-          <a href="#">My Bookings</a>
-          <hr>
-          <a href="#">Log Out</a>
-        </div>
-      </div>
-    </nav>
-  </header>
-
-  <!-- === MAIN CONTENT === -->
   <main class="dashboard-grid">
 
     <!-- User Data Section -->
@@ -117,12 +101,9 @@
     </div>
 
   </main>
-
-  <!-- === FOOTER === -->
-  <footer>
-    <p>© 2025 EzParking — All rights reserved</p>
-  </footer>
-
-  <script src="../js/dropdown.js" crossorigin="anonymous"></script>
+    <?php
+        $footer = file_get_contents(FOOTER);
+        echo $footer;
+    ?>
 </body>
 </html>

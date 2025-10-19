@@ -5,14 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration</title>
     <link rel="stylesheet" href="../css/style.css">
-<!--<link rel="stylesheet" href="../css/navbar.css">-->
+    
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./fontawesome-free-6.4.0-web/css/all.css">
+    <link rel="website icon" type="png" href="/Img/lego-icon-12.ico">
 </head>
 <body>
-  <?php
-  require_once './config.php';
-    $navbar = file_get_contents(NAVBAR);
-    echo $navbar;
-  ?>
+    <?php include './functions.php';
+      $nav = generate_navbar('');
+      echo $nav;
+     ?>
     <div class="login-container">
         <h2>Sign Up</h2>
         <form id="login-form">
@@ -41,8 +46,8 @@
         </form>
     </div>
     <script src="../js/script.js"></script>
-    <script src="../js/dropdown.js" crossorigin="anonymous"></script>
     <?php
+    require_once './config.php';
       $footer = file_get_contents(FOOTER);
       echo $footer;
     ?>
