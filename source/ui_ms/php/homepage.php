@@ -18,7 +18,7 @@
 <body>
 
       <?php include './functions.php';
-      $nav = generate_navbar('');
+      $nav = generate_navbar('guest');
       echo $nav;
      ?>
 
