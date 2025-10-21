@@ -1,20 +1,90 @@
 <?php
+    require './config.php';
 
-require './config.php';
+    // Dispatcher for the navbar
+    function generate_navbar($role)
+    {
+        switch($role)
+        {
+            case 'admin':
+                $navbar = file_get_contents(NAVBAR_ADMIN);
+                break;
+            case 'user':
+                $navbar = file_get_contents(NAVBAR_USER);
+                break;
+            default:
+                $navbar = file_get_contents(NAVBAR_GUEST);
+        }
 
-function generate_navbar($role){
-
-    switch($role){
-        case 'admin':
-            $navbar = file_get_contents(NAVBAR_ADMIN);
-            break;
-        case 'user':
-            $navbar = file_get_contents(NAVBAR_USER);
-            break;
-        default:
-            $navbar = file_get_contents(NAVBAR_GUEST);
+        return $navbar;
     }
 
-return $navbar;
-}
+    // Method to compose the url given the endpoint's name, the port, the protocol and the path
+    function compose_url($protocol, $socket, $path)
+    { return $protocol . '://' . $socket . $path; }
+
+    // Method to sent request and receive response from a REST endpoint
+    function perform_rest_request($method, $url, $data = null, $token = null) 
+    {
+        $ch = curl_init();
+
+        // Base headers (always included)
+        $headers = [
+            'Content-Type: application/json',
+            'Accept: application/json'
+        ];
+
+        // Add Authorization header only if token is provided
+        if (!empty($token))
+            $headers[] = 'Authorization: ' . $token;
+        
+        // Configure CURL based on HTTP method
+        switch (strtoupper($method)) 
+        {
+            case 'GET':
+                if (!empty($data))
+                    $url .= '?' . http_build_query($data);
+                break;
+            case 'POST':
+                curl_setopt($ch, CURLOPT_POST, true);
+                if (!empty($data))     
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+                break;
+            case 'PUT':
+            case 'DELETE':
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+                if (!empty($data))
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+                break;
+            default:
+                throw new Exception("Unsupported HTTP method: $method");
+        }
+
+        // Set CURL options
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // disable SSL verification (for local dev)
+
+        // Execute request
+        $response = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        // Handle errors
+        if (curl_errno($ch)) 
+        {
+            $error = curl_error($ch);
+            curl_close($ch);
+            throw new Exception("cURL error: $error");
+        }
+
+        curl_close($ch);
+
+        // Return decoded response
+        return 
+        [
+            'status' => $http_code,
+            'body' => json_decode($response, true)
+        ];
+    }
 ?>

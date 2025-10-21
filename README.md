@@ -30,9 +30,10 @@ The project uses Docker and Docker Compose to orchestrate microservices.
 1. Ensure Docker and Docker Compose are installed.
 
 2. From the main project folder, run:
-    
-    ```bash
-    docker-compose up -d
+   
+   ```bash
+   cd source
+   docker-compose up -d
     ```
 
    This command builds (if necessary) and starts all containers in the background.

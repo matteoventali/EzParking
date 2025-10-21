@@ -14,10 +14,11 @@
     <link rel="website icon" type="png" href="/Img/lego-icon-12.ico">
 </head>
 <body>
-    <?php include './functions.php';
-      $nav = generate_navbar('guest');
-      echo $nav;
-     ?>
+    <?php 
+        include './functions.php';
+        $nav = generate_navbar('guest');
+        echo $nav;
+    ?>
     
     <div class="login-container">
         <h2>Login into your account</h2>

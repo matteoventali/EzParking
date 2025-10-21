@@ -16,7 +16,8 @@
 </head>
 
 <body>
-    <?php include './functions.php';
+    <?php 
+      include './functions.php';
       $nav = generate_navbar('admin');
       echo $nav;
      ?>
