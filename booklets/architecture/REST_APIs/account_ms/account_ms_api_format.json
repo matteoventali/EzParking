@@ -1,0 +1,275 @@
+[
+  {
+    "name": "Service status",
+    "http_method": "GET",
+    "endpoint": "/",
+    "headers": "None",
+    "json_request_format": {},
+    "http_response_json_format": {
+      "message": "Service is active"
+    }
+  },
+
+  {
+    "name": "User signup",
+    "http_method": "POST",
+    "endpoint": "/auth/signup",
+    "headers": "Content-Type: application/json",
+    "json_request_format": {
+      "name": "<string>",
+      "surname": "<string>",
+      "email": "<string>",
+      "password": "<string>",
+      "phone": "<string>"
+    },
+    "http_response_json_format": {
+      "desc": "User registered successfully",
+      "code": "0",
+      "user": {
+        "id": "<int>",
+        "name": "<string>",
+        "surname": "<string>",
+        "email": "<string>",
+        "phone": "<string>",
+        "role": "user"
+      }
+    }
+  },
+
+  {
+    "name": "User login",
+    "http_method": "POST",
+    "endpoint": "/auth/login",
+    "headers": "Content-Type: application/json",
+    "json_request_format": {
+      "email": "<string>",
+      "password": "<string>"
+    },
+    "http_response_json_format": {
+      "desc": "Login successful",
+      "code": "0",
+      "user": {
+        "id": "<int>",
+        "name": "<string>",
+        "surname": "<string>",
+        "email": "<string>",
+        "phone": "<string>",
+        "role": "<string>",
+        "session_token": "<string>",
+        "account_status": "<bool>"
+      }
+    }
+  },
+
+  {
+    "name": "User logout",
+    "http_method": "GET",
+    "endpoint": "/auth/logout",
+    "headers": "Authorization: <session_token>",
+    "json_request_format": {},
+    "http_response_json_format": {
+      "desc": "Logout successful",
+      "code": "0"
+    }
+  },
+
+  {
+    "name": "Session status",
+    "http_method": "GET",
+    "endpoint": "/auth/status",
+    "headers": "Authorization: <session_token>",
+    "json_request_format": {},
+    "http_response_json_format": {
+      "desc": "Online",
+      "code": "0"
+    }
+  },
+
+  {
+    "name": "Get personal data",
+    "http_method": "GET",
+    "endpoint": "/pdata",
+    "headers": "Authorization: <session_token>",
+    "json_request_format": {},
+    "http_response_json_format": {
+      "desc": "User data retrieved successfully",
+      "code": "0",
+      "user": {
+        "name": "<string>",
+        "surname": "<string>",
+        "email": "<string>",
+        "phone": "<string>",
+        "score": "<float>"
+      }
+    }
+  },
+
+  {
+    "name": "Update personal data",
+    "http_method": "PUT",
+    "endpoint": "/pdata",
+    "headers": "Authorization: <session_token>, Content-Type: application/json",
+    "json_request_format": {
+      "name": "<string>",
+      "surname": "<string>",
+      "phone": "<string>",
+      "password": "<string>"
+    },
+    "http_response_json_format": {
+      "desc": "User data updated successfully",
+      "code": "0",
+      "user": {
+        "id": "<int>",
+        "name": "<string>",
+        "surname": "<string>",
+        "email": "<string>",
+        "phone": "<string>",
+        "password": "<bool>"
+      }
+    }
+  },
+
+  {
+    "name": "List reviews",
+    "http_method": "GET",
+    "endpoint": "/reviews",
+    "headers": "Authorization: <session_token>",
+    "json_request_format": {},
+    "http_response_json_format": {
+      "desc": "Reviews retrieved successfully",
+      "code": "0",
+      "written_reviews": [
+        {
+          "id": "<int>",
+          "review_date": "<date>",
+          "star": "<int>",
+          "review_description": "<string>",
+          "reservation_id": "<int>",
+          "other_side_id": "<int>",
+          "other_side_name": "<string>",
+          "other_side_surname": "<string>"
+        }
+      ],
+      "received_reviews": [
+        {
+          "id": "<int>",
+          "review_date": "<date>",
+          "star": "<int>",
+          "review_description": "<string>",
+          "other_side_id": "<int>",
+          "other_side_name": "<string>",
+          "other_side_surname": "<string>",
+          "reservation_id": "<int>"
+        }
+      ]
+    }
+  },
+
+  {
+    "name": "Add review",
+    "http_method": "POST",
+    "endpoint": "/reviews",
+    "headers": "Authorization: <session_token>, Content-Type: application/json",
+    "json_request_format": {
+      "target_id": "<int>",
+      "reservation_id": "<int>",
+      "star": "<int>",
+      "review_description": "<string>"
+    },
+    "http_response_json_format": {
+      "desc": "Review added successfully",
+      "code": "0",
+      "review": {
+        "id": "<int>",
+        "writer_id": "<int>",
+        "target_id": "<int>",
+        "reservation_id": "<int>",
+        "star": "<int>",
+        "review_description": "<string>",
+        "review_date": "<date>"
+      }
+    }
+  },
+
+  {
+    "name": "Admin: Get users list",
+    "http_method": "GET",
+    "endpoint": "/users",
+    "headers": "Authorization: <admin_session_token>",
+    "json_request_format": {},
+    "http_response_json_format": {
+      "desc": "Users list retrieved successfully",
+      "code": "0",
+      "users": [
+        {
+          "id": "<int>",
+          "name": "<string>",
+          "surname": "<string>",
+          "email": "<string>",
+          "role": "<string>"
+        }
+      ]
+    }
+  },
+
+  {
+    "name": "Admin: Get user dashboard",
+    "http_method": "GET",
+    "endpoint": "/users/<user_id>",
+    "headers": "Authorization: <admin_session_token>",
+    "json_request_format": {},
+    "http_response_json_format": {
+      "desc": "User dashboard retrieved successfully",
+      "code": "0",
+      "user": {
+        "id": "<int>",
+        "name": "<string>",
+        "surname": "<string>",
+        "email": "<string>",
+        "phone": "<string>",
+        "role": "<string>",
+        "score": "<float>"
+      },
+      "received_reviews": [],
+      "written_reviews": []
+    }
+  },
+
+  {
+    "name": "Admin: Enable user account",
+    "http_method": "GET",
+    "endpoint": "/users/<user_id>/enable",
+    "headers": "Authorization: <admin_session_token>",
+    "json_request_format": {},
+    "http_response_json_format": {
+      "desc": "User account enabled successfully",
+      "code": "0",
+      "user": {
+        "id": "<int>",
+        "name": "<string>",
+        "surname": "<string>",
+        "email": "<string>",
+        "account_status": true
+      }
+    }
+  },
+
+  {
+    "name": "Admin: Disable user account",
+    "http_method": "GET",
+    "endpoint": "/users/<user_id>/disable",
+    "headers": "Authorization: <admin_session_token>",
+    "json_request_format": {},
+    "http_response_json_format": {
+      "desc": "User account disabled successfully",
+      "code": "0",
+      "user": {
+        "id": "<int>",
+        "name": "<string>",
+        "surname": "<string>",
+        "email": "<string>",
+        "account_status": false
+      }
+    }
+  }
+]
