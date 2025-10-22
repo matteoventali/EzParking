@@ -3,8 +3,8 @@
     require_once './config.php';
 
     // Verifying the session
-    if (verify_session())
-        header("Location: homepage.php");
+    if ( verify_session() )
+        header("Location: " . $homepage);
     
     // Informative variables
     $ok_message = $error_message = null;
@@ -28,7 +28,7 @@
             'password' => $password
         ];
 
-        try 
+        try
         {
             // Execute the request
             $api_url = compose_url($protocol, $socket_account_ms, '/auth/signup');

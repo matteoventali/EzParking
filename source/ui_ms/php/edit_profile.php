@@ -1,3 +1,19 @@
+<?php
+    require_once './config.php';
+    require_once './functions.php';
+    
+    // Checking the session status
+    if ( !verify_session() )
+    {
+        // Redirecting the user to the start page
+        header("Location: " . $starting_page);
+        exit();
+    }
+
+    // Here we are logged
+    
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,10 +32,10 @@
 </head>
 
 <body>
-    <?php include './functions.php';
-      $nav = generate_navbar('user');
-      echo $nav;
-     ?>
+    <?php 
+        $nav = generate_navbar($_SESSION["role"]);
+        echo $nav;
+    ?>
 
   <main class="dashboard-grid">
 
@@ -56,12 +72,9 @@
 
   </main>
 
-  <?php
-  require_once './config.php';
-    $footer = file_get_contents(FOOTER);
-    echo $footer;
-  ?>
-
-
+    <?php
+        $footer = file_get_contents(FOOTER);
+        echo $footer;
+    ?>
 </body>
 </html>

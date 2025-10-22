@@ -96,12 +96,12 @@
         if (! isset($_SESSION['session_token']) )
         {
             session_destroy(); // No session already opened
-            return;
+            return false;
         }
 
         // We have to use the variables in config.php
         $token = $_SESSION['session_token'];
-        global $protocol, $socket_account_ms, $starting_page;
+        global $protocol, $socket_account_ms;
         
         $url = compose_url($protocol, $socket_account_ms, '/auth/status');
         $response = perform_rest_request('GET', $url, null, $token);
@@ -115,8 +115,7 @@
         {
             // We have to destroy the session and logout the user
             session_destroy();
-            header("Location: " . $starting_page);
-            exit();    
+            return false;
         }
     }
 ?>

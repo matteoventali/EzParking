@@ -17,10 +17,10 @@
 
 <body>
     <?php 
-      include './functions.php';
-      $nav = generate_navbar('admin');
-      echo $nav;
-     ?>
+        include './functions.php';
+        $nav = generate_navbar('admin');
+        echo $nav;
+    ?>
 
   <main class="dashboard-grid">
 

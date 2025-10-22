@@ -3,9 +3,9 @@
     require_once './config.php';
 
     // Verifying the session
-    if (verify_session())
-        header("Location: homepage.php");
-
+    if ( verify_session() )
+        header("Location: " . $homepage);
+    
     // Informative variables
     $ok_message = $error_message = null;
     
@@ -34,11 +34,12 @@
                 $ok_message = $response["body"]["desc"];
 
                 // Redirecting the user into the homepage
-                header("Location: homepage.php");
+                header("Location: " . $homepage);
 
                 // Starting the session and saving the token received
                 session_start();
                 $_SESSION['session_token'] = $response["body"]["user"]["session_token"];
+                $_SESSION['role'] = $response["body"]["user"]["role"];
             }
             else 
                 $error_message = $response["body"]["desc"];
