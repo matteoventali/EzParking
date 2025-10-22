@@ -7,8 +7,8 @@
     define('FOOTER', HTML.'/footer.html');
 
     # Flow pages parameters
-    $starting_page = 'homepage.php';
-    $homepage = 'homepageTODO.php';
+    $starting_page = 'index.php';
+    $homepage = 'homepage.php';
     
     # Microservices parameters
     $protocol = 'http';

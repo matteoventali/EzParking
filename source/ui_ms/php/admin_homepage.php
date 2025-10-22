@@ -20,16 +20,21 @@
 <body>
     <?php 
         include './functions.php';
-        $nav = generate_navbar('user');
+        $nav = generate_navbar('admin');
         echo $nav;
     ?>
 
     <section class="hero">
-        <h1>Welcome Pierluca</h1>
-        <p>Use the buttons below to search, book, or manage your reservations. Find and reserve your parking space in seconds.</p>
+        <h1>Welcome Admin Pierluca</h1>
+        <p>Use the buttons below to access to your dashboard, search, book, or manage your reservations. Find and reserve your parking space in seconds.</p>
 
         
         <div class="actions" style="display:flex; gap:0.8rem; flex-wrap:wrap; justify-content:center;">
+            <button onclick="location.href='../php/manage_user.php';">
+                <i class="fas fa-map-marker-alt" style="margin-right:8px;"></i>
+                Manage Users
+            </button>
+
             <button onclick="location.href='../php/book_parking.php';">
                 <i class="fas fa-map-marker-alt" style="margin-right:8px;"></i>
                 Book Parking Spots
