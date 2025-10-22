@@ -40,19 +40,20 @@ services:
   #    - "5001:5001"
   #  networks:
   #    - ezparking_network
-  #
-  #park_ms: # Parking microservice
-  #  build:
-  #    context: ./park_ms
-  #  container_name: park_ms
-  #  depends_on:
-  #    - dbms
-  #  volumes:
-  #    - ./park_ms:/app
-  #  ports:
-  #    - "5002:5002"
-  #  networks:
-  #    - ezparking_network
+  
+  park_ms: # Parking microservice
+    build:
+      context: ./park_ms
+    container_name: park_ms
+    depends_on:
+      - dbms
+    volumes:
+      - ./park_ms:/app
+    ports:
+      - "5002:5002"
+    networks:
+      ezparking_network:
+        ipv4_address: 10.5.0.13
 #
   #payment_ms: # Payments microservice
   #  build:

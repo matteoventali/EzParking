@@ -78,9 +78,9 @@ Docker Compose manages a private internal network for the microservices. Each co
 | Service           | Docker Internal Host  |   IP:Port
 |------------------|---------------------------|---------------------|
 | account_ms        | `account_ms`             |10.5.0.11:5000|
-| notification_ms   | `notification_ms`        |10.5.0.11:5001|
-| park_ms           | `park_ms`                |10.5.0.11:5002|
-| payment_ms        | `payment_ms`             |10.5.0.11:5003|
+| notification_ms   | `notification_ms`        |10.5.0.12:5001|
+| park_ms           | `park_ms`                |10.5.0.13:5002|
+| payment_ms        | `payment_ms`             |10.5.0.14:5003|
 | ui_ms             | `ui_ms`                  |10.5.0.16:80/443|
 | dbms              | `dbms`                   |10.5.0.10:3306|
 
