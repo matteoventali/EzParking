@@ -62,6 +62,11 @@
       <button class="edit-btn" onclick="window.location.href='edit_profile.php'">
         <i class="fas fa-user-edit"></i> Edit Profile
       </button>
+
+
+      <button class="edit-btn" onclick="window.location.href='manage_user.php'">
+        <i class="fas fa-user-edit"></i> Manage Users
+      </button>
     </div>
 
   </main>

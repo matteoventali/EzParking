@@ -108,6 +108,14 @@
       </div>
           </div>
   </section>
+  
+  <div class="loader-section" style="display: none;">
+    <?php
+        require_once './config.php';
+        $footer = file_get_contents(LOADER);
+        echo $footer;
+    ?>
+  </div>
 
   <main class="parking-container" id="parkingList" aria-live="polite" style="display: none;">
     <!-- sample cards -->

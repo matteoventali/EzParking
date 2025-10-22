@@ -35,24 +35,10 @@
                 Manage Users
             </button>
 
-            <button onclick="location.href='../php/book_parking.php';">
-                <i class="fas fa-map-marker-alt" style="margin-right:8px;"></i>
-                Book Parking Spots
-            </button>
-
-            <button onclick="location.href='../php/new_booking.php';">
-                <i class="fas fa-calendar-check" style="margin-right:8px;"></i>
-                Manage your Parking Spot
-            </button>
-
-            <button onclick="location.href='../php/my_bookings.php';">
-                <i class="fas fa-ticket-alt" style="margin-right:8px;"></i>
-                My Reservations
-            </button>
-
-            <button onclick="location.href='../php/history.php';">
+        
+            <button onclick="location.href='../php/admin_dashboard.php';">
                 <i class="fas fa-history" style="margin-right:8px;"></i>
-                Chronology
+                Account
             </button>
         </div>
     </section>

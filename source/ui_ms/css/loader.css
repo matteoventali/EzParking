@@ -1,0 +1,67 @@
+.loader {
+	height: 10vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 40rem;
+}
+
+
+/* container loader: più vicino alla search bar, senza il grande margin-bottom */
+.loader-section {
+	height: 10vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	/* Rende il loader centrato orizzontalmente e con un margine-top contenuto */
+	margin: 0.6rem auto 0;
+	max-width: 960px;       /* opzionale: limita larghezza se vuoi allinearlo al layout */
+	padding: 0 1rem;
+	transition: opacity 220ms ease, transform 220ms ease;
+	opacity: 1;
+	pointer-events: none;   /* evita che tocchi il loader interferiscano con click */
+	position: relative;     /* resta nel flusso, ma pronto per regole basate su sibling */
+	z-index: 5;
+}
+/* svg "car" */
+.car {
+	width: 102px;
+	height: 40px;
+}
+
+/* anima il corpo (path) */
+.car .car__body {
+	animation: shake 0.2s ease-in-out infinite alternate;
+	/* per far funzionare transform-origin sugli elementi SVG */
+	transform-box: fill-box;
+	transform-origin: center;
+}
+
+/* linee animate: attenzione a transform-box per SVG e selettori non annidati */
+.car .car__line {
+	transform-origin: center right;
+	transform-box: fill-box;
+	stroke-dasharray: 22;
+	animation: line 0.8s ease-in-out infinite;
+	animation-fill-mode: both;
+}
+
+.car .car__line--top    { animation-delay: 0s; }
+.car .car__line--middle { animation-delay: 0.2s; }
+.car .car__line--bottom { animation-delay: 0.4s; }
+
+/* keyframes */
+@keyframes shake {
+	0%   { transform: translateY(-1%); }
+	100% { transform: translateY(3%); }
+}
+
+@keyframes line {
+	0%   { stroke-dashoffset: 22; }
+	25%  { stroke-dashoffset: 22; }
+	50%  { stroke-dashoffset: 0; }
+	51%  { stroke-dashoffset: 0; }
+	80%  { stroke-dashoffset: -22; }
+	100% { stroke-dashoffset: -22; }
+}

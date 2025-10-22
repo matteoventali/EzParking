@@ -5,6 +5,7 @@
     define('NAVBAR_ADMIN', HTML.'/navbar_admin.html');
     define('NAVBAR_GUEST', HTML.'/navbar_guest.html');
     define('FOOTER', HTML.'/footer.html');
+    define('LOADER', HTML.'/loader.html');
 
     # Flow pages parameters
     $starting_page = 'index.php';
