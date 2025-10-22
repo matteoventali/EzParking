@@ -542,6 +542,7 @@ def enable_user_account(user_id):
                                 'code': '6'}), 200
 
             user.account_status = True
+            user.session_token = None;
 
         return jsonify({
             'desc': 'User account enabled successfully',
@@ -597,6 +598,7 @@ def disable_user_account(user_id):
                                 'code': '6'}), 200
 
             user.account_status = False
+            user.session_token = None;
 
         return jsonify({
             'desc': 'User account disabled successfully',

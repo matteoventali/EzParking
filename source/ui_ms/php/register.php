@@ -2,16 +2,10 @@
     require_once './functions.php';
     require_once './config.php';
 
-    // If the user is already logged in, redirect to home
-    session_start();
-    if (isset($_SESSION['session_token']))
-    {
-        header('Location: homepage.php');
-        exit();
-    }
-    else
-        session_destroy(); // No session already opened
-
+    // Verifying the session
+    if (verify_session())
+        header("Location: homepage.php");
+    
     // Informative variables
     $ok_message = $error_message = null;
 

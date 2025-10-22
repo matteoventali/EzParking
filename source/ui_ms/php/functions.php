@@ -1,5 +1,5 @@
 <?php
-    require './config.php';
+    require_once './config.php';
 
     // Dispatcher for the navbar
     function generate_navbar($role)
@@ -20,8 +20,8 @@
     }
 
     // Method to compose the url given the endpoint's name, the port, the protocol and the path
-    function compose_url($protocol, $socket, $path)
-    { return $protocol . '://' . $socket . $path; }
+    function compose_url($proto, $socket, $path)
+    { return $proto . '://' . $socket . $path; }
 
     // Method to sent request and receive response from a REST endpoint
     function perform_rest_request($method, $url, $data = null, $token = null) 
@@ -86,5 +86,37 @@
             'status' => $http_code,
             'body' => json_decode($response, true)
         ];
+    }
+
+    // Method to verify the session is still valid
+    // In case is not valid the session is destroyed
+    function verify_session()
+    {
+        session_start();
+        if (! isset($_SESSION['session_token']) )
+        {
+            session_destroy(); // No session already opened
+            return;
+        }
+
+        // We have to use the variables in config.php
+        $token = $_SESSION['session_token'];
+        global $protocol, $socket_account_ms, $starting_page;
+        
+        $url = compose_url($protocol, $socket_account_ms, '/auth/status');
+        $response = perform_rest_request('GET', $url, null, $token);
+
+        // If it is all ok
+        if ( $response["body"]["code"] === "0" )
+        {
+            return true;
+        }
+        else
+        {
+            // We have to destroy the session and logout the user
+            session_destroy();
+            header("Location: " . $starting_page);
+            exit();    
+        }
     }
 ?>

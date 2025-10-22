@@ -6,6 +6,10 @@
     define('NAVBAR_GUEST', HTML.'/navbar_guest.html');
     define('FOOTER', HTML.'/footer.html');
 
+    # Flow pages parameters
+    $starting_page = 'showsite.php';
+    $homepage = 'homepage.php';
+    
     # Microservices parameters
     $protocol = 'http';
     $socket_account_ms = '10.5.0.11:5000';
