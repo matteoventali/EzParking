@@ -10,7 +10,7 @@
 </head>
 <body>
     <?php include './functions.php';
-      $nav = generate_navbar('admin');
+      $nav = generate_navbar('user');
       echo $nav;
      ?>
 
