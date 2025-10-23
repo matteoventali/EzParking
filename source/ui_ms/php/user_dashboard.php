@@ -1,3 +1,19 @@
+<?php
+    require_once "./config.php";
+    require_once "./functions.php";
+
+    // We must be logged in to access this page
+    if ( !verify_session() )
+        header("Location: " . $starting_page);
+    else if ( $_SESSION['role'] != 'user') // We must be normal user to access this page
+        header("Location: admin_dashboard.php");
+
+    // Updating the user informations in the session storage to get access also to the score of the user
+    $url = compose_url($protocol, $socket_account_ms, '/pdata');
+    $new_data = perform_rest_request('GET', $url, null, $_SESSION['session_token']);
+    $_SESSION['user'] = array_merge($_SESSION['user'], $new_data['body']['user']);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,10 +33,10 @@
 </head>
 
 <body>
-    <?php include './functions.php';
-      $nav = generate_navbar('user');
-      echo $nav;
-     ?>
+    <?php
+        $nav = generate_navbar($_SESSION['role']);
+        echo $nav;
+    ?>
 
   <main class="dashboard-grid">
 
@@ -29,30 +45,30 @@
       <div class="user-header">
         <img src="../images/account.svg" alt="User Avatar" class="user-avatar">
         <div>
-          <h2 class="user-name">Federico De Lullo</h2>
+          <h2 class="user-name"><?php echo strtoupper($_SESSION['user']['name'] . ' ' . $_SESSION['user']['surname']); ?></h2>
         </div>
       </div>
-
+    
       <div class="user-info">
         <div class="info-item">
           <i class="fas fa-phone"></i>
-          <span><strong>Name: </strong>Federico</span>
+          <span><strong>Name: </strong><?php echo $_SESSION['user']['name']; ?></span>
         </div>
         <div class="info-item">
           <i class="fas fa-phone"></i>
-          <span><strong>Surname: </strong>De Lullo</span>
+          <span><strong>Surname: </strong><?php echo $_SESSION['user']['surname']; ?></span>
         </div>
         <div class="info-item">
           <i class="fas fa-phone"></i>
-          <span><strong>Email: </strong>delullo.1935510@studenti.uniroma1.it</span>
+          <span><strong>Email: </strong><?php echo $_SESSION['user']['email']; ?></span>
         </div>
         <div class="info-item">
           <i class="fas fa-phone"></i>
-          <span><strong>Phone: </strong> +39 333 1234567</span>
+          <span><strong>Phone: </strong><?php echo $_SESSION['user']['phone']; ?></span>
         </div>
         <div class="info-item">
           <i class="fas "></i>
-          <span><strong>Role: </strong> Resident</span>
+          <span><strong>Role: </strong><?php echo strtoupper($_SESSION['role']); ?></span>
         </div>
       </div>
 
@@ -64,7 +80,7 @@
     <!-- Reputation Section -->
     <div class="dashboard-card reputation-card">
       <div class="section-title">Reputation</div>
-      <div class="reputation-score">⭐ 4.2/5</div>
+      <div class="reputation-score">⭐ <?php echo $_SESSION['user']['score'];?>/5</div>
       <p style="margin-top: 0.5rem; color:#666; font-size:0.95rem;">
         Keep contributing to improve your score!
       </p>

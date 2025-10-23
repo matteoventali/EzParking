@@ -204,7 +204,10 @@ def get_personal_data():
 
     reviews = list_reviews(user)
     received_reviews = reviews["received_reviews"]
-    score = statistics.mean([r["star"] for r in received_reviews])
+    if ( len(received_reviews) == 0 ):
+        score = 0
+    else:
+        score = statistics.mean([r["star"] for r in received_reviews])
 
     return jsonify({
         'desc': 'User data retrieved successfully',
