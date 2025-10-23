@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
 from config import DB_CONFIG
 from models import db, User, Label, ParkingSpot, ParkingSpotLabel, AvailabilitySlot, Reservation
-from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import func
 from geoalchemy2.shape import to_shape
 
@@ -43,7 +42,6 @@ def add_user():
     user_id = data['id']
     name = data['name']
     surname = data['surname']
-    session_token = data['session_token']
 
     try:
         existing_user = User.query.filter_by(id=user_id).first()
@@ -53,7 +51,7 @@ def add_user():
                 'code': '2'
             }), 409
 
-        new_user = User(id=user_id, name=name, surname=surname, session_token=session_token)
+        new_user = User(id=user_id, name=name, surname=surname)
 
         db.session.add(new_user)
         db.session.commit()
@@ -64,8 +62,7 @@ def add_user():
             'user': {
                 'id': new_user.id,
                 'name': new_user.name,
-                'surname': new_user.surname,
-                'session_token': new_user.session_token
+                'surname': new_user.surname
             }
         }), 201
 
@@ -135,13 +132,8 @@ def get_parking_spot(spot_id):
 @app.route("/parking_spots", methods=["POST"])
 def create_parking_spot():
     
-    auth_header = request.headers.get('Authorization')
-    if not auth_header:
-        return jsonify({'desc': 'Missing Authorization header', 'code': '1'}), 400
-    
-    session_token = auth_header
     data = request.get_json()
-    required_fields = ['name', 'latitude', 'longitude', 'slot_price']
+    required_fields = ['name', 'latitude', 'longitude', 'slot_price', 'id']
     if not data or not all(field in data for field in required_fields):
         return jsonify({'desc': 'Missing required fields', 'code': '2'}), 400
 
@@ -150,6 +142,7 @@ def create_parking_spot():
     longitude = data['longitude']
     slot_price = data['slot_price']
     rep_treshold = data.get('rep_treshold', 0)
+    user_id = data['id']
 
     if not isinstance(latitude, (int, float)) or not isinstance(longitude, (int, float)):
         return jsonify({'desc': 'Latitude and longitude must be numeric', 'code': '3'}), 400
@@ -162,9 +155,9 @@ def create_parking_spot():
 
     try:
         with db.session.begin():
-            user = User.query.filter_by(session_token=session_token).first()
+            user = User.query.filter_by(id=user_id).first()
             if not user:
-                return jsonify({'desc': 'Invalid session_token in Authorization header', 'code': '6'}), 401
+                return jsonify({'desc': 'Invalid user\'s id', 'code': '6'}), 401
 
             geom = func.ST_GeomFromText(f'POINT({longitude} {latitude})', 4326)
 

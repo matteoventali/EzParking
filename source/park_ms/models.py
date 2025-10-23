@@ -13,7 +13,6 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     surname = db.Column(db.String(50), nullable=False)
-    session_token = db.Column(db.String(32), nullable=False)
 
     parking_spots = db.relationship(
         "ParkingSpot",
