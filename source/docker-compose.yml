@@ -28,18 +28,19 @@ services:
       ezparking_network:
         ipv4_address: 10.5.0.11
 
-  #notification_ms: # Notification microservice
-  #  build:
-  #    context: ./notification_ms
-  #  container_name: notification_ms
-  #  depends_on:
-  #    - dbms
-  #  volumes:
-  #    - ./notification_ms:/app
-  #  ports:
-  #    - "5001:5001"
-  #  networks:
-  #    - ezparking_network
+  notification_ms: # Notification microservice
+    build:
+      context: ./notification_ms
+    container_name: notification_ms
+    depends_on:
+      - dbms
+    volumes:
+      - ./notification_ms:/app
+    ports:
+      - "5001:5001"
+    networks:
+      ezparking_network:
+        ipv4_address: 10.5.0.12
   
   park_ms: # Parking microservice
     build:
@@ -54,19 +55,20 @@ services:
     networks:
       ezparking_network:
         ipv4_address: 10.5.0.13
-#
-  #payment_ms: # Payments microservice
-  #  build:
-  #    context: ./payment_ms
-  #  container_name: payment_ms
-  #  depends_on:
-  #    - dbms
-  #  volumes:
-  #    - ./payment_ms:/app
-  #  ports:
-  #    - "5003:5003"
-  #  networks:
-  #    - ezparking_network
+
+  payment_ms: # Payments microservice
+    build:
+      context: ./payment_ms
+    container_name: payment_ms
+    depends_on:
+      - dbms
+    volumes:
+      - ./payment_ms:/app
+    ports:
+      - "5003:5003"
+    networks:
+      ezparking_network:
+        ipv4_address: 10.5.0.14
 
   ui_ms:
     build:

@@ -1,0 +1,5 @@
+Flask
+Flask-SQLAlchemy
+geoalchemy2
+psycopg2-binary
+mysql-connector-python
