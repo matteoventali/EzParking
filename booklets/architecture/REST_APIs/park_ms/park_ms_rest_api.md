@@ -2,7 +2,7 @@
 
 | Method | Endpoint | Description |
 |:--------|:----------|:-------------|
-| **POST** | `/users` | Add a user in the park_ms db. The adding involves also the session_token, to keep trace the user's session. |
+| **POST** | `/users` | Add a user in the park_ms db. |
 | **GET** | `/parking_spots/{id}` | Retrieve details of a specific parking spot. |
 | **POST** | `/parking_spots` | Create a new parking spot owned by the authenticated user. |
 | **PUT** | `/parking_spots/{id}` | Update parking spot information.|

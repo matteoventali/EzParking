@@ -16,12 +16,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 
+
 # -------------------------------
 # ROUTES
 # -------------------------------
-
-
-
 @app.route("/")
 def index():
     return jsonify({"message": "Parking Service is active"}), 200
