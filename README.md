@@ -9,6 +9,17 @@ Laboratory of Advanced Programming project.
 - Pierluca Grasso (1950186)
 - Federico De Lullo (1935510)
 
+## Accounts
+| Email           | Password  |   Role
+|------------------|---------------------------|---------------------|
+| matteo.ventali@gmail.com       | ezparking        |admin|
+| valerio.spagnoli@gmail.com     | ezparking        |admin|
+| serena.ragaglia@gmail.com      | ezparking        |user|
+| pierluca.grasso@gmail.com      | ezparking        |user|
+| federico.delullo@gmail.com     | ezparking        |user|
+
+
+
 ## Project Description
 EzParking is a parking management system based on microservices.
 The goal of this system is to create a parking sharing application that enables
