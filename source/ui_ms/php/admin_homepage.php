@@ -1,7 +1,7 @@
 <?php
     require_once "./config.php";
     require_once "./functions.php";
-    
+
     // We must be logged in to access this page
     if ( !verify_session() )
         header("Location: " . $starting_page);
@@ -32,7 +32,7 @@
 
 </head>
 <body>
-    <?php 
+    <?php
         $nav = generate_navbar($_SESSION['role']);
         echo $nav;
     ?>
@@ -43,19 +43,19 @@
 
         <div class="actions" style="display:flex; gap:0.8rem; flex-wrap:wrap; justify-content:center;">
             <button onclick="location.href='../php/manage_user.php';">
-                <i class="fas fa-map-marker-alt" style="margin-right:8px;"></i>
+                <i class="fas fa-map-marker-alt"></i>
                 Manage Users
             </button>
 
-        
+
             <button onclick="location.href='../php/admin_dashboard.php';">
-                <i class="fas fa-history" style="margin-right:8px;"></i>
+                <i class="fas fa-history"></i>
                 Account
             </button>
         </div>
     </section>
 
-    
+
     <section class="features">
         <!-- ADD MAP WITH API  -->
         <h2>Find Nearest Parking Spots</h2>

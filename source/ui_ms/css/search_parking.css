@@ -1,0 +1,403 @@
+/* Base layout */
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #222;
+  background: #f7f7fb;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Header */
+.header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ---------- Search section ---------- */
+.search-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  
+  margin-top: 12rem;
+  position: relative;
+  z-index: 10;
+}
+
+.search-wrapper {
+  width: 100%;
+  max-width: 980px;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+}
+
+/* Search input */
+.search-input {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.search-input input[type="text"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e6e0f3;
+  border-radius: 12px;
+  font-size: 1rem;
+  outline: none;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.search-input input[type="text"]:focus {
+  border-color: #5e25a5;
+  box-shadow: 0 0 0 4px rgba(94,37,165,0.08);
+}
+
+/* Controls: dropdowns, buttons, etc. */
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Dropdown */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.66rem 0.9rem;
+  border-radius: 12px;
+  border: 2px solid #5e25a5;
+  background: #fff;
+  color: #5e25a5;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dropdown-toggle:focus {
+  box-shadow: 0 0 0 4px rgba(94,37,165,0.08);
+  outline: none;
+}
+
+/* Dropdown panel (hidden / shown via `.open`) */
+.dropdown-panel {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 0.6rem);
+  min-width: 220px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  padding: 0.75rem;
+  z-index: 120;
+  display: none; /* toggled by JS adding .open to .dropdown */
+}
+
+.dropdown.open .dropdown-panel {
+  display: block;
+}
+
+/* Filters inside dropdown */
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.4rem;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.12s;
+}
+
+.filter-item:hover {
+  background: #f4f2fb;
+}
+
+.filter-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #5e25a5; /* modern browsers */
+}
+
+.filter-label-text {
+  font-size: 0.95rem;
+  color: #222;
+}
+
+/* Label pills (outside dropdown, for quick view) */
+.label-pills {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-left: 0.25rem;
+}
+
+.pill {
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid #dcd6ea;
+  font-size: 0.85rem;
+  color: #5e25a5;
+  background: #fff;
+}
+
+/* Search button */
+.search-btn {
+  padding: 0.66rem 1rem;
+  border-radius: 12px;
+  border: none;
+  background: #5e25a5;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.search-btn:active {
+  transform: translateY(1px);
+}
+
+/* ---------- Parking Cards ---------- */
+.parking-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  padding: 2rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto 7rem;
+  box-sizing: border-box;
+}
+
+.parking-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 6px 18px rgba(19,12,44,0.06);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.parking-card h3 {
+  color: #5e25a5;
+  font-size: 1.05rem;
+  margin: 0 0 0.2rem 0;
+}
+
+.meta-row {
+  font-size: 0.95rem;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+}
+
+.meta-strong {
+  font-weight: 600;
+  color: #222;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.6rem;
+}
+
+.book-btn {
+  padding: 0.6rem 0.9rem;
+  border-radius: 10px;
+  border: none;
+  background: #5e25a5;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Footer */
+footer {
+  background-color: #5e25a5;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: auto;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .header h1 {
+    font-size: 1.4rem;
+  }
+
+  /* Manteniamo la barra di ricerca su una riga separata sopra i controlli */
+  .search-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+  }
+
+  /* Controls diventano una riga orizzontale */
+  .controls {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;        /* distanza uniforme tra i controlli */
+    align-items: center;
+    justify-content: flex-start; /* non forziamo larghezza uguale */
+    flex-wrap: wrap;     /* se manca spazio, vanno a capo */
+  }
+
+  /* Ogni controllo mantiene la propria larghezza naturale */
+  .controls > .dropdown,
+  .controls > .search-btn {
+    flex: 0 0 auto;      /* larghezza automatica secondo il contenuto */
+  }
+
+  /* Dropdown toggle: larghezza automatica e caret a destra */
+  .dropdown-toggle {
+    width: auto;
+    justify-content: space-between;
+    white-space: nowrap; /* non andare a capo */
+  }
+
+  /* Dropdown panel: si apre sotto il toggle, larghezza minima come desktop */
+  .dropdown-panel {
+    left: 0;
+    right: auto;
+    min-width: 220px;
+  }
+
+  /* Piccolo tweak: padding uniforme per toggle e search button */
+  .search-btn,
+  .dropdown-toggle {
+    padding: 0.66rem 0.9rem;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+
+/* Utility: position a filters dropdown relative to search-section (if needed) */
+.filters-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 20;
+}
+
+.search-section {
+  transition: transform 420ms cubic-bezier(.2,.9,.2,1), margin-top 0rem;
+  will-change: transform, margin-bottom;
+}
+
+/* quando la barra si solleva, le diamo anche un piccolo margine inferiore */
+.search-section.is-raised {
+  transform: translateY(-8rem); /* sposta verso l'alto (regolabile) */
+  margin-bottom: 1.5rem; /* piccolo spazio tra barra e card */
+  box-shadow: 0 12px 30px rgba(19,12,44,0.08);
+  margin-top: 8rem;
+
+}
+
+/* parking-container */
+.parking-container {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 320ms ease, transform 320ms ease;
+  display: none;
+  max-width: 1200px;
+  margin-top: -4rem;
+}
+
+/* quando diventa visibile */
+.parking-container.visible {
+  display: grid !important;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* --- Normalize inputs to custom circular controls --- */
+.dropdown-panel input[type="checkbox"],
+.dropdown-panel input[type="radio"] {
+  /* rimuove l'aspetto nativo */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #cfc7e8; /* bordo non selezionato */
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+  cursor: pointer;
+  background-clip: padding-box;
+}
+
+/* stato checked: riempiamo il cerchio interno */
+.dropdown-panel input[type="checkbox"]:checked,
+.dropdown-panel input[type="radio"]:checked {
+  border-color: #5e25a5;
+  background-color: #5e25a5;
+}
+
+/* piccolo "dot" interno più piccolo per dare l'effetto pallino (contrasto) */
+/* usiamo box-shadow per compatibilità e per mantenere dimensione */
+.dropdown-panel input[type="checkbox"]:checked::after,
+.dropdown-panel input[type="radio"]:checked::after {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+  position: relative;
+  top: 2px;
+  left: 2px;
+}
+
+/* focus ring per accessibilità */
+.dropdown-panel input[type="checkbox"]:focus,
+.dropdown-panel input[type="radio"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(94,37,165,0.08);
+}
+
+/* mantiene l'allineamento con il label text */
+.filter-item .filter-label-text {
+  margin-left: 0.45rem;
+}
