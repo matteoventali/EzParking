@@ -1,3 +1,14 @@
+<?php
+    require_once "./config.php";
+    require_once "./functions.php";
+
+    // We must be logged in to access this page
+    if ( !verify_session() )
+        header("Location: " . $starting_page);
+    else if ( $_SESSION['role'] != 'admin') // We must be admin to access this page
+        header("Location: user_dashboard.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,8 +28,7 @@
 
 <body>
     <?php 
-        include './functions.php';
-        $nav = generate_navbar('admin');
+        $nav = generate_navbar($_SESSION['role']);
         echo $nav;
     ?>
 
@@ -29,33 +39,34 @@
       <div class="user-header">
         <img src="../images/account.svg" alt="Admin Avatar" class="user-avatar">
         <div>
-          <h2 class="user-name">Federico De Lullo</h2>
-          <p class="user-email">admin@ezparking.com</p>
-          <p class="user-role"><strong>Role:</strong> Admin</p>
+          <div>
+            <h2 class="user-name"><?php echo strtoupper($_SESSION['user']['name'] . ' ' . $_SESSION['user']['surname']); ?></h2>
+          </div>
         </div>
       </div>
 
       <div class="user-info">
         <div class="info-item">
           <i class="fas fa-user"></i>
-          <span><strong>Name:</strong> Federico</span>
+          <span><strong>Name:</strong><?php echo $_SESSION['user']['name']; ?></span>
         </div>
         <div class="info-item">
           <i class="fas fa-user"></i>
-          <span><strong>Surname:</strong> De Lullo</span>
+          <span><strong>Surname:</strong><?php echo $_SESSION['user']['surname']; ?></span>
         </div>
         <div class="info-item">
           <i class="fas fa-envelope"></i>
-          <span><strong>Email:</strong> admin@ezparking.com</span>
+          <span><strong>Email:</strong><?php echo $_SESSION['user']['email']; ?></span>
         </div>
         <div class="info-item">
           <i class="fas fa-phone"></i>
-          <span><strong>Phone:</strong> +39 333 1234567</span>
+          <span><strong>Phone:</strong><?php echo $_SESSION['user']['phone']; ?></span>
         </div>
 
         <div class="info-item">
-          <i class="fas fa-id-badge"></i>
-          <span class="role"><strong>Role:</strong> Admin</span>
+          <!--<i class="fas fa-id-badge"></i>-->
+          <i class="fas "></i>
+          <span><strong>Role:</strong><?php echo strtoupper($_SESSION['role']); ?></span>
         </div>
       </div>
 
