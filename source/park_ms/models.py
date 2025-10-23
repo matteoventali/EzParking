@@ -1,4 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
+from geoalchemy2 import Geometry
+
 
 db = SQLAlchemy()
 
@@ -11,6 +13,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     surname = db.Column(db.String(50), nullable=False)
+    session_token = db.Column(db.String(32), nullable=False)
 
     parking_spots = db.relationship(
         "ParkingSpot",
@@ -56,7 +59,7 @@ class ParkingSpot(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), nullable=False)
-    spot_location = db.Column(db.String(255), nullable=False)  # MySQL POINT type handled as string
+    spot_location = db.Column(Geometry(geometry_type='POINT', srid=4326), nullable=False)
     rep_treshold = db.Column(db.Integer, nullable=False, default=0)
     slot_price = db.Column(db.Float, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
