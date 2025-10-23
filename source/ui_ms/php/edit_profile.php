@@ -9,7 +9,7 @@
         header("Location: " . $starting_page);
         exit();
     }
-
+ 
     // Here we are logged
     
 ?>
@@ -42,7 +42,7 @@
     <div class="dashboard-card edit-profile-card">
       <div class="section-title">Edit Your Profile</div>
 
-      <form class="edit-user-form" action="save_profile.php" method="post">
+      <form id="edit-form"  class="edit-user-form" action="save_profile.php" method="post">
         <label for="name">Name</label>
         <input type="text" id="name" name="name" value="Federico">
 
@@ -55,16 +55,13 @@
         <label for="phone">Phone</label>
         <input type="tel" id="phone" name="phone" value="+39 333 1234567">
 
-        <label for="password">Insert old Password</label>
-        <input type="password" id="password" name="password" value="">
-
         <label for="password">Insert new Password</label>
-        <input type="password" id="password" name="password" value="">
+        <input type="password" id="new" name="password" value="">
 
         <label for="password">Confirm new Password</label>
-        <input type="password" id="password" name="password" value="">
+        <input type="password" id="confirm" name="password" value="">
 
-        <button type="submit" class="save-btn">
+        <button id="edit-button" type="submit" class="save-btn" >
           <i class="fas fa-check"></i> Save Changes
         </button>
       </form>
