@@ -56,7 +56,7 @@
         </div>
       </div>
 
-      <button class="edit-btn" onclick="window.location.href='edit_profile.html'">
+      <button class="edit-btn" onclick="window.location.href='edit_profile.php'">
         <i class="fas fa-user-edit"></i> Edit Profile
       </button>
     </div>

@@ -9,7 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <?php include './functions.php';
+    <?php
+      include './functions.php';
       $nav = generate_navbar('user');
       echo $nav;
      ?>
@@ -62,7 +63,7 @@
           </div>
         </div>
 
-        <!-- NEW: Distance dropdown (same style as filters) -->
+        <!-- Distance dropdown (same style as filters) -->
         <div class="dropdown" id="distanceDropdown">
           <button
             class="dropdown-toggle"
@@ -112,8 +113,8 @@
   <div class="loader-section" style="display: none;">
     <?php
         require_once './config.php';
-        $footer = file_get_contents(LOADER);
-        echo $footer;
+        $loader = file_get_contents(LOADER);
+        echo $loader;
     ?>
   </div>
 
@@ -301,7 +302,6 @@
     </article>
   </main>
     <?php
-    require_once './config.php';
     $footer = file_get_contents(FOOTER);
     echo $footer;
   ?>

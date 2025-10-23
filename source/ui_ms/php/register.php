@@ -60,6 +60,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./fontawesome-free-6.4.0-web/css/all.css">
     <link rel="website icon" type="png" href="/Img/lego-icon-12.ico">
+    <script src="../js/form_check.js" defer></script>
 </head>
 <body>
     <?php 
@@ -68,7 +69,7 @@
      ?>
     <div class="login-container">
         <h2>Sign Up</h2>
-        <form id="login-form" action="register.php" method="post">
+        <form id="register-form" action="register.php" method="post">
             <div class="input-group">
                 <label for="name">Name</label>
                 <input type="text" id="name" class="login-input" name="name" required>
@@ -97,11 +98,10 @@
                 <?php if(isset($ok_message)) echo $ok_message; else echo ''; ?>
             </p>
         </form>
-    </div>
-    
+    </div>    
     <?php
         $footer = file_get_contents(FOOTER);
         echo $footer;
-    ?>
+    ?>    
 </body>
 </html>

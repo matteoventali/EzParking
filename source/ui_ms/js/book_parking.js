@@ -3,9 +3,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const searchSection = document.getElementById('searchSection');
   const parkingList = document.getElementById('parkingList');
   const activePills = document.getElementById('activePills');
-  const loader = document.querySelector('.loader-section'); // <- singolo elemento
+  const loader = document.querySelector('.loader-section');
 
-  // --- Generic dropdown logic (unchanged, solo unificato qui) ---
+  // --- Generic dropdown logic  ---
   const dropdowns = document.querySelectorAll('.dropdown');
   dropdowns.forEach(drop => {
     const toggle = drop.querySelector('.dropdown-toggle');
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   refreshPills(); // init
 
-  // --- Search / loader logic (unico listener, protegge da click multipli) ---
+  // --- Search / loader logic---
   if (!searchBtn || !searchSection || !parkingList) return;
 
   let busy = false;
@@ -92,19 +92,19 @@ document.addEventListener('DOMContentLoaded', function () {
   let showCardsTimeoutId = null;
 
   searchBtn.addEventListener('click', function () {
-    // evita ri-esecuzione se già sollevata o in corso
+    // do not refresh again if already loaded
     if (searchSection.classList.contains('is-raised') || busy) return;
 
     busy = true;
 
-    // chiudi dropdown aperti
+    // close open dropdowns
     document.querySelectorAll('.dropdown.open').forEach(d => {
       d.classList.remove('open');
       const t = d.querySelector('.dropdown-toggle');
       if (t) t.setAttribute('aria-expanded', 'false');
     });
 
-    // mostra loader (se esiste)
+    // show loader
     if (loader) {
       // solleva la search bar
       searchSection.classList.add('is-raised');
@@ -112,25 +112,21 @@ document.addEventListener('DOMContentLoaded', function () {
       loader.setAttribute('aria-hidden', 'false');
     }
 
-    // cancella eventuali timeout precedenti (protezione)
+    // clean old timeouts
     if (loaderTimeoutId) clearTimeout(loaderTimeoutId);
     if (showCardsTimeoutId) clearTimeout(showCardsTimeoutId);
 
-    // dopo 4 secondi nascondi loader e mostra i contenuti
+    // after four seconds close loader and show results
     loaderTimeoutId = setTimeout(() => {
       if (loader) {
         loader.style.display = 'none';
         loader.setAttribute('aria-hidden', 'true');
       }
-
-      
-
-      // piccolo delay per effetto (come prima)
+  
       showCardsTimeoutId = setTimeout(() => {
         parkingList.style.display = 'grid';
         parkingList.classList.add('visible');
 
-        // reset busy per permettere future ricerche
         busy = false;
       }, 280);
     }, 2500);
