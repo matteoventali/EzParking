@@ -7,8 +7,7 @@ USE db_park_ms;
 CREATE TABLE IF NOT EXISTS Users (
     id                          INT PRIMARY KEY,
     name                        VARCHAR(50) NOT NULL,
-    surname                     VARCHAR(50) NOT NULL,
-    session_token               CHAR(32) DEFAULT NULL
+    surname                     VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Labels (
