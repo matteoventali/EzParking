@@ -32,19 +32,19 @@ CREATE TABLE IF NOT EXISTS Review (
 
 
 -- Creating some users for testing purposes
-INSERT INTO Users (name, surname, password_hash, email, phone, user_role, account_status) VALUES
-('Matteo', 'Ventali', 
+INSERT INTO Users (id, name, surname, password_hash, email, phone, user_role, account_status) VALUES
+(1, 'Matteo', 'Ventali', 
 'scrypt:32768:8:1$d0OF8WM15UKJAoqf$62916af62533ab4ec4d7ae08541369a751f3eba6fb70a65a476182b6a6d3e17c9e8f6f1291310592052347a0344e88b3b949e71a8e104c87512e5ce0c8dce520', 
 'matteo.ventali@gmail.com', '3463462160', 'admin', true),
-('Valerio', 'Spagnoli', 
+(2, 'Valerio', 'Spagnoli', 
 'scrypt:32768:8:1$d0OF8WM15UKJAoqf$62916af62533ab4ec4d7ae08541369a751f3eba6fb70a65a476182b6a6d3e17c9e8f6f1291310592052347a0344e88b3b949e71a8e104c87512e5ce0c8dce520', 
 'valerio.spagnoli@gmail.com', '3454616365', 'admin', true),
-('Serena', 'Ragaglia', 
+(3, 'Serena', 'Ragaglia', 
 'scrypt:32768:8:1$d0OF8WM15UKJAoqf$62916af62533ab4ec4d7ae08541369a751f3eba6fb70a65a476182b6a6d3e17c9e8f6f1291310592052347a0344e88b3b949e71a8e104c87512e5ce0c8dce520', 
 'serena.ragaglia@gmail.com', '3343290262', 'user', true),
-('Pierluca', 'Grasso', 
+(4, 'Pierluca', 'Grasso', 
 'scrypt:32768:8:1$d0OF8WM15UKJAoqf$62916af62533ab4ec4d7ae08541369a751f3eba6fb70a65a476182b6a6d3e17c9e8f6f1291310592052347a0344e88b3b949e71a8e104c87512e5ce0c8dce520', 
 'pierluca.grasso@gmail.com', '3898730182', 'user', true),
-('Federico', 'De Lullo', 
+(5, 'Federico', 'De Lullo', 
 'scrypt:32768:8:1$d0OF8WM15UKJAoqf$62916af62533ab4ec4d7ae08541369a751f3eba6fb70a65a476182b6a6d3e17c9e8f6f1291310592052347a0344e88b3b949e71a8e104c87512e5ce0c8dce520', 
 'federico.delullo@gmail.com', '3293321366', 'user', true)

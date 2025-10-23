@@ -55,3 +55,8 @@ CREATE TABLE IF NOT EXISTS Reservations (
     CONSTRAINT fk_slot FOREIGN KEY (slot_id) REFERENCES Availability_Slots(id),
     CONSTRAINT fk2_user FOREIGN KEY (user_id) REFERENCES Users(id)
 );
+
+INSERT INTO Users (id, name, surname) VALUES
+(3, 'Serena', 'Ragaglia'),
+(4, 'Pierluca', 'Grasso'),
+(5, 'Federico', 'De Lullo')

@@ -26,3 +26,8 @@ CREATE TABLE IF NOT EXISTS Payments (
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES Users(id),
     CONSTRAINT fk_reservation FOREIGN KEY (reservation_id) REFERENCES Reservations(id)
 );
+
+INSERT INTO Users (id, name, surname) VALUES
+(3, 'Serena', 'Ragaglia'),
+(4, 'Pierluca', 'Grasso'),
+(5, 'Federico', 'De Lullo')

@@ -11,11 +11,13 @@ CREATE DATABASE IF NOT EXISTS db_park_ms;
 CREATE DATABASE IF NOT EXISTS db_payment_ms;
 CREATE DATABASE IF NOT EXISTS db_notification_ms;
 
+CREATE USER IF NOT EXISTS 'test'@'%' IDENTIFIED BY 'ezparking';
 CREATE USER IF NOT EXISTS 'user_account_ms'@'%' IDENTIFIED BY 'ezparking';
 CREATE USER IF NOT EXISTS 'user_park_ms'@'%' IDENTIFIED BY 'ezparking';
 CREATE USER IF NOT EXISTS 'user_payment_ms'@'%' IDENTIFIED BY 'ezparking';
 CREATE USER IF NOT EXISTS 'user_notification_ms'@'%' IDENTIFIED BY 'ezparking';
 
+GRANT ALL PRIVILEGES ON *.* TO 'test'@'%';
 GRANT ALL PRIVILEGES ON db_account_ms.* TO 'user_account_ms'@'%';
 GRANT ALL PRIVILEGES ON db_park_ms.* TO 'user_park_ms'@'%';
 GRANT ALL PRIVILEGES ON db_payment_ms.* TO 'user_payment_ms'@'%';

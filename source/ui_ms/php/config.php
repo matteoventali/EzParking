@@ -16,8 +16,8 @@
     # Microservices parameters
     $protocol = 'http';
     $socket_account_ms = '10.5.0.11:5000';
-    $socket_notification_ms ='10.5.0.11:5001';
-    $socket_park_ms = '10.5.0.11:5002';
-    $socket_payment_ms = '10.5.0.11:5003';
+    $socket_notification_ms ='10.5.0.12:5001';
+    $socket_park_ms = '10.5.0.13:5002';
+    $socket_payment_ms = '10.5.0.14:5003';
     $socket_dbms = '10.5.0.10:3306';
 ?>

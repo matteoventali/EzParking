@@ -39,6 +39,13 @@
                 $_SESSION['role'] = $response["body"]["user"]["role"];
                 $_SESSION['user'] = $response["body"]["user"];
 
+                // Updating last login e timestamp in the notification microservices
+                // only if it is logged an user
+                if ( $_SESSION['role'] == 'user' )
+                {
+                    // INSERT CODE HEAR TO CALL NOTIFICATION_MS!!!!
+                }
+
                 // Redirecting the user into the homepage
                 header("Location: " . $homepage);
             }

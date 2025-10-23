@@ -36,7 +36,26 @@
 
             // Success in the registration
             if ($response['status'] === 201) 
+            {   
                 $ok_message = $response["body"]["desc"];
+
+                // Getting the last id
+                $last_id = $response["body"]["user"]["id"];
+
+                // Synchronizing all the microservices
+                // 1. Park_ms
+                $payload = [
+                    'id' => $last_id,
+                    'name' => $name,
+                    'surname' => $surname
+                ];
+                $api_url = compose_url($protocol, $socket_park_ms, '/users');
+                $response = perform_rest_request('POST', $api_url, $payload);
+
+                // 2. Notification_ms
+
+                // 3. Payment_ms
+            }
             else 
                 $error_message = $response["body"]["desc"];
         } catch (Exception $e) 
