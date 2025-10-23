@@ -4,7 +4,7 @@
 |:--------|:----------|:-------------|
 | **GET** | `/parking-spots/{id}` | Retrieve details of a specific parking spot. |
 | **POST** | `/parking-spots` | Create a new parking spot owned by the authenticated user. |
-| **PUT** | `/parking-spots/{id}` | Update parking spot information .|
+| **PUT** | `/parking-spots/{id}` | Update parking spot information.|
 | **DELETE** | `/parking-spots/{id}` | Delete a parking spot. Requires Authorization header. |
 | **GET** | `/parking-spots/{id}/labels` | Get all labels associated with a parking spot. |
 | **DELETE** | `/parking-spots/{id}/labels/{label_id}` | Remove a label from a parking spot. |
@@ -18,4 +18,4 @@
 | **PUT** | `/reservations/{id}` | Update the status of a reservation (pending, confirmed, cancelled, completed). |
 | **DELETE** | `/reservations/{id}` | Cancel a reservation. |
 | **GET** | `/labels` | Retrieve all available labels in the system. |
-| **POST** | `/labels` | Create a new label. Requires Authorization header (admin). |
+| **POST** | `/labels` | Create a new label. Requires Authorization headerCH **_ONLY FOR ADMIN_**. |
