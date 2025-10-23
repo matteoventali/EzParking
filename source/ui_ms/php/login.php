@@ -33,13 +33,14 @@
             {
                 $ok_message = $response["body"]["desc"];
 
-                // Redirecting the user into the homepage
-                header("Location: " . $homepage);
-
                 // Starting the session and saving the token received
                 session_start();
                 $_SESSION['session_token'] = $response["body"]["user"]["session_token"];
                 $_SESSION['role'] = $response["body"]["user"]["role"];
+                $_SESSION['user'] = $response["body"]["user"];
+
+                // Redirecting the user into the homepage
+                header("Location: " . $homepage);
             }
             else 
                 $error_message = $response["body"]["desc"];

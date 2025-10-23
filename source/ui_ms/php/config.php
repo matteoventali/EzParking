@@ -10,6 +10,8 @@
     # Flow pages parameters
     $starting_page = 'index.php';
     $homepage = 'homepage.php';
+    $homepage_admin = 'admin_homepage.php';
+    $homepage_user = 'user_homepage.php';
     
     # Microservices parameters
     $protocol = 'http';
