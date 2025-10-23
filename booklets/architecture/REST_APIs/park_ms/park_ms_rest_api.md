@@ -2,12 +2,12 @@
 
 | Method | Endpoint | Description |
 |:--------|:----------|:-------------|
-| **GET** | `/parking-spots/{id}` | Retrieve details of a specific parking spot. |
-| **POST** | `/parking-spots` | Create a new parking spot owned by the authenticated user. |
-| **PUT** | `/parking-spots/{id}` | Update parking spot information.|
-| **DELETE** | `/parking-spots/{id}` | Delete a parking spot. Requires Authorization header. |
-| **GET** | `/parking-spots/{id}/labels` | Get all labels associated with a parking spot. |
-| **DELETE** | `/parking-spots/{id}/labels/{label_id}` | Remove a label from a parking spot. |
+| **GET** | `/parking_spots/{id}` | Retrieve details of a specific parking spot. |
+| **POST** | `/parking_spots` | Create a new parking spot owned by the authenticated user. |
+| **PUT** | `/parking_spots/{id}` | Update parking spot information.|
+| **DELETE** | `/parking_spots/{id}` | Delete a parking spot. Requires Authorization header. |
+| **GET** | `/parking_spots/{id}/labels` | Get all labels associated with a parking spot. |
+| **DELETE** | `/parking_spots/{id}/labels/{label_id}` | Remove a label from a parking spot. |
 | **GET** | `/availability/{park_id}` | Retrieve availability time slots of a parking spot. |
 | **POST** | `/availability` | Add a new availability slot for a parking spot. |
 | **POST** | `/availability/search` | Retrieve all parking spots in a specific radius near me. |

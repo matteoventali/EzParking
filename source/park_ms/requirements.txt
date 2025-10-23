@@ -1,3 +1,5 @@
 Flask
 Flask-SQLAlchemy
 mysql-connector-python
+geoalchemy2
+geoalchemy2[shapely]
