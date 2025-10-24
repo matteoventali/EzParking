@@ -1,0 +1,247 @@
+/* ===== RESET & FONT CHANGE (Consistent with your example) ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif; /* Changed from Inter to Poppins */
+}
+
+:root {
+    --primary-color: #5e25a5; /* Primary Violet */
+    --primary-dark: #4a1c86; /* Dark Violet */
+    --bg-light: #f7f5fb;
+    --text-dark: #222;
+    --text-light: #777;
+    --white: #fff;
+    --shadow: rgba(0, 0, 0, 0.1);
+
+    /* Status Colors */
+    --available-color: #28a745; /* Green for Available */
+    --available-bg: #e6f7e9;
+    --full-color: #dc3545; /* Red for Full */
+    --full-bg: #f8d7da;
+}
+
+body {
+    /* Rimosso margin: 0 e font-family qui, ora gestiti dal reset universale */
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 1rem;
+    width: 100%;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    max-width: 800px;
+}
+
+.dashboard-header h1 {
+    color: var(--primary-color);
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-header p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+}
+
+/* --- */
+
+/* ======================================= */
+/* ADD NEW PARKING BUTTON */
+/* ======================================= */
+
+.add-new-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    transition: background 0.2s ease-in-out, transform 0.1s;
+    box-shadow: 0 4px 10px rgba(94, 37, 165, 0.3);
+    width: 100%;
+    max-width: 800px;
+    /* box-sizing è già impostato nel reset universale, ma lo manteniamo qui come promemoria */
+    box-sizing: border-box;
+}
+
+.add-new-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(94, 37, 165, 0.4);
+}
+
+.add-new-button i {
+    font-size: 1.2rem;
+}
+
+/* --- */
+
+/* ======================================= */
+/* PARKING LIST (CARDS) */
+/* ======================================= */
+
+.garage-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 800px;
+}
+
+.garage-card {
+    /* Styles the card as a clickable link */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: var(--white);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text-dark);
+    box-shadow: 0 4px 12px var(--shadow);
+    border: 1px solid #e0e0e0;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hover Effect */
+.garage-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-color);
+}
+
+.garage-name {
+    margin: 0;
+    font-size: 1.3rem;
+    color: var(--primary-dark);
+}
+
+.garage-address {
+    margin: 0.5rem 0 0 0;
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+.garage-address i {
+    margin-right: 5px;
+    color: var(--primary-color);
+}
+
+/* Status and management arrow */
+.card-status {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.status-indicator {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 80px; /* Ensures status boxes have uniform width */
+    text-align: center;
+}
+
+/* Style for Available Status (Green) */
+.garage-card.available .status-indicator {
+    background-color: var(--available-bg);
+    color: var(--available-color);
+    border: 1px solid var(--available-color);
+}
+
+/* Style for Full Status (Red) */
+.garage-card.full .status-indicator {
+    background-color: var(--full-bg);
+    color: var(--full-color);
+    border: 1px solid var(--full-color);
+}
+
+/* Redirection arrow */
+.card-status .fa-arrow-right {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    transition: transform 0.2s;
+}
+
+.garage-card:hover .fa-arrow-right {
+    transform: translateX(5px);
+}
+
+
+@media (max-width: 390px) {
+    main {
+        padding: 1.5rem 0.5rem; /* Riduci il padding generale */
+    }
+
+    .dashboard-header h1 {
+        font-size: 1.6rem; /* Riduci la dimensione del titolo */
+    }
+
+    .dashboard-header p {
+        font-size: 1rem;
+    }
+
+    .garage-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 1rem; /* Riduci il padding delle card */
+    }
+
+    .garage-name {
+        font-size: 1.1rem;
+    }
+
+    .garage-address {
+        font-size: 0.9rem;
+    }
+
+    .card-details {
+        margin-bottom: 10px;
+    }
+
+    .card-status {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px dashed #eee;
+    }
+
+    .status-indicator {
+        min-width: 70px; /* Riduci la larghezza minima */
+        font-size: 0.85rem;
+    }
+
+    .card-status .fa-arrow-right {
+        display: none;
+    }
+
+    .add-new-button {
+        padding: 0.8rem 1rem; /* Riduci il padding del pulsante */
+        font-size: 1rem;
+        box-shadow: 0 2px 5px rgba(94, 37, 165, 0.2);
+    }
+}

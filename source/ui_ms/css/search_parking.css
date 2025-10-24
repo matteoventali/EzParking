@@ -29,7 +29,7 @@ main {
   display: flex;
   justify-content: center;
   padding: 1rem;
-  
+
   margin-top: 12rem;
   position: relative;
   z-index: 10;
@@ -255,19 +255,23 @@ footer {
 
 /* Responsive tweaks */
 @media (max-width: 600px) {
+
   .header h1 {
     font-size: 1.4rem;
   }
 
   /* Manteniamo la barra di ricerca su una riga separata sopra i controlli */
   .search-wrapper {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.6rem;
+        max-width: 94%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.6rem;
+        margin-left: -33px;
   }
 
   /* Controls diventano una riga orizzontale */
   .controls {
+    margin-left: 57px;
     display: flex;
     flex-direction: row;
     gap: 0.5rem;        /* distanza uniforme tra i controlli */

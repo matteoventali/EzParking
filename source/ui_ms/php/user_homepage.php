@@ -48,7 +48,7 @@
                 Book Parking Spots
             </button>
 
-            <button onclick="location.href='../php/new_booking.php';">
+            <button onclick="location.href='../php/manage_garage.php';">
                 <i class="fas fa-calendar-check" ></i>
                 Manage your Parking Spot
             </button>
