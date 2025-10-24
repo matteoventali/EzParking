@@ -48,13 +48,12 @@ main {
   text-align: center;
 }
 
-/* ===== SEZIONE DETTAGLI PARCHEGGIO ===== */
-.garage-details {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Due colonne principali */
-  gap: 2rem;
+.garage-details-single-column {
+  display: flex;
+  flex-direction: column; /* Forza la visualizzazione verticale */
+  gap: 1rem;
   margin-bottom: 1rem;
-  align-items: start;
+  align-items: stretch;
 }
 
 .garage-column {
@@ -63,7 +62,7 @@ main {
   gap: 1rem;
 }
 
-.garage-details p {
+.garage-details-single-column p { /* Selettore aggiornato */
   background: #faf8ff;
   border-radius: 10px;
   padding: 0.9rem 1rem;
@@ -89,15 +88,18 @@ form {
 label {
   font-weight: 600;
   margin-bottom: 0.3rem;
+  display: block; /* Importante per le label degli input */
 }
 
-input {
+input[type="date"],
+input[type="text"] {
   padding: 0.8rem 1rem;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 1rem;
   transition: 0.2s;
   width: 100%;
+  box-sizing: border-box; /* Aggiunto per evitare overflow */
 }
 
 input:focus {
@@ -115,6 +117,65 @@ input:focus {
   flex: 1;
 }
 
+
+.slot-options {
+    display: flex;
+    flex-wrap: wrap; /* Permette il wrapping su schermi piccoli */
+    gap: 0.75rem; /* Spazio tra le pillole */
+    margin-top: 0.5rem;
+}
+
+/* Nasconde le checkbox di default */
+.slot-options input[type="checkbox"] {
+    display: none;
+}
+
+.slot-pill {
+    padding: 0.7rem 1.1rem;
+    border: 2px solid #ddd;
+    border-radius: 20px; /* Forma a pillola */
+    cursor: pointer;
+    background-color: var(--white);
+    color: var(--text-dark);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    user-select: none; /* Rende la selezione testuale meno fastidiosa */
+}
+
+/* Stato Hover */
+.slot-pill:not(.disabled-slot):hover {
+    background-color: #f0eafb; /* Sfondo leggero in tema con primary-color */
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 5px rgba(94, 37, 165, 0.15);
+}
+
+/* Stato Selezionato */
+.slot-options input[type="checkbox"]:checked + .slot-pill {
+    background-color: var(--primary-color); /* Colore primario per l'evidenziazione */
+    border-color: var(--primary-dark);
+    color: var(--white);
+    font-weight: 600;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(94, 37, 165, 0.3);
+}
+
+/* Stato Disabilitato (Full) */
+.disabled-slot {
+    background-color: #eee;
+    color: var(--text-light);
+    border-color: #ddd;
+    cursor: not-allowed;
+    opacity: 0.7;
+    text-decoration: line-through;
+    box-shadow: none;
+}
+.disabled-slot:hover {
+    background-color: #eee; /* Blocca il cambio di colore all'hover */
+    border-color: #ddd;
+}
+
 .price-display {
   background-color: #faf8ff;
   border-left: 5px solid var(--primary-color);
@@ -128,7 +189,7 @@ input:focus {
   margin-top: 1rem;
 }
 
-button {
+button#bookNowButton {
   background-color: var(--primary-color);
   color: var(--white);
   font-weight: 600;
@@ -138,12 +199,21 @@ button {
   cursor: pointer;
   font-size: 1rem;
   margin-top: 0.5rem;
-  transition: background 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out, transform 0.1s ease-out;
+  box-shadow: 0 4px 10px rgba(94, 37, 165, 0.4);
 }
 
-button:hover {
+button#bookNowButton:hover {
   background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(94, 37, 165, 0.5);
 }
+
+button#bookNowButton:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(94, 37, 165, 0.4);
+}
+
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
@@ -151,22 +221,35 @@ button:hover {
     padding: 1.5rem;
   }
 
-  .garage-details {
-    grid-template-columns: 1fr; /* Diventa una colonna singola su mobile */
+  .time-slot-selection label {
+      text-align: center; /* Centra la label per chiarezza */
+  }
+
+  .slot-options {
+      justify-content: center; /* Centra le pillole */
+  }
+
+  .slot-pill {
+      flex-grow: 1; /* Permette alle pillole di riempire lo spazio */
+      min-width: unset;
   }
 
   .time-range {
     flex-direction: column;
     gap: 0.8rem;
   }
+
+  .payment-options {
+      flex-direction: column; /* Impila le opzioni di pagamento */
+      gap: 10px;
+  }
+
+  .payment-options label {
+      min-width: 100%;
+  }
 }
 
 
-/* ======================================= */
-/* STILI MODERNIZZATI PER IL PAGAMENTO */
-/* ======================================= */
-
-/* Margine e separatore per la sezione di pagamento */
 .payment-method-selection {
     margin-top: 25px;
     padding-top: 20px;
@@ -177,68 +260,65 @@ button:hover {
     font-weight: 600;
     display: block;
     margin-bottom: 15px;
-    color: #333;
+    color: var(--text-dark);
     font-size: 1.1em;
 }
 
-/* Contenitore Flexbox per le opzioni */
 .payment-options {
     display: flex;
-    gap: 12px; /* Spazio uniforme tra le card */
-    flex-wrap: wrap; /* Assicura il wrap su schermi piccoli */
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
-/* Nasconde i pulsanti radio nativi (il pallino) */
 .payment-options input[type="radio"] {
     display: none;
 }
 
 /* Stile per le label (le card cliccabili) */
 .payment-options label {
-    flex: 1; /* Permette una distribuzione uniforme */
-    min-width: 140px; /* Larghezza minima per una buona leggibilità */
+    flex: 1;
+    min-width: 140px;
     padding: 15px 10px;
     border: 2px solid #ccc;
-    border-radius: 10px; /* Bordi arrotondati */
+    border-radius: 10px;
     cursor: pointer;
     text-align: center;
-    transition: all 0.3s ease; /* Transizioni fluide */
+    transition: all 0.3s ease;
     display: flex;
-    flex-direction: column; /* Icona sopra il testo */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: #f9f9f9;
     color: #555;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Leggera ombra */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    font-weight: 500;
 }
 
-/* Icone all'interno delle label */
 .payment-options label i {
-    font-size: 2.2em; /* Icone più grandi e visibili */
-    margin-bottom: 5px; /* Spazio tra icona e testo */
+    font-size: 2.2em;
+    margin-bottom: 5px;
     transition: color 0.3s ease;
 }
 
 /* Stile Hover/Focus */
 .payment-options label:hover {
-    border-color: #a0c9ff;
-    color: #0066cc;
-    background-color: #f0f8ff;
-    box-shadow: 0 4px 8px rgba(0, 102, 204, 0.1);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background-color: var(--bg-light);
+    box-shadow: 0 4px 8px rgba(94, 37, 165, 0.1);
 }
 
 /* Stile per l'opzione Selezionata */
 .payment-options input[type="radio"]:checked + label {
-    background-color: #e6f7ff; /* Sfondo che evidenzia la selezione */
-    border-color: #007bff; /* Bordo blu acceso */
-    color: #007bff; /* Testo blu */
+    background-color: #e6f7ff; /* Sfondo chiaro per la selezione */
+    border-color: var(--primary-color); /* Bordo primario */
+    color: var(--primary-dark);
     font-weight: 700;
-    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
-    /* Animazione leggera all'attivazione */
+    box-shadow: 0 4px 10px rgba(94, 37, 165, 0.2);
     transform: translateY(-2px);
 }
 
 /* Colore icona evidenziato */
 .payment-options input[type="radio"]:checked + label i {
-    color: #007bff;
+    color: var(--primary-color);
 }

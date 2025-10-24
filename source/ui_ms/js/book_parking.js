@@ -1,76 +1,90 @@
 
-    // Calcolo dinamico del costo totale
-    const startInput = document.getElementById('start_time');
-    const endInput = document.getElementById('end_time');
+document.addEventListener('DOMContentLoaded', () => {
+    const pricePerHour = 2.50; // Prezzo fisso letto dal garage-info
     const totalCostEl = document.getElementById('totalCost');
-    const pricePerHour = 2.5;
+    const slotCheckboxes = document.querySelectorAll('input[name="time_slot[]"]');
+    const bookingForm = document.getElementById('bookingForm');
 
-    function calculateCost() {
-      const start = startInput.value;
-      const end = endInput.value;
-      if (!start || !end) {
-        totalCostEl.textContent = "Costo totale: €0.00";
-        return;
-      }
+    function calculateTotalCost() {
+        let totalDuration = 0;
 
-      const startTime = new Date(`1970-01-01T${start}:00`);
-      const endTime = new Date(`1970-01-01T${end}:00`);
-      const diff = (endTime - startTime) / (1000 * 60 * 60); // ore
+        // Itera su tutte le checkbox per trovare quelle selezionate e non disabilitate
+        slotCheckboxes.forEach(checkbox => {
+            if (checkbox.checked && !checkbox.disabled) {
+                const duration = parseFloat(checkbox.getAttribute('data-duration') || 1);
+                totalDuration += duration;
+            }
+        });
 
-      if (diff <= 0) {
-        totalCostEl.textContent = "Intervallo non valido";
-        return;
-      }
+        const totalCost = totalDuration * pricePerHour;
 
-      const total = diff * pricePerHour;
-      totalCostEl.textContent = `Costo totale: €${total.toFixed(2)}`;
+        // Formatta il testo di visualizzazione
+        const durationText = (totalDuration === 1) ? '1 hour' : `${totalDuration} hours`;
+
+        // Aggiorna l'elemento in pagina
+        totalCostEl.textContent = `Total cost: €${totalCost.toFixed(2)} (${durationText})`;
     }
 
-    startInput.addEventListener('change', calculateCost);
-    endInput.addEventListener('change', calculateCost);
+    // 3. Setup Iniziale
+    // Inizializza il costo a 0.00 all'avvio della pagina
+    calculateTotalCost();
+    // Assicura che la visualizzazione sia corretta anche se non viene selezionato nulla
 
+    // 4. Aggiungi Event Listener ad ogni checkbox
+    slotCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', calculateTotalCost);
+    });
 
-  
-    document.getElementById('bookingForm').addEventListener('submit', function(event) {
-        // Impedisce l'invio standard del form
+    // 5. Gestione Invio Modulo
+    bookingForm.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // Trova il metodo di pagamento selezionato
         const selectedPayment = document.querySelector('input[name="payment_method"]:checked');
+        const selectedSlots = document.querySelectorAll('input[name="time_slot[]"]:checked');
 
-        if (selectedPayment) {
+        if (selectedPayment && selectedSlots.length > 0) {
             let redirectUrl = '';
-            const baseUrl = '../RES/payment/'; // Base URL fittizia per i reindirizzamenti
+            const baseUrl = '../RES/payment/';
 
-            // Imposta l'URL di reindirizzamento in base al metodo scelto
+            // Determina l'URL di reindirizzamento
             switch (selectedPayment.value) {
                 case 'applepay':
-                    redirectUrl = baseUrl + 'applepay.php';
-                    break;
                 case 'googlepay':
-                    redirectUrl = baseUrl + 'googlepay.php';
-                    break;
                 case 'paypal':
-                    redirectUrl = baseUrl + 'paypal.php';
-                    break;
                 case 'creditcard':
-                    redirectUrl = baseUrl + 'creditcard.php';
+                    redirectUrl = baseUrl + selectedPayment.value + '.php';
                     break;
                 default:
-                    // Se non c'è corrispondenza, usa l'azione originale del form
+                    // Se il metodo non è gestito, invia il form all'azione predefinita
                     this.submit();
                     return;
             }
 
-            // Aggiunge tutti i dati del form come parametri di query all'URL di reindirizzamento
-            // (Questo è utile per passare i dati di prenotazione alla pagina di pagamento)
+            // Prepara i dati per l'URL di reindirizzamento
             const formData = new FormData(this);
-            const params = new URLSearchParams(formData).toString();
+            const params = new URLSearchParams();
 
-            window.location.href = `${redirectUrl}?${params}`;
+            // Copia tutti i dati del form nell'oggetto URLSearchParams
+            for (let [key, value] of formData.entries()) {
+                 // FormData gestisce già gli array (time_slot[]) correttamente.
+                params.append(key, value);
+            }
+
+            // Calcola il costo finale e lo aggiunge come parametro
+            let finalDuration = 0;
+            selectedSlots.forEach(checkbox => {
+                finalDuration += parseFloat(checkbox.getAttribute('data-duration') || 1);
+            });
+            const totalCostValue = (finalDuration * pricePerHour).toFixed(2);
+            params.append('calculated_cost', totalCostValue);
+
+            // Reindirizza l'utente
+            window.location.href = `${redirectUrl}?${params.toString()}`;
 
         } else {
-            // Se nessun metodo di pagamento è selezionato (anche se "required" dovrebbe prevenire questo)
-            alert('Please select a payment method.');
+            // Messaggio di errore se non sono state fatte selezioni importanti
+            alert('Please select at least one time slot and a payment method.');
         }
     });
+
+});
