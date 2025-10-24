@@ -44,6 +44,31 @@ def notify_parking_available():
     pass
 
 
+@app.route("/notifications/reservation_accepted", methods=["POST"])
+def notify_reservation_accepted():
+    pass
+
+
+@app.route("/notifications/reservation_rejected", methods=["POST"])
+def notify_reservation_rejected():
+    pass
+
+
+@app.route("/notifications/reservation_cancelled", methods=["POST"])
+def notify_reservation_cancelled():
+    pass
+
+
+@app.route("/notifications/payment_success", methods=["POST"])
+def notify_payment_success():
+    pass
+
+
+@app.route("/notifications/payment_failure", methods=["POST"])
+def notify_payment_failure():
+    pass
+
+
 @app.route("/notifications/<int:user_id>/account_disabled", methods=["GET"])
 def notify_account_disabled(user_id):
     pass

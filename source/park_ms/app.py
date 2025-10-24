@@ -3,6 +3,8 @@ from config import DB_CONFIG
 from models import db, User, Label, ParkingSpot, ParkingSpotLabel, AvailabilitySlot, Reservation
 from sqlalchemy import func
 from geoalchemy2.shape import to_shape
+from datetime import datetime
+
 
 # -------------------------------
 # Init
@@ -25,6 +27,8 @@ def index():
     return jsonify({"message": "Parking Service is active"}), 200
 
 
+
+# ------------ USERS ------------
 @app.route("/users", methods=["POST"])
 def add_user():
     
@@ -94,6 +98,16 @@ def get_parking_spot(spot_id):
             for rel in spot.labels
         ]
 
+        time_slots = [
+            {
+                "id": slot.id,
+                "slot_date": slot.slot_date.isoformat(),
+                "start_time": slot.start_time.strftime("%H:%M"),
+                "end_time": slot.end_time.strftime("%H:%M")
+            }
+            for slot in spot.availability_slots
+        ]
+
         owner = spot.owner
         point = to_shape(spot.spot_location)
         latitude = point.y
@@ -111,7 +125,8 @@ def get_parking_spot(spot_id):
                 "name": owner.name,
                 "surname": owner.surname
             },
-            "labels": labels
+            "labels": labels,
+            "time_slots": time_slots
         }
 
         return jsonify({
@@ -190,45 +205,308 @@ def create_parking_spot():
 
 @app.route("/parking_spots/<int:spot_id>", methods=["PUT"])
 def update_parking_spot(spot_id):
-    auth_header = request.headers.get('Authorization')
-    if not auth_header:
-        return jsonify({'desc': 'Missing Authorization header', 'code': '1'}), 400
-    return jsonify({"desc": f"Update parking spot {spot_id}"}), 200
+ 
+    data = request.get_json()
+    if not data:
+        return jsonify({'desc': 'Missing request body', 'code': '1'}), 400
+
+    if 'name' not in data:
+        return jsonify({'desc': 'Missing field: name', 'code': '2'}), 400
+
+    new_name = data['name']
+    if not isinstance(new_name, str) or len(new_name.strip()) == 0:
+        return jsonify({'desc': 'Invalid name value', 'code': '3'}), 400
+
+    try:
+        with db.session.begin():
+            spot = ParkingSpot.query.filter_by(id=spot_id).with_for_update().first()
+            if not spot:
+                return jsonify({'desc': f'Parking spot {spot_id} not found', 'code': '4'}), 404
+
+            spot.name = new_name.strip()
+
+        return jsonify({
+            "desc": "Parking spot name updated successfully",
+            "code": "0",
+            "parking_spot": {
+                "id": spot.id,
+                "name": spot.name,
+                "rep_treshold": spot.rep_treshold,
+                "slot_price": spot.slot_price
+            }
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'desc': f'Database error: {str(e)}',
+            'code': '99'
+        }), 500
 
 
 @app.route("/parking_spots/<int:spot_id>", methods=["DELETE"])
 def delete_parking_spot(spot_id):
-    auth_header = request.headers.get('Authorization')
-    if not auth_header:
-        return jsonify({'desc': 'Missing Authorization header', 'code': '1'}), 400
-    return jsonify({"desc": f"Delete parking spot {spot_id}"}), 200
+
+    try:
+        with db.session.begin():
+            spot = ParkingSpot.query.filter_by(id=spot_id).with_for_update().first()
+            if not spot:
+                return jsonify({'desc': f'Parking spot {spot_id} not found', 'code': '1'}), 404
+
+            db.session.delete(spot)
+
+        return jsonify({
+            'desc': f'Parking spot {spot_id} deleted successfully',
+            'code': '0'
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'desc': f'Database error: {str(e)}',
+            'code': '99'
+        }), 500
 
 
 @app.route("/parking_spots/<int:spot_id>/labels", methods=["GET"])
 def get_parking_spot_labels(spot_id):
-    return jsonify({"desc": f"Retrieve labels for parking spot {spot_id}"}), 200
+
+    try:
+        spot = ParkingSpot.query.get(spot_id)
+        if not spot:
+            return jsonify({
+                "desc": f"Parking spot {spot_id} not found",
+                "code": "1"
+            }), 404
+
+        results = (
+            db.session.query(
+                ParkingSpotLabel.label_id,
+                Label.name,
+                Label.label_description
+            )
+            .join(Label, ParkingSpotLabel.label_id == Label.id)
+            .filter(ParkingSpotLabel.parking_spot_id == spot_id)
+            .all()
+        )
+
+        labels = [
+            {
+                "id": row.label_id,
+                "name": row.name,
+                "description": row.label_description
+            }
+            for row in results
+        ]
+
+        return jsonify({
+            "desc": "Labels retrieved successfully",
+            "code": "0",
+            "parking_spot": {
+                "id": spot.id,
+                "name": spot.name
+            },
+            "labels": labels
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            "desc": f"Database error: {str(e)}",
+            "code": "99"
+        }), 500
+
+
+@app.route("/parking_spots/<int:spot_id>/labels", methods=["POST"])
+def add_parking_spot_label(spot_id):
+ 
+    data = request.get_json()
+    if not data:
+        return jsonify({'desc': 'Missing request body', 'code': '1'}), 400
+
+    if 'label_id' not in data:
+        return jsonify({'desc': 'Missing field: label_id', 'code': '2'}), 400
+
+    label_id = data['label_id']
+
+    if not isinstance(label_id, int):
+        return jsonify({'desc': 'Invalid label_id type (must be integer)', 'code': '3'}), 400
+
+    try:
+        with db.session.begin():
+            spot = ParkingSpot.query.filter_by(id=spot_id).with_for_update().first()
+            if not spot:
+                return jsonify({
+                    'desc': f'Parking spot {spot_id} not found',
+                    'code': '4'
+                }), 404
+
+            label = Label.query.get(label_id)
+            if not label:
+                return jsonify({
+                    'desc': f'Label {label_id} not found',
+                    'code': '5'
+                }), 404
+
+            existing_link = ParkingSpotLabel.query.filter_by(
+                parking_spot_id=spot.id,
+                label_id=label.id
+            ).first()
+
+            if existing_link:
+                return jsonify({
+                    'desc': f'Label {label_id} is already associated with parking spot {spot_id}',
+                    'code': '6'
+                }), 409
+
+            new_link = ParkingSpotLabel(
+                parking_spot_id=spot.id,
+                label_id=label.id
+            )
+            db.session.add(new_link)
+
+        return jsonify({
+            'desc': f'Label {label_id} successfully added to parking spot {spot_id}',
+            'code': '0',
+            'parking_spot_label': {
+                'parking_spot_id': spot.id,
+                'label_id': label.id,
+                'label_name': label.name,
+                'label_description': label.label_description
+            }
+        }), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'desc': f'Database error: {str(e)}',
+            'code': '99'
+        }), 500
 
 
 @app.route("/parking_spots/<int:spot_id>/labels/<int:label_id>", methods=["DELETE"])
 def delete_parking_spot_label(spot_id, label_id):
-    auth_header = request.headers.get('Authorization')
-    if not auth_header:
-        return jsonify({'desc': 'Missing Authorization header', 'code': '1'}), 400
-    return jsonify({"desc": f"Remove label {label_id} from parking spot {spot_id}"}), 200
+
+    try:
+        with db.session.begin():
+            spot = ParkingSpot.query.filter_by(id=spot_id).with_for_update().first()
+            if not spot:
+                return jsonify({
+                    'desc': f'Parking spot {spot_id} not found',
+                    'code': '1'
+                }), 404
+
+            label = Label.query.get(label_id)
+            if not label:
+                return jsonify({
+                    'desc': f'Label {label_id} not found',
+                    'code': '2'
+                }), 404
+
+            link = ParkingSpotLabel.query.filter_by(
+                parking_spot_id=spot.id,
+                label_id=label.id
+            ).first()
+
+            if not link:
+                return jsonify({
+                    'desc': f'Label {label_id} is not associated with parking spot {spot_id}',
+                    'code': '3'
+                }), 404
+
+            db.session.delete(link)
+
+        return jsonify({
+            'desc': f'Label {label_id} removed from parking spot {spot_id} successfully',
+            'code': '0'
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'desc': f'Database error: {str(e)}',
+            'code': '99'
+        }), 500
 
 
-# ------------ AVAILABILITY ------------
-@app.route("/availability/<int:park_id>", methods=["GET"])
+
+# ------------ TIME SLOTS ------------
+@app.route("/time_slots/availability/<int:park_id>", methods=["GET"])
 def get_availability_slots(park_id):
     return jsonify({"desc": f"Retrieve availability slots for parking spot {park_id}"}), 200
 
 
-@app.route("/availability", methods=["POST"])
-def create_availability_slot():
-    auth_header = request.headers.get('Authorization')
-    if not auth_header:
-        return jsonify({'desc': 'Missing Authorization header', 'code': '1'}), 400
-    return jsonify({"desc": "Create new availability slot"}), 201
+@app.route("/time_slots/availables/<int:spot_id>", methods=["POST"])
+def create_availability_slot(spot_id):
+
+    data = request.get_json()
+    if not data:
+        return jsonify({'desc': 'Missing request body', 'code': '1'}), 400
+
+    required_fields = ['slot_date', 'start_time', 'end_time']
+    if not all(f in data for f in required_fields):
+        return jsonify({'desc': 'Missing required fields', 'code': '2'}), 400
+
+    try:
+        slot_date = datetime.strptime(data['slot_date'], "%Y-%m-%d").date()
+        start_time = datetime.strptime(data['start_time'], "%H:%M").time()
+        end_time = datetime.strptime(data['end_time'], "%H:%M").time()
+    except ValueError:
+        return jsonify({'desc': 'Invalid date/time format', 'code': '3'}), 400
+
+    if end_time <= start_time:
+        return jsonify({'desc': 'Invalid time range (end_time must be after start_time)', 'code': '4'}), 400
+
+    try:
+        with db.session.begin():
+            spot = ParkingSpot.query.filter_by(id=spot_id).with_for_update().first()
+            if not spot:
+                return jsonify({'desc': f'Parking spot {spot_id} not found', 'code': '5'}), 404
+
+            overlapping_slot = (
+                AvailabilitySlot.query.filter(
+                    AvailabilitySlot.parking_spot_id == spot.id,
+                    AvailabilitySlot.slot_date == slot_date,
+                    AvailabilitySlot.start_time < end_time,
+                    AvailabilitySlot.end_time > start_time
+                ).first()
+            )
+
+            if overlapping_slot:
+                return jsonify({
+                    'desc': (
+                        f"Time slot overlaps with existing slot "
+                        f"{overlapping_slot.start_time.strftime('%H:%M')} - "
+                        f"{overlapping_slot.end_time.strftime('%H:%M')} on {slot_date}"
+                    ),
+                    'code': '6'
+                }), 409
+
+            new_slot = AvailabilitySlot(
+                slot_date=slot_date,
+                start_time=start_time,
+                end_time=end_time,
+                parking_spot_id=spot.id
+            )
+            db.session.add(new_slot)
+
+        return jsonify({
+            "desc": "Availability slot created successfully",
+            "code": "0",
+            "availability_slot": {
+                "id": new_slot.id,
+                "slot_date": new_slot.slot_date.isoformat(),
+                "start_time": new_slot.start_time.strftime("%H:%M"),
+                "end_time": new_slot.end_time.strftime("%H:%M"),
+                "parking_spot_id": spot.id
+            }
+        }), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'desc': f'Database error: {str(e)}',
+            'code': '99'
+        }), 500
 
 
 @app.route("/availability/search", methods=["POST"])
@@ -288,15 +566,84 @@ def delete_reservation(reservation_id):
 # ------------ LABELS ------------
 @app.route("/labels", methods=["GET"])
 def get_labels():
-    return jsonify({"desc": "Retrieve all available labels"}), 200
+
+    try:
+        labels = Label.query.all()
+
+        if not labels:
+            return jsonify({
+                "desc": "No labels found",
+                "code": "1",
+                "labels": []
+            }), 200
+
+        label_list = [
+            {
+                "id": label.id,
+                "name": label.name,
+                "description": label.label_description
+            }
+            for label in labels
+        ]
+
+        return jsonify({
+            "desc": "Labels retrieved successfully",
+            "code": "0",
+            "labels": label_list
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            "desc": f"Database error: {str(e)}",
+            "code": "99"
+        }), 500
 
 
 @app.route("/labels", methods=["POST"])
 def create_label():
-    auth_header = request.headers.get('Authorization')
-    if not auth_header:
-        return jsonify({'desc': 'Missing Authorization header', 'code': '1'}), 400
-    return jsonify({"desc": "Create new label (admin only)"}), 201
+
+    data = request.get_json()
+    if not data:
+        return jsonify({'desc': 'Missing request body', 'code': '1'}), 400
+
+    required_fields = ['name', 'description']
+    if not all(field in data for field in required_fields):
+        return jsonify({'desc': 'Missing required fields', 'code': '2'}), 400
+
+    name = data['name'].strip() if isinstance(data['name'], str) else None
+    description = data['description'].strip() if isinstance(data['description'], str) else None
+
+    if not name or not description:
+        return jsonify({'desc': 'Invalid name or description', 'code': '3'}), 400
+
+    try:
+        with db.session.begin():
+            existing = Label.query.filter(func.lower(Label.name) == func.lower(name)).first()
+            if existing:
+                return jsonify({
+                    'desc': f'Label with name "{name}" already exists',
+                    'code': '4'
+                }), 409
+
+            new_label = Label(name=name, label_description=description)
+            db.session.add(new_label)
+
+        return jsonify({
+            "desc": "Label created successfully",
+            "code": "0",
+            "label": {
+                "id": new_label.id,
+                "name": new_label.name,
+                "description": new_label.label_description
+            }
+        }), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            "desc": f"Database error: {str(e)}",
+            "code": "99"
+        }), 500
 
 
 # -------------------------------
