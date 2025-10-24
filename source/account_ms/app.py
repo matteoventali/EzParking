@@ -110,10 +110,6 @@ def login():
                 return jsonify({ 'desc': 'Account disabled',
                                  'code': '3'}), 403
 
-            if user.session_token:
-                return jsonify({'desc': 'User already logged',
-                                'code': '4'}), 401
-
             user.lastlogin_ts = db.func.current_timestamp()
             session_token = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
             user.session_token = session_token
