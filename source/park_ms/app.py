@@ -430,12 +430,12 @@ def delete_parking_spot_label(spot_id, label_id):
 
 
 # ------------ TIME SLOTS ------------
-@app.route("/time_slots/availability/<int:park_id>", methods=["GET"])
+@app.route("/time_slots/<int:park_id>", methods=["GET"])
 def get_availability_slots(park_id):
     return jsonify({"desc": f"Retrieve availability slots for parking spot {park_id}"}), 200
 
 
-@app.route("/time_slots/availables/<int:spot_id>", methods=["POST"])
+@app.route("/time_slots/<int:spot_id>", methods=["POST"])
 def create_availability_slot(spot_id):
 
     data = request.get_json()
@@ -509,17 +509,15 @@ def create_availability_slot(spot_id):
         }), 500
 
 
-@app.route("/availability/search", methods=["POST"])
+@app.route("/time_slots/<int:slot_id>/<int:spot_id>", methods=["DELETE"])
+def delete_availability_slot(spot_id, slot_id):
+    pass
+
+# ------------ SEARCHING ------------
+@app.route("/search", methods=["POST"])
 def search_availability():
     return jsonify({"desc": "Search parking spots within radius"}), 200
 
-
-@app.route("/availability", methods=["DELETE"])
-def delete_availability_slot():
-    auth_header = request.headers.get('Authorization')
-    if not auth_header:
-        return jsonify({'desc': 'Missing Authorization header', 'code': '1'}), 400
-    return jsonify({"desc": "Delete availability slot"}), 200
 
 
 # ------------ RESERVATIONS ------------
