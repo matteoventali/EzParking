@@ -48,25 +48,24 @@
       <div class="user-info">
         <div class="info-item">
           <i class="fas fa-user"></i>
-          <span><strong>Name:</strong><?php echo $_SESSION['user']['name']; ?></span>
+          <span><strong>Name: </strong><?php echo $_SESSION['user']['name']; ?></span>
         </div>
         <div class="info-item">
           <i class="fas fa-user"></i>
-          <span><strong>Surname:</strong><?php echo $_SESSION['user']['surname']; ?></span>
+          <span><strong>Surname: </strong><?php echo $_SESSION['user']['surname']; ?></span>
         </div>
         <div class="info-item">
           <i class="fas fa-envelope"></i>
-          <span><strong>Email:</strong><?php echo $_SESSION['user']['email']; ?></span>
+          <span><strong>Email: </strong><?php echo $_SESSION['user']['email']; ?></span>
         </div>
         <div class="info-item">
           <i class="fas fa-phone"></i>
-          <span><strong>Phone:</strong><?php echo $_SESSION['user']['phone']; ?></span>
+          <span><strong>Phone: </strong><?php echo $_SESSION['user']['phone']; ?></span>
         </div>
 
         <div class="info-item">
-          <!--<i class="fas fa-id-badge"></i>-->
           <i class="fas "></i>
-          <span><strong>Role:</strong><?php echo strtoupper($_SESSION['role']); ?></span>
+          <span><strong>Role: </strong><?php echo strtoupper($_SESSION['role']); ?></span>
         </div>
       </div>
 

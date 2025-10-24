@@ -450,7 +450,8 @@ def get_users_list():
         'name': user.name,
         'surname': user.surname,
         'email': user.email,
-        'role': user.user_role
+        'role': user.user_role,
+        'status' : user.account_status
     } for user in users]
 
     return jsonify({
@@ -486,7 +487,11 @@ def get_user_dashboard(user_id):
 
     reviews = list_reviews(target_user)
     received_reviews = reviews["received_reviews"]
-    score = statistics.mean([r["star"] for r in received_reviews])
+
+    if ( len(received_reviews) == 0 ):
+        score = 0
+    else:
+        score = statistics.mean([r["star"] for r in received_reviews])
     
     return jsonify({
         'desc': 'User dashboard retrieved successfully',
@@ -498,7 +503,8 @@ def get_user_dashboard(user_id):
             'email': target_user.email,
             'phone': target_user.phone,
             'role': target_user.user_role,
-            'score': score
+            'score': score,
+            'status': target_user.account_status
         },
         'received_reviews': reviews["received_reviews"],
         'written_reviews': reviews["written_reviews"]

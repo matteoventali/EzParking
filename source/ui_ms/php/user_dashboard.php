@@ -77,6 +77,7 @@
       </button>
     </div>
 
+    <!-- TO BE REMOVED!!! -->
     <!-- Reputation Section -->
     <div class="dashboard-card reputation-card">
       <div class="section-title">Reputation</div>
