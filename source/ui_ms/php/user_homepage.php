@@ -13,7 +13,7 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -26,6 +26,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Map setup --> 
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        crossorigin=""
+    />
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        crossorigin=""
+    ></script>
+    <script src="../js/map.js" type="text/javascript"></script>
 </head>
 <body>
     <?php
@@ -63,9 +75,8 @@
 
 
     <section class="features">
-        <!-- ADD MAP WITH API  -->
         <h2>Find Nearest Parking Spots</h2>
-        Aggiungi una mappa interattiva qui con le posizioni dei parcheggi più vicini all'utente.
+        <div id="map" style="height: 500px; width: 20%; border-radius: 10px;"></div>
     </section>
 
 
