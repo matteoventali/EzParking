@@ -24,7 +24,7 @@ body {
 .features {
     background: var(--card-bg);
     /* white card on top of page bg */
-    width: 1000px;
+    max-width: 1400px;
     /* wider container */
     margin: 1.2rem auto;
     padding: 1.8rem 1.4rem;
@@ -64,7 +64,6 @@ body {
     justify-content: space-between;
     transition: transform 220ms ease, box-shadow 220ms ease;
     overflow: hidden;
-    
 }
 
 /* hover */
