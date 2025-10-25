@@ -35,13 +35,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
-    
-    <script type="text/javascript">
-        function enable_disable_user()
-        {
-            alert("To be implemented");
-        }
-    </script>
 </head>
 
 <body>
@@ -60,7 +53,7 @@
         </div>
         <div>
             <div class="user-name-wrapper">
-                <h2 class="user-name"><?php echo $user["name"] . " " . $user["surname"]; ?></h2>
+                <h2 class="user-name"><?php echo strtoupper($user["name"] . " " . $user["surname"]); ?></h2>
             </div>
           
         </div>
@@ -94,29 +87,31 @@
 
             // We show the enable/disable button only if we're seeing a user profile.
             // An admin cannot be disabled/enabled by another admin
-            $button = '<button id="button_enable" class="edit-btn" onclick="enable_disable_user();">
+            $button = '<button id="button_enable" class="edit-btn" 
+                            onclick="location.href=\'enable_disable_user.php?id=%d&status=%s\'">
                             <i class="fas fa-user-edit"></i> ' . $label . ' Profile
                         </button>';
+            $button = sprintf($button, $user['id'], $user['status'] ? 'true' : 'false');
+            
             if ( $user['role'] == 'user' )
                 echo $button;
         ?>
     </div>
 
-    <div class="dashboard-card reputation-card">
-      <div class="section-title">Reputation</div>
-      <div class="reputation-score">⭐ 4.2/5</div>
-      <p style="margin-top: 0.5rem; color:#666; font-size:0.95rem;">
-        Keep contributing to improve your score!
-      </p>
-    </div>
+    <?php
+        $rep_card = '<div class="dashboard-card reputation-card">
+                    <div class="section-title">Reputation</div>
+                    <div class="reputation-score">⭐ ' . $user['score'] . '/5</div></div>';
 
-
-    
+        // Show the reputation section only for normal users
+        if ( $user['role'] == 'user' )  
+            echo $rep_card;
+    ?>
 
     </main>
     <?php
-      $footer = file_get_contents(FOOTER);
-      echo $footer;
+        $footer = file_get_contents(FOOTER);
+        echo $footer;
     ?>
 </body>
 </html>
