@@ -77,7 +77,7 @@ function editValidation(){
             return;
         }
 
-        if(passwordValidation(psw)==false){
+        if(passwordValidation(new_psw)==false){
             alert("Password too short, at least 8 characters");
             e.preventDefault();
             return;

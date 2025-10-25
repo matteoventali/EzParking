@@ -70,8 +70,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./fontawesome-free-6.4.0-web/css/all.css">
-    <link rel="website icon" type="png" href="/Img/lego-icon-12.ico">
     <script src="../js/form_check.js" defer></script>
 </head>
 <body>

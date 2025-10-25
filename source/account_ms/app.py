@@ -249,8 +249,10 @@ def update_personal_data():
         user.surname = data['surname']
         updated = True
 
+    print(data['password']);
+
     if 'password' in data and (data['password'] != None):
-        user.password = generate_password_hash(data['password'])
+        user.password_hash = generate_password_hash(data['password'])
         updated_pwd = True
 
     if 'phone' in data:
