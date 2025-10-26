@@ -15,3 +15,4 @@
 | **GET** | `/users/{user_id}` | Get the dashboard of the selected user **_ONLY FOR ADMIN_** |
 | **GET** | `/users/{user_id}/enable` | Enable the account of the selected user **_ONLY FOR ADMIN_** |
 | **GET** | `/users/{user_id}/disable` | Disable the account of the selected user **_ONLY FOR ADMIN_** |
+| **GET** | `/users/active_count` | Get the numbers of users currently logged into the system **_ONLY FOR ADMIN_** |

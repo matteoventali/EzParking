@@ -437,6 +437,27 @@ http://10.5.0.11:5000/
 { "desc": "<error>", "code": "99" }
 ```
 
+### `GET /users/active_count`
+**Description:** Get the number of users currenty logged into the system
+**Authentication:** Admin  
+**Responses:**
+```json
+// 200 OK
+{
+  "desc": "Active user count retrieved successfully",
+  "code": '0',
+  "active_user_count": active_user_count
+}
+
+// 400 Bad Request
+{ "desc": "Missing or invalid Authorization header", "code": "1" }
+
+// 401 Unauthorized
+{ "desc": "Invalid session token", "code": "2" }
+
+// 403 Forbidden
+{ "desc": "Access denied: admin only", "code": "3" }
+
 ---
 
 **Author:** EzParking Development Team  

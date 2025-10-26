@@ -624,6 +624,31 @@ def disable_user_account(user_id):
         return jsonify({'desc': f'{str(e)}',
                         'code': '99',}), 500 
 
+@app.route("/users/active_count", methods=["GET"])
+def get_count_user():
+    auth_header = request.headers.get('Authorization')
+
+    if not auth_header:
+        return jsonify({'desc': 'Missing or invalid Authorization header',
+                        'code': '1'}), 400
+
+    session_token = auth_header
+    admin_user = User.query.filter_by(session_token=session_token).first()
+
+    if not admin_user:
+        return jsonify({'desc': 'Invalid session token',
+                        'code': '2'}), 401
+
+    if admin_user.user_role != 'admin':
+        return jsonify({'desc': 'Access denied: admin only',
+                        'code': '3'}), 403
+
+    active_user_count = User.query.filter(User.session_token.isnot(None)).count()
+    return jsonify({
+        'desc': 'Active user count retrieved successfully',
+        'code': '0',
+        'active_user_count': active_user_count
+    }), 200
 
 
 # -------------------------------

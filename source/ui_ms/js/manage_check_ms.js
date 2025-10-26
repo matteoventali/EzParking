@@ -101,4 +101,4 @@ function fetchMicroservicesStatus()
 // Starting call
 fetchMicroservicesStatus();
 // Update every 5 seconds
-setInterval(fetchMicroservicesStatus, 5000);
+setInterval(fetchMicroservicesStatus, 10000);
