@@ -65,6 +65,7 @@
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // disable SSL verification (for local dev)
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10); // set timeout to 10 seconds
 
         // Execute request
         $response = curl_exec($ch);
@@ -117,5 +118,54 @@
             session_destroy();
             return false;
         }
+    }
+
+    // Method to verify the status of a single microservice
+    function check_status_microservice($protocol, $socket, $path, $name)
+    {
+        // Checking account microservice
+        $api_url = compose_url($protocol, $socket, $path);
+        try
+        {
+            perform_rest_request('GET', $api_url, null, null);
+            $status = [
+                'name' => $name,
+                'status' => 'active',
+                'ip' => explode(":", $socket)[0],
+                'port' => explode(":", $socket)[1]
+            ];
+        }
+        catch(Exception $e)
+        {
+            $status = [
+                'name' => $name,
+                'status' => 'down',
+                'ip' => explode(":", $socket)[0],
+                'port' => explode(":", $socket)[1],
+                'error'=> 'Timeout reached'
+            ];
+        }
+
+        return $status;
+    }
+
+    // Method to verify the status of all microservices of the system
+    // Return an object with all informations
+    function check_status_microservices()
+    {
+        // Importing variables from config.php
+        global $protocol, $socket_account_ms, $socket_notification_ms, $socket_park_ms, $socket_payment_ms;
+        
+        // Resulting array
+        $status = array();
+
+        // Checking all microervices
+        array_push($status, check_status_microservice($protocol, $socket_account_ms, '/', 'account_ms') );
+        array_push($status, check_status_microservice($protocol, $socket_notification_ms, '/', 'notification_ms') );
+        array_push($status, check_status_microservice($protocol, $socket_park_ms, '/', 'park_ms') );
+        array_push($status, check_status_microservice($protocol, $socket_payment_ms, '/', 'payment_ms') );
+
+        // Returning the resulting array
+        return $status;    
     }
 ?>
