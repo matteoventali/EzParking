@@ -61,7 +61,7 @@
                 Manage your Parking Spot
             </button>
 
-            <button onclick="location.href='../php/my_bookings.php';">
+            <button onclick="location.href='../php/manage_my_bookings.php';">
                 <i class="fas fa-ticket-alt"></i>
                 My Reservations
             </button>

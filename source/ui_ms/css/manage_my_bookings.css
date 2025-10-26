@@ -1,0 +1,291 @@
+
+
+
+:root {
+    --primary-color: #5e25a5; 
+    --primary-dark: #4a1c86; 
+    --bg-light: #f7f5fb;
+    --text-dark: #222;
+    --text-light: #777;
+    --white: #fff;
+    --shadow: rgba(0, 0, 0, 0.1);
+
+   
+    --confirmed-color: #28a745;
+    --confirmed-bg: #e6f7e9;
+    --pending-color: #ffc107;
+    --pending-bg: #fffbe6;
+    --cancelled-color: #dc3545; 
+    --cancelled-bg: #f8d7da;
+    --completed-color: #6c757d; 
+    --completed-bg: #f8f9fa;
+    
+    --delete-btn-color: #dc3545;
+}
+
+
+*{
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 1rem;
+    width: 100%;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    max-width: 800px;
+}
+
+.dashboard-header h1 {
+    color: var(--primary-color);
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-header p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+}
+
+
+.add-new-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    transition: background 0.2s ease-in-out, transform 0.1s;
+    box-shadow: 0 4px 10px rgba(94, 37, 165, 0.3);
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
+}
+
+.add-new-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(94, 37, 165, 0.4);
+}
+
+.add-new-button i {
+    font-size: 1.2rem;
+}
+
+
+
+.booking-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 800px;
+}
+
+
+.booking-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: var(--white);
+    border-radius: 12px;
+    color: var(--text-dark);
+    box-shadow: 0 4px 12px var(--shadow);
+    border: 1px solid #e0e0e0;
+    transition: all 0.2s ease-in-out;
+    position: relative; 
+}
+
+
+.booking-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-color);
+}
+
+.garage-name {
+    margin: 0;
+    font-size: 1.3rem;
+    color: var(--primary-dark);
+}
+
+.car-license {
+    margin: 0.5rem 0 0 0;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+
+.garage-address {
+    margin: 0.5rem 0 0 0;
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+.garage-address i {
+    margin-right: 5px;
+    color: var(--primary-color);
+}
+
+
+.card-status {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.status-indicator {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 100px; 
+    text-align: center;
+}
+
+
+.booking-card.confirmed .status-indicator {
+    background-color: var(--confirmed-bg);
+    color: var(--confirmed-color);
+    border: 1px solid var(--confirmed-color);
+}
+
+
+.booking-card.pending .status-indicator {
+    background-color: var(--pending-bg);
+    color: var(--pending-color);
+    border: 1px solid var(--pending-color);
+}
+
+
+.booking-card.cancelled .status-indicator {
+    background-color: var(--cancelled-bg);
+    color: var(--cancelled-color);
+    border: 1px solid var(--cancelled-color);
+}
+
+
+.booking-card.completed .status-indicator {
+    background-color: var(--completed-bg);
+    color: var(--completed-color);
+    border: 1px solid var(--completed-color);
+}
+
+
+
+
+.delete-booking-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+    font-size: 1.2rem;
+    padding: 8px;
+    border-radius: 50%;
+    transition: color 0.2s, background-color 0.2s;
+    line-height: 1; 
+}
+
+
+.delete-booking-btn:hover {
+    color: var(--delete-btn-color);
+    background-color: var(--cancelled-bg);
+}
+
+.booking-card.completed .delete-booking-btn,
+.booking-card.cancelled .delete-booking-btn {
+    color: var(--text-light); 
+}
+
+.booking-card.completed .delete-booking-btn:hover,
+.booking-card.cancelled .delete-booking-btn:hover {
+    color: var(--delete-btn-color);
+    background-color: var(--cancelled-bg);
+}
+
+
+
+
+@media (max-width: 480px) { 
+    main {
+        padding: 1.5rem 0.5rem;
+    }
+
+    .dashboard-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .dashboard-header p {
+        font-size: 1rem;
+    }
+
+    .booking-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.2rem 1rem;
+    }
+
+    .garage-name {
+        font-size: 1.2rem;
+    }
+
+    .car-license {
+        font-size: 0.95rem;
+    }
+
+    .garage-address {
+        font-size: 0.9rem;
+    }
+
+    .card-details {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .card-status {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px dashed #eee;
+    }
+
+    .status-indicator {
+        min-width: 85px;
+        font-size: 0.85rem;
+    }
+
+    
+    .delete-booking-btn {
+        font-size: 1.5rem;
+        padding: 5px;
+    }
+
+    .add-new-button {
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+    }
+}
