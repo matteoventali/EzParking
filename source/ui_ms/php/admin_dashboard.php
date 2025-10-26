@@ -81,11 +81,10 @@
 
   </main>
 
-  <?php
-    require_once './config.php';
-    $footer = file_get_contents(FOOTER);
-    echo $footer;
-  ?>
+    <?php
+        $footer = file_get_contents(FOOTER);
+        echo $footer;
+    ?>
 
 <script src="../js/users_table.js" crossorigin="anonymous"></script>
 </body>

@@ -441,6 +441,7 @@ http://10.5.0.11:5000/
 **Description:** Get the number of users currenty logged into the system
 **Authentication:** Admin  
 **Responses:**
+
 ```json
 // 200 OK
 {
