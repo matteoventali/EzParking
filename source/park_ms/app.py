@@ -3,6 +3,7 @@ from config import DB_CONFIG
 from models import db, User, Label, ParkingSpot, ParkingSpotLabel, AvailabilitySlot, Reservation
 from sqlalchemy import func
 from geoalchemy2.shape import to_shape
+from sqlalchemy import and_, or_
 from datetime import datetime
 
 
@@ -80,6 +81,10 @@ def add_user():
 # ------------ PARKING SPOTS ------------
 @app.route("/parking_spots/<int:spot_id>", methods=["GET"])
 def get_parking_spot(spot_id):
+    """
+    Returned time slots are not only the availables ones, but them involve all time slots in the history
+    of the parking spot.
+    """
     try:
         spot = ParkingSpot.query.get(spot_id)
 
@@ -432,11 +437,72 @@ def delete_parking_spot_label(spot_id, label_id):
 # ------------ TIME SLOTS ------------
 @app.route("/time_slots/<int:park_id>", methods=["GET"])
 def get_availability_slots(park_id):
-    return jsonify({"desc": f"Retrieve availability slots for parking spot {park_id}"}), 200
+
+    try:
+        spot = ParkingSpot.query.get(park_id)
+        if not spot:
+            return jsonify({
+                "desc": f"Parking spot {park_id} not found",
+                "code": "1"
+            }), 404
+
+        now = datetime.now()
+        today = now.date()
+        current_time = now.time()
+
+        active_reservations = (
+            db.session.query(Reservation.slot_id)
+            .filter(Reservation.reservation_status.in_(["pending", "confirmed"]))
+            .subquery()
+        )
+
+        available_slots = (
+            db.session.query(AvailabilitySlot)
+            .filter(
+                AvailabilitySlot.parking_spot_id == spot.id,
+                ~AvailabilitySlot.id.in_(active_reservations),
+                or_(
+                    AvailabilitySlot.slot_date > today,
+                    and_(
+                        AvailabilitySlot.slot_date == today,
+                        AvailabilitySlot.end_time > current_time
+                    )
+                )
+            )
+            .order_by(AvailabilitySlot.slot_date.asc(), AvailabilitySlot.start_time.asc())
+            .all()
+        )
+
+        available_slots_json = [
+            {
+                "id": slot.id,
+                "slot_date": slot.slot_date.isoformat(),
+                "start_time": slot.start_time.strftime("%H:%M"),
+                "end_time": slot.end_time.strftime("%H:%M")
+            }
+            for slot in available_slots
+        ]
+
+        return jsonify({
+            "desc": "Available future time slots retrieved successfully",
+            "code": "0",
+            "parking_spot": {
+                "id": spot.id,
+                "name": spot.name
+            },
+            "available_slots": available_slots_json,
+            "count": len(available_slots_json)
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            "desc": f"Database error: {str(e)}",
+            "code": "99"
+        }), 500
 
 
-@app.route("/time_slots/<int:spot_id>", methods=["POST"])
-def create_availability_slot(spot_id):
+@app.route("/time_slots/<int:park_id>", methods=["POST"])
+def create_time_slot(park_id):
 
     data = request.get_json()
     if not data:
@@ -458,9 +524,9 @@ def create_availability_slot(spot_id):
 
     try:
         with db.session.begin():
-            spot = ParkingSpot.query.filter_by(id=spot_id).with_for_update().first()
+            spot = ParkingSpot.query.filter_by(id=park_id).with_for_update().first()
             if not spot:
-                return jsonify({'desc': f'Parking spot {spot_id} not found', 'code': '5'}), 404
+                return jsonify({'desc': f'Parking spot {park_id} not found', 'code': '5'}), 404
 
             overlapping_slot = (
                 AvailabilitySlot.query.filter(
@@ -509,12 +575,12 @@ def create_availability_slot(spot_id):
         }), 500
 
 
-@app.route("/time_slots/<int:slot_id>/<int:spot_id>", methods=["DELETE"])
-def delete_availability_slot(spot_id, slot_id):
+@app.route("/time_slots/<int:slot_id>", methods=["DELETE"])
+def delete_time_slot(slot_id):
     pass
 
 # ------------ SEARCHING ------------
-@app.route("/search", methods=["POST"])
+@app.route("/time_slots/search", methods=["POST"])
 def search_availability():
     return jsonify({"desc": "Search parking spots within radius"}), 200
 
