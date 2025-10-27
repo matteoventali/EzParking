@@ -1,10 +1,10 @@
 from flask import Flask, jsonify, request
 from config import DB_CONFIG
 from models import db, User, Label, ParkingSpot, ParkingSpotLabel, AvailabilitySlot, Reservation
-from sqlalchemy import func
+from sqlalchemy import func, and_, or_
 from geoalchemy2.shape import to_shape
-from sqlalchemy import and_, or_
-from datetime import datetime
+from datetime import datetime, date
+from geoalchemy2.elements import WKTElement
 
 
 # -------------------------------
@@ -75,6 +75,7 @@ def add_user():
             'desc': f'Database error: {str(e)}',
             'code': '99'
         }), 500
+# ------------ USERS ------------
 
 
 
@@ -431,6 +432,7 @@ def delete_parking_spot_label(spot_id, label_id):
             'desc': f'Database error: {str(e)}',
             'code': '99'
         }), 500
+# ------------ PARKING SPOTS ------------
 
 
 
@@ -576,13 +578,250 @@ def create_time_slot(park_id):
 
 
 @app.route("/time_slots/<int:slot_id>", methods=["DELETE"])
-def delete_time_slot(slot_id):
-    pass
+def delete_availability_slot(slot_id):
+
+    try:
+        with db.session.begin():
+            slot = AvailabilitySlot.query.filter_by(id=slot_id).with_for_update().first()
+            if not slot:
+                return jsonify({
+                    "desc": f"Availability slot {slot_id} not found",
+                    "code": "1"
+                }), 404
+
+            active_reservation = (
+                db.session.query(Reservation)
+                .filter(
+                    Reservation.slot_id == slot.id,
+                    Reservation.reservation_status.in_(["pending", "confirmed"])
+                )
+                .first()
+            )
+
+            if active_reservation:
+                return jsonify({
+                    "desc": f"Slot {slot_id} cannot be deleted because it has an active reservation "
+                            f"({active_reservation.reservation_status})",
+                    "code": "2"
+                }), 409
+
+            db.session.delete(slot)
+
+        return jsonify({
+            "desc": f"Availability slot {slot_id} deleted successfully",
+            "code": "0"
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            "desc": f"Database error: {str(e)}",
+            "code": "99"
+        }), 500
+# ------------ TIME SLOTS ------------
+
+
 
 # ------------ SEARCHING ------------
-@app.route("/time_slots/search", methods=["POST"])
-def search_availability():
-    return jsonify({"desc": "Search parking spots within radius"}), 200
+@app.route("/search", methods=["GET"])
+def search_parking_spots():
+
+    name_query = request.args.get("name", "").strip()
+
+    if not name_query:
+        return jsonify({'desc': 'Missing or empty "name" query parameter', 'code': '1'}), 400
+
+    try:
+        now = datetime.now()
+        today = date.today()
+        current_time = now.time()
+
+        matching_spots = (
+            db.session.query(ParkingSpot)
+            .filter(func.lower(ParkingSpot.name).like(f"%{name_query.lower()}%"))
+            .all()
+        )
+
+        if not matching_spots:
+            return jsonify({
+                'desc': f'No parking spots found matching "{name_query}"',
+                'code': '2',
+                'results': []
+            }), 200
+
+        active_reservations = (
+            db.session.query(Reservation.slot_id)
+            .filter(Reservation.reservation_status.in_(["pending", "confirmed"]))
+            .subquery()
+        )
+
+        results = []
+
+        for spot in matching_spots:
+            available_slots = (
+                db.session.query(AvailabilitySlot)
+                .filter(
+                    AvailabilitySlot.parking_spot_id == spot.id,
+                    ~AvailabilitySlot.id.in_(active_reservations),
+                    or_(
+                        AvailabilitySlot.slot_date > today,
+                        and_(
+                            AvailabilitySlot.slot_date == today,
+                            AvailabilitySlot.end_time > current_time
+                        )
+                    )
+                )
+                .order_by(AvailabilitySlot.slot_date.asc(), AvailabilitySlot.start_time.asc())
+                .all()
+            )
+
+            if available_slots:
+                slots_json = [
+                    {
+                        "id": s.id,
+                        "slot_date": s.slot_date.isoformat(),
+                        "start_time": s.start_time.strftime("%H:%M"),
+                        "end_time": s.end_time.strftime("%H:%M")
+                    }
+                    for s in available_slots
+                ]
+
+                results.append({
+                    "parking_spot_id": spot.id,
+                    "name": spot.name,
+                    "rep_treshold": spot.rep_treshold,
+                    "slot_price": spot.slot_price,
+                    "user_id": spot.user_id,
+                    "available_slots": slots_json
+                })
+
+        if not results:
+            return jsonify({
+                'desc': f'No availability found for parking spots matching "{name_query}"',
+                'code': '3',
+                'results': []
+            }), 200
+
+        return jsonify({
+            'desc': f'Available parking spots retrieved successfully',
+            'code': '0',
+            'results': results,
+            'count': len(results)
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            'desc': f'Database error: {str(e)}',
+            'code': '99'
+        }), 500
+
+
+@app.route("/search/closetome", methods=["POST"])
+def search_closetome():
+
+    data = request.get_json()
+    if not data:
+        return jsonify({'desc': 'Missing request body', 'code': '1'}), 400
+
+    required_fields = ['latitude', 'longitude', 'radius']
+    if not all(field in data for field in required_fields):
+        return jsonify({'desc': 'Missing required fields', 'code': '2'}), 400
+
+    try:
+        latitude = float(data['latitude'])
+        longitude = float(data['longitude'])
+        radius = float(data['radius'])
+    except ValueError:
+        return jsonify({'desc': 'Latitude, longitude and radius must be numeric', 'code': '3'}), 400
+
+    if radius <= 0:
+        return jsonify({'desc': 'Radius must be greater than zero', 'code': '4'}), 400
+
+    try:
+        now = datetime.now()
+        today = date.today()
+        current_time = now.time()
+
+        user_point = WKTElement(f'POINT({longitude} {latitude})', srid=4326)
+
+        nearby_spots = (
+            db.session.query(
+                ParkingSpot,
+                func.ST_Distance_Sphere(ParkingSpot.spot_location, user_point).label("distance_meters")
+            )
+            .filter(func.ST_Distance_Sphere(ParkingSpot.spot_location, user_point) <= radius)
+            .order_by("distance_meters")
+            .all()
+        )
+
+        if not nearby_spots:
+            return jsonify({
+                'desc': 'No parking spots found within the given radius',
+                'code': '5',
+                'results': []
+            }), 200
+
+        active_reservations = (
+            db.session.query(Reservation.slot_id)
+            .filter(Reservation.reservation_status.in_(["pending", "confirmed"]))
+            .subquery()
+        )
+
+        results = []
+
+        for spot, distance in nearby_spots:
+            available_slots = (
+                db.session.query(AvailabilitySlot)
+                .filter(
+                    AvailabilitySlot.parking_spot_id == spot.id,
+                    ~AvailabilitySlot.id.in_(active_reservations),
+                    AvailabilitySlot.slot_date == today,
+                    AvailabilitySlot.start_time > current_time
+                )
+                .order_by(AvailabilitySlot.start_time.asc())
+                .all()
+            )
+
+            if available_slots:
+                slots_json = [
+                    {
+                        "id": s.id,
+                        "slot_date": s.slot_date.isoformat(),
+                        "start_time": s.start_time.strftime("%H:%M"),
+                        "end_time": s.end_time.strftime("%H:%M")
+                    }
+                    for s in available_slots
+                ]
+
+                results.append({
+                    "parking_spot_id": spot.id,
+                    "name": spot.name,
+                    "rep_treshold": spot.rep_treshold,
+                    "slot_price": spot.slot_price,
+                    "distance_meters": round(distance, 2), 
+                    "available_slots": slots_json
+                })
+
+        if not results:
+            return jsonify({
+                'desc': 'No available parking slots found in the selected radius',
+                'code': '6',
+                'results': []
+            }), 200
+
+        return jsonify({
+            'desc': 'Available parking spots retrieved successfully',
+            'code': '0',
+            'results': results,
+            'count': len(results)
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            'desc': f'Database error: {str(e)}',
+            'code': '99'
+        }), 500
+# ------------ SEARCHING ------------
 
 
 
@@ -625,6 +864,16 @@ def delete_reservation(reservation_id):
     if not auth_header:
         return jsonify({'desc': 'Missing Authorization header', 'code': '1'}), 400
     return jsonify({"desc": f"Cancel reservation {reservation_id}"}), 200
+# ------------ RESERVATIONS ------------
+
+
+
+# ------------ REQUESTS ------------
+@app.route("/requests", methods=["GET"])
+def get_requests():
+    pass
+# ------------ REQUESTS ------------
+
 
 
 # ------------ LABELS ------------
@@ -708,6 +957,8 @@ def create_label():
             "desc": f"Database error: {str(e)}",
             "code": "99"
         }), 500
+# ------------ LABELS ------------
+
 
 
 # -------------------------------
