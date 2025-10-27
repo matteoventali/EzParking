@@ -734,11 +734,15 @@ def search_parking_spot():
                 .first()
             )
 
+            point = to_shape(spot.spot_location)
+            latitude = point.y
+            longitude = point.x
+            
             if next_slot:
                 results.append({
                     "parking_spot_id": spot.id,
-                    "latitude": spot.latitude,
-                    "longitude": spot.longitude,
+                    "latitude": latitude,
+                    "longitude": longitude,
                     "name": spot.name,
                     "rep_treshold": spot.rep_treshold,
                     "slot_price": spot.slot_price,
