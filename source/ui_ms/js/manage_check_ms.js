@@ -53,6 +53,13 @@ const TEMPLATE_DOWN = `
 </div>
 `;
 
+// Wrapper function
+function updateDashboard()
+{
+    fetchMicroservicesStatus();
+    fetchActiveUsers();
+}
+
 // Handling the toggle in the microservices card
 document.addEventListener('DOMContentLoaded', function () 
 {
@@ -98,7 +105,21 @@ function fetchMicroservicesStatus()
         .catch(err => console.error('Error fetching microservices status:', err));
 }
 
-// Starting call
-fetchMicroservicesStatus();
-// Update every 5 seconds
-setInterval(fetchMicroservicesStatus, 10000);
+// Handling the number of active users
+function fetchActiveUsers()
+{
+    fetch('../php/check_active_users.php')
+        .then(res => res.json())
+        .then(data => {
+            // Access the correct div
+            const activeUsersDiv = document.getElementById('number_users');
+            activeUsersDiv.innerHTML = ''; // Clean all
+            activeUsersDiv.textContent = data;
+        })
+        .catch(err => console.error('Error fetching microservices status:', err));
+}
+
+updateDashboard();
+
+// Update the dashboard every 5 seconds
+setInterval(updateDashboard, 5000);

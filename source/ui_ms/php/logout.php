@@ -10,6 +10,9 @@
         $api_url = compose_url($protocol, $socket_account_ms, '/auth/logout');
         $response = perform_rest_request('GET', $api_url, null, $_SESSION["session_token"]);
         session_destroy();
+
+        // Destroying the session cookie
+        setcookie(session_name(), '', time() - 3600, '/');
     }
         
     // Redirect the user to the first page of the site

@@ -76,7 +76,7 @@
 
                     <div class="card-info">
                         <h3 id="c1-title">Users online</h3>
-                        <div class="card-value" aria-live="polite">18</div>
+                        <div class="card-value" aria-live="polite" id="number_users">0</div>
                     </div>
                 </div>
 
