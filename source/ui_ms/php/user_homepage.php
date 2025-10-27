@@ -76,7 +76,7 @@
 
     <section class="features">
         <h2>Find Nearest Parking Spots</h2>
-        <div id="map" style="height: 500px; width: 20%; border-radius: 10px;"></div>
+        <div id="map" style="height: 500px; width: 100%; border-radius: 10px;"></div>
     </section>
 
 
