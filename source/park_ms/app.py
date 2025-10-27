@@ -623,20 +623,21 @@ def delete_availability_slot(slot_id):
 
 
 # ------------ SEARCHING ------------
-@app.route("/search/closetome", methods=["POST"])
-def search_closetome():
+@app.route("/search", methods=["POST"])
+def search_parking_spot():
 
     data = request.get_json()
     if not data:
         return jsonify({'desc': 'Missing request body', 'code': '1'}), 400
 
-    required_fields = ['latitude', 'longitude']
+    required_fields = ['latitude', 'longitude', 'user_reputation']
     if not all(field in data for field in required_fields):
         return jsonify({'desc': 'Missing required fields', 'code': '2'}), 400
 
     try:
         latitude = float(data['latitude'])
         longitude = float(data['longitude'])
+        user_reputation = float(data['user_reputation'])
         radius = data.get('radius', None)
         label_ids = data.get('labels', None)
 
@@ -645,9 +646,9 @@ def search_closetome():
             if radius <= 0:
                 return jsonify({'desc': 'Radius must be greater than zero', 'code': '4'}), 400
         else:
-            radius = None 
+            radius = None
     except ValueError:
-        return jsonify({'desc': 'Latitude, longitude, radius must be numeric', 'code': '3'}), 400
+        return jsonify({'desc': 'Latitude, longitude, reputation or radius must be numeric', 'code': '3'}), 400
 
     try:
         now = datetime.now()
@@ -660,6 +661,8 @@ def search_closetome():
             ParkingSpot,
             func.ST_Distance_Sphere(ParkingSpot.spot_location, user_point).label("distance_meters")
         )
+
+        nearby_spots_query = nearby_spots_query.filter(ParkingSpot.rep_treshold <= user_reputation)
 
         if radius is not None:
             nearby_spots_query = nearby_spots_query.filter(
@@ -677,7 +680,8 @@ def search_closetome():
             return jsonify({
                 'desc': 'No parking spots found within the given filters',
                 'code': '5',
-                'results': []
+                'results': [],
+                'user_reputation': user_reputation
             }), 200
 
         active_reservations = (
@@ -749,15 +753,17 @@ def search_closetome():
 
         if not results:
             return jsonify({
-                'desc': 'No available parking slots found with the given filters',
+                'desc': 'No available parking slots found within reputation or filter constraints',
                 'code': '6',
-                'results': []
+                'results': [],
+                'user_reputation': user_reputation
             }), 200
 
         return jsonify({
-            'desc': 'Closest available parking spots retrieved successfully',
+            'desc': 'Available parking spots retrieved successfully',
             'code': '0',
             'count': len(results),
+            'user_reputation': user_reputation,
             'filters': {
                 "radius": "∞" if radius is None else radius,
                 "labels": label_ids if label_ids else []
