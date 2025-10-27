@@ -788,82 +788,226 @@ def search_parking_spot():
 
 
 # ------------ RESERVATIONS ------------
-@app.route("/reservations", methods=["GET"])
-def get_reservations():
-    pass
+@app.route("/reservations/users/<int:user_id>", methods=["GET"])
+def get_reservations(user_id):
 
-@app.route("/reservations/<int:reservation_id>", methods=["GET"])
-def get_reservation(reservation_id):
-    auth_header = request.headers.get('Authorization')
-    if not auth_header:
-        return jsonify({'desc': 'Missing Authorization header', 'code': '1'}), 400
-    return jsonify({"desc": f"Retrieve details of reservation {reservation_id}"}), 200
+    try:
+        reservations = Reservation.query.filter_by(user_id=user_id).all()
+        if not reservations:
+            return jsonify({
+                "desc": "No reservations found for this user",
+                "code": "1",
+                "reservations": []
+            }), 200 
+
+        slot_ids = [r.slot_id for r in reservations]
+        slots = AvailabilitySlot.query.filter(AvailabilitySlot.id.in_(slot_ids)).all()
+        slot_map = {s.id: s for s in slots}
+
+        results = []
+        for res in reservations:
+            slot = slot_map.get(res.slot_id)
+            results.append({
+                "res_id": res.id,
+                "user_id": res.user_id,
+                "ts": res.reservation_ts.isoformat(),
+                "status": res.reservation_status,
+                "slot_id": res.slot_id,
+                "start_time": slot.start_time.strftime("%H:%M") if slot else None,
+                "end_time": slot.end_time.strftime("%H:%M") if slot else None,
+                "slot_date": slot.slot_date.isoformat() if slot else None
+            })
+
+        return jsonify({
+            "desc": "Reservations retrieved successfully",
+            "code": "0",
+            "count": len(results),
+            "reservations": results
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            "desc": f"Database error: {str(e)}",
+            "code": "99"
+        }), 500
+
+
+@app.route("/reservations/<int:res_id>", methods=["GET"])
+def get_reservation(res_id):
+
+    try:
+        res = Reservation.query.filter_by(id=res_id).first()
+        if not res:
+            return jsonify({
+                "desc": "No reservation found with this id",
+                "code": "1",
+                "reservation": {}
+            }), 200 
+
+        slot = AvailabilitySlot.query.filter_by(id=res.slot_id).first()
+
+        return jsonify({
+            "desc": "Reservations retrieved successfully",
+            "code": "0",
+            "reservation": {
+                "res_id": res.id,
+                "user_id": res.user_id,
+                "ts": res.reservation_ts.isoformat(),
+                "status": res.reservation_status,
+                "slot_id": res.slot_id,
+                "start_time": slot.start_time.strftime("%H:%M") if slot else None,
+                "end_time": slot.end_time.strftime("%H:%M") if slot else None,
+                "slot_date": slot.slot_date.isoformat() if slot else None
+            }
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            "desc": f"Database error: {str(e)}",
+            "code": "99"
+        }), 500
 
 
 @app.route("/reservations", methods=["POST"])
 def create_reservation():
 
-    try:
         data = request.get_json()
-        if not data:
-            return jsonify({'desc': 'Missing request body', 'code': '1'}), 400
 
         required_fields = ['slot_id', 'car_plate', 'user_id']
         if not all(field in data for field in required_fields):
             return jsonify({'desc': 'Missing required fields', 'code': '2'}), 400
-
+        
         slot_id = data['slot_id']
         car_plate = data['car_plate'].upper().strip()
         user_id = data['user_id']
-
+        
         if not isinstance(slot_id, int):
             return jsonify({'desc': 'slot_id must be an integer', 'code': '3'}), 400
         if not isinstance(car_plate, str) or len(car_plate) != 7:
             return jsonify({'desc': 'car_plate must be 7 characters', 'code': '4'}), 400
 
-        with db.session.begin():
-            slot = AvailabilitySlot.query.filter_by(id=slot_id).with_for_update().first()
+        try:
+            with db.session.begin():
+                slot = AvailabilitySlot.query.filter_by(id=slot_id).with_for_update().first()
+                spot = ParkingSpot.query.filter_by(id=slot.parking_spot_id).first()
 
-            if not slot:
-                return jsonify({'desc': f'Slot {slot_id} not found', 'code': '5'}), 404
+                if user_id == spot.user_id:
+                    return jsonify({'desc': 'This is your parking spot, impossible to book it', 'code': 5}), 400
+                if not slot:
+                    return jsonify({'desc': f'Slot {slot_id} not found', 'code': '6'}), 404
 
-            existing_reservation = (
-                db.session.query(Reservation)
-                .filter(
-                    Reservation.slot_id == slot.id,
-                    Reservation.reservation_status.in_(["pending", "confirmed"])
+                existing_reservation = (
+                    db.session.query(Reservation)
+                    .filter(
+                        Reservation.slot_id == slot.id,
+                        Reservation.reservation_status.in_(["pending", "confirmed"])
+                    )
+                    .with_for_update(read=True).first()
                 )
-                .with_for_update(read=True).first()
-            )
 
-            if existing_reservation:
+                if existing_reservation:
+                    return jsonify({
+                        'desc': f'Slot {slot_id} is already reserved (pending or confirmed)',
+                        'code': '7'
+                    }), 409
+
+                new_reservation = Reservation(
+                    reservation_ts=datetime.now(),
+                    reservation_status='pending', 
+                    car_plate=car_plate,
+                    slot_id=slot.id,
+                    user_id=user_id
+                )
+
+                db.session.add(new_reservation)
+
+            return jsonify({
+                'desc': 'Reservation created successfully (pending approval)',
+                'code': '0',
+                'reservation': {
+                    'id': new_reservation.id,
+                    'slot_id': new_reservation.slot_id,
+                    'user_id': new_reservation.user_id,
+                    'car_plate': new_reservation.car_plate,
+                    'reservation_status': new_reservation.reservation_status,
+                    'reservation_ts': new_reservation.reservation_ts.isoformat()
+                }
+            }), 201
+
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({
+                'desc': f'Database error: {str(e)}',
+                'code': '99'
+            }), 500
+
+
+@app.route("/reservations/<int:res_id>/status", methods=["PUT"])
+def update_reservation(res_id):
+
+    try:
+        data = request.get_json()
+        if not data or "new_status" not in data:
+            return jsonify({
+                'desc': 'Missing new_status in request body',
+                'code': '1'
+            }), 400
+
+        new_status = data["new_status"].lower().strip()
+
+        valid_statuses = ["pending", "confirmed", "cancelled", "completed"]
+        if new_status not in valid_statuses:
+            return jsonify({
+                'desc': f"Invalid reservation_status value: '{new_status}'",
+                'code': '2'
+            }), 400
+
+        allowed_transitions = {
+            "pending": ["confirmed", "cancelled"],
+            "confirmed": ["completed", "cancelled"],
+            "cancelled": [],
+            "completed": []
+        }
+
+        with db.session.begin():
+            reservation = Reservation.query.filter_by(id=res_id).with_for_update().first()
+            if not reservation:
                 return jsonify({
-                    'desc': f'Slot {slot_id} is already reserved (pending or confirmed)',
-                    'code': '6'
-                }), 409
+                    'desc': f"Reservation {res_id} not found",
+                    'code': '3'
+                }), 404
 
-            new_reservation = Reservation(
-                reservation_ts=datetime.now(),
-                reservation_status='pending', 
-                car_plate=car_plate,
-                slot_id=slot.id,
-                user_id=user_id
-            )
+            current_status = reservation.reservation_status
 
-            db.session.add(new_reservation)
+            if new_status == current_status:
+                return jsonify({
+                    'desc': f"Reservation already in status '{new_status}'",
+                    'code': '4'
+                }), 200
+
+            if new_status not in allowed_transitions.get(current_status, []):
+                return jsonify({
+                    'desc': f"Transition from '{current_status}' to '{new_status}' not allowed",
+                    'code': '5'
+                }), 400
+
+            reservation.reservation_status = new_status
 
         return jsonify({
-            'desc': 'Reservation created successfully (pending approval)',
+            'desc': 'Reservation status updated successfully',
             'code': '0',
             'reservation': {
-                'id': new_reservation.id,
-                'slot_id': new_reservation.slot_id,
-                'user_id': new_reservation.user_id,
-                'car_plate': new_reservation.car_plate,
-                'reservation_status': new_reservation.reservation_status,
-                'reservation_ts': new_reservation.reservation_ts.isoformat()
+                'id': reservation.id,
+                'slot_id': reservation.slot_id,
+                'user_id': reservation.user_id,
+                'car_plate': reservation.car_plate,
+                'previous_status': current_status,
+                'new_status': reservation.reservation_status,
+                'reservation_ts': reservation.reservation_ts.isoformat()
             }
-        }), 201
+        }), 200
 
     except Exception as e:
         db.session.rollback()
@@ -871,30 +1015,61 @@ def create_reservation():
             'desc': f'Database error: {str(e)}',
             'code': '99'
         }), 500
-
-
-@app.route("/reservations/<int:reservation_id>", methods=["PUT"])
-def update_reservation(reservation_id):
-    auth_header = request.headers.get('Authorization')
-    if not auth_header:
-        return jsonify({'desc': 'Missing Authorization header', 'code': '1'}), 400
-    return jsonify({"desc": f"Update reservation {reservation_id} status"}), 200
-
-
-@app.route("/reservations/<int:reservation_id>", methods=["DELETE"])
-def delete_reservation(reservation_id):
-    auth_header = request.headers.get('Authorization')
-    if not auth_header:
-        return jsonify({'desc': 'Missing Authorization header', 'code': '1'}), 400
-    return jsonify({"desc": f"Cancel reservation {reservation_id}"}), 200
 # ------------ RESERVATIONS ------------
 
 
 
 # ------------ REQUESTS ------------
-@app.route("/requests", methods=["GET"])
-def get_requests():
-    pass
+@app.route("/requests/<int:user_id>", methods=["GET"])
+def get_requests(user_id):
+    try:
+        reservations = (
+            db.session.query(Reservation, AvailabilitySlot, ParkingSpot)
+            .join(AvailabilitySlot, Reservation.slot_id == AvailabilitySlot.id)
+            .join(ParkingSpot, AvailabilitySlot.parking_spot_id == ParkingSpot.id)
+            .filter(
+                ParkingSpot.user_id == user_id,
+                Reservation.reservation_status == "pending"
+            )
+            .all()
+        )
+
+        if not reservations:
+            return jsonify({
+                "desc": "No pending reservation requests for your parking spots",
+                "code": "1",
+                "requests": []
+            }), 200
+
+        results = []
+        for res, slot, spot in reservations:
+            results.append({
+                "reservation_id": res.id,
+                "driver_id": res.user_id,
+                "parking_spot_id": spot.id,
+                "parking_spot_name": spot.name,
+                "slot_id": slot.id,
+                "slot_date": slot.slot_date.isoformat(),
+                "start_time": slot.start_time.strftime("%H:%M"),
+                "end_time": slot.end_time.strftime("%H:%M"),
+                "car_plate": res.car_plate,
+                "status": res.reservation_status,
+                "reservation_ts": res.reservation_ts.isoformat()
+            })
+
+        return jsonify({
+            "desc": "Pending reservation requests retrieved successfully",
+            "code": "0",
+            "count": len(results),
+            "requests": results
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            "desc": f"Database error: {str(e)}",
+            "code": "99"
+        }), 500
 # ------------ REQUESTS ------------
 
 
