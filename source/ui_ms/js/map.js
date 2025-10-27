@@ -3,12 +3,13 @@ let circle_marker_color = '#ff0000';
 let circle_marker_border_color = '#000000';
 
 // Global array to keep track of added markers
+let map;
 let markers = [];
 
 // Initialize the map centered on user's location (if available)
 document.addEventListener("DOMContentLoaded", () => 
 {
-    const map = L.map('map').setView([41.9028, 12.4964], 13); // Default localization is Rome
+    map = L.map('map').setView([41.9028, 12.4964], 13); // Default localization is Rome
 
     // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -33,6 +34,9 @@ document.addEventListener("DOMContentLoaded", () =>
                 weight: 2
             }).addTo(map);
             userCircle.bindPopup("You are here").openPopup();
+
+            // Search the parking spots near the user position
+            search_parking_spots_nearby(lat, lon);
         }, 
         () => { // Fail
             map.setView([41.8719, 12.5674], 6); // Default localization is Italy
@@ -43,14 +47,13 @@ document.addEventListener("DOMContentLoaded", () =>
 function addParkingMarker(map, park) 
 {
     // Creation of the marker
-    const marker = L.marker([park.lat, park.lon]).addTo(map);
+    const marker = L.marker([park.latitude, park.longitude]).addTo(map);
 
     // Attach id for future search
-    marker.parkingId = park.id;
-    marker.parkData = park; // optional: store full object if needed
-
+    marker.parkingId = park.parking_spot_id;
+    
     // Bind a simple popup
-    marker.bindPopup(`<b>${park.name}</b><br>Available: ${park.available}`);
+    marker.bindPopup(`<b>${park.name}</b>`);
 
     // When we click on the mark start the search
     marker.on('click', () => {
@@ -80,4 +83,31 @@ function removeMarker(map, lat, lon)
 function fetchParkingDetailsAndShow(parkingId) 
 {
     /* To be filled */
+}
+
+function search_parking_spots_nearby(lat, lon)
+{
+    // XMLHttpRequest to fetch parking spots nearby
+    query_string = "lat=" + lat + "&lon=" + lon;
+    
+    // Doing the request
+    xhr = new XMLHttpRequest();
+    xhr.open("GET", '../php/get_nearby_parking_spots.php?' + query_string, true);
+    xhr.send();
+
+    xhr.onload = function()
+    {
+        // Parsing the JSON response
+        const response = JSON.parse(xhr.responseText);
+        console.log(response);
+        
+        // Showing the parking spots on the map if the code is 0
+        if ( response.body.code === "0")
+        {
+            // Adding all the parking spots
+            response.body.results.forEach(park => {
+                addParkingMarker(map, park);
+            });
+        };
+    }  
 }
