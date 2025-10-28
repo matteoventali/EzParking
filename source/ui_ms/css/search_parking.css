@@ -91,6 +91,7 @@ main {
 .dropdown-toggle:focus {
   box-shadow: 0 0 0 4px rgba(94,37,165,0.08);
   outline: none;
+
 }
 
 /* Dropdown panel (hidden / shown via `.open`) */
@@ -235,8 +236,6 @@ main {
   cursor: pointer;
 }
 
-
-
 /* Responsive tweaks */
 @media (min-width:390px) and (max-width: 1100px) {
 
@@ -248,7 +247,6 @@ main {
   .search-wrapper {
         max-width: 94%;
         flex-direction: column;
-        align-items: stretch;
         gap: 0.6rem;
         margin-left: -33px;
   }
@@ -356,15 +354,14 @@ main {
   background-clip: padding-box;
 }
 
-/* stato checked: riempiamo il cerchio interno */
+/*if checked, the button is colored*/
 .dropdown-panel input[type="checkbox"]:checked,
 .dropdown-panel input[type="radio"]:checked {
   border-color: #5e25a5;
   background-color: #5e25a5;
 }
 
-/* piccolo "dot" interno più piccolo per dare l'effetto pallino (contrasto) */
-/* usiamo box-shadow per compatibilità e per mantenere dimensione */
+/*dot inside button*/
 .dropdown-panel input[type="checkbox"]:checked::after,
 .dropdown-panel input[type="radio"]:checked::after {
   content: "";
@@ -378,14 +375,13 @@ main {
   left: 2px;
 }
 
-/* focus ring per accessibilità */
+/* focus ring */
 .dropdown-panel input[type="checkbox"]:focus,
 .dropdown-panel input[type="radio"]:focus {
   outline: none;
   box-shadow: 0 0 0 4px rgba(94,37,165,0.08);
 }
 
-/* mantiene l'allineamento con il label text */
 .filter-item .filter-label-text {
   margin-left: 0.45rem;
 }
