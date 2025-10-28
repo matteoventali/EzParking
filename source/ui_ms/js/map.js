@@ -19,11 +19,31 @@ document.addEventListener("DOMContentLoaded", () =>
     }).addTo(map);
 
     // Try to get user location
-    if (navigator.geolocation) 
+    if ( navigator.geolocation ) 
     {
-        navigator.geolocation.getCurrentPosition(pos => { // Success location of the user
+        // Set in the map the last position known during the waiting for the new position
+        const saved_lat = localStorage.getItem("user_latitude");
+        const saved_lon = localStorage.getItem("user_longitude");
+        if ( saved_lat && saved_lon )
+        {
+            map.setView([saved_lat, saved_lon], 15);
+            const userCircle = L.circleMarker([saved_lat, saved_lon], {
+                radius: 8,           
+                color: circle_marker_border_color,
+                fillColor: circle_marker_color,
+                fillOpacity: 0.6,    
+                weight: 2
+            }).addTo(map);
+            userCircle.bindPopup("You are here");
+
+            // Search the parking spots near the user position
+            search_parking_spots_nearby(saved_lat, saved_lon);
+        }
+            
+        navigator.geolocation.watchPosition(pos => { // Success location of the user
             const lat = pos.coords.latitude;
             const lon = pos.coords.longitude;
+
             map.setView([lat, lon], 15);
 
             // Add a circular marker for the user position
@@ -34,7 +54,11 @@ document.addEventListener("DOMContentLoaded", () =>
                 fillOpacity: 0.6,    
                 weight: 2
             }).addTo(map);
-            userCircle.bindPopup("You are here").openPopup();
+            userCircle.bindPopup("You are here");
+
+            // Save user position in the local storage for future use
+            localStorage.setItem("user_latitude", lat);
+            localStorage.setItem("user_longitude", lon);
 
             // Search the parking spots near the user position
             search_parking_spots_nearby(lat, lon);
@@ -46,10 +70,8 @@ document.addEventListener("DOMContentLoaded", () =>
     }
 });
 
-function addParkingMarker(map, park) 
+function addParkingMarker(map, park)
 {
-    console.log(park);
-    
     // Creation of the marker
     const marker = L.marker([park.latitude, park.longitude]).addTo(map);
 
@@ -67,6 +89,7 @@ function addParkingMarker(map, park)
     `;
     marker.bindPopup(popup_content);
     markers.push(marker); // Keep track of the marker
+
     return marker;
 }
 

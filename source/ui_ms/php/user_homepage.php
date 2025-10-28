@@ -79,7 +79,6 @@
         <div id="map" style="height: 500px; width: 100%; border-radius: 10px;"></div>
     </section>
 
-
     <?php
         $footer = file_get_contents(FOOTER);
         echo $footer;
