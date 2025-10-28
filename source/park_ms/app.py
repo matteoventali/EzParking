@@ -156,7 +156,7 @@ def get_user_spots(user_id):
         if not spots:
             return jsonify({'desc': 'The user has not parking spots', 
                             'code': 2, 
-                            'parking_spots': []}), 400
+                            'parking_spots': []}), 404
         
         results = []
 
