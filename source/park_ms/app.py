@@ -144,6 +144,7 @@ def get_parking_spot(spot_id):
             "code": "99"
         }), 500
 
+
 @app.route("/parking_spots/users/<int:user_id>", methods=["GET"])
 def get_user_spots(user_id):
 
@@ -188,6 +189,7 @@ def get_user_spots(user_id):
             'desc': f'Database error: {str(e)}',
             'code': '99'
         }), 500
+
 
 @app.route("/parking_spots", methods=["POST"])
 def create_parking_spot():
