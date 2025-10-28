@@ -1,3 +1,17 @@
+<?php
+    require_once "./config.php";
+    require_once "./functions.php";
+
+    // We must be logged in to access this page
+    if ( !verify_session() )
+        header("Location: " . $starting_page);
+    else if ( $_SESSION['role'] != 'user' ) // Redirect the user to the correct homepage
+        header("Location: " . $homepage);
+
+    // Get the parking spots of the user currently logged in
+    
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +33,7 @@
   <main>
     <section class="dashboard-header">
         <h1>My Parking Spots</h1>
-        <p>Manage your owned garages and check their current status.</p>
+        <p>Manage your owned spots and check their current status.</p>
     </section>
 
     <a href="./add_new_garage.php" class="add-new-button">
