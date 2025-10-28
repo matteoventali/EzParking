@@ -1,3 +1,14 @@
+<?php
+    require_once "./config.php";
+    require_once "./functions.php";
+
+    // We must be logged in to access this page
+    if ( !verify_session() )
+        header("Location: " . $starting_page);
+    else if ( $_SESSION['role'] != 'user' ) // Redirect the user to the correct homepage
+        header("Location: " . $homepage);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,10 +21,9 @@
 </head>
 <body>
     <?php
-      include './functions.php';
-      $nav = generate_navbar('user');
-      echo $nav;
-     ?>
+        $nav = generate_navbar($_SESSION['role']);
+        echo $nav;
+    ?>
 
 
   <section class="search-section"id="searchSection" aria-label="Search parking">
@@ -112,7 +122,6 @@
 
   <div class="loader-section" style="display: none;">
     <?php
-        require_once './config.php';
         $loader = file_get_contents(LOADER);
         echo $loader;
     ?>
@@ -302,9 +311,9 @@
     </article>
   </main>
     <?php
-    $footer = file_get_contents(FOOTER);
-    echo $footer;
-  ?>
+        $footer = file_get_contents(FOOTER);
+        echo $footer;
+    ?>
 
   <script src="../js/search_parking.js"></script>
 </body>
