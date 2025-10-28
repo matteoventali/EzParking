@@ -1,4 +1,4 @@
-# 🧩 Account Microservice API Documentation
+# Account Microservice API Documentation
 
 Comprehensive documentation for all REST endpoints of the **Account Microservice** in EzParking.
 
@@ -23,7 +23,7 @@ http://10.5.0.11:5000/
 
 ---
 
-## 🔐 AUTHENTICATION
+## AUTHENTICATION
 
 ### `POST /auth/signup`
 **Description:** Register a new user.  
@@ -218,7 +218,7 @@ http://10.5.0.11:5000/
 
 ---
 
-## ⭐ REVIEWS
+## REVIEWS
 
 ### `GET /reviews`
 **Description:** Retrieve all reviews written and received by the user.  
@@ -295,7 +295,7 @@ http://10.5.0.11:5000/
 
 ---
 
-## ⚙️ ADMIN ENDPOINTS
+## ADMIN ENDPOINTS
 
 ### `GET /users`
 **Description:** Retrieve list of all users.  
