@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const pricePerHour = 2.50; // Prezzo fisso letto dal garage-info
     const totalCostEl = document.getElementById('totalCost');
@@ -25,17 +24,32 @@ document.addEventListener('DOMContentLoaded', () => {
         totalCostEl.textContent = `Total cost: €${totalCost.toFixed(2)} (${durationText})`;
     }
 
-    // 3. Setup Iniziale
-    // Inizializza il costo a 0.00 all'avvio della pagina
+    // Setup Iniziale
     calculateTotalCost();
-    // Assicura che la visualizzazione sia corretta anche se non viene selezionato nulla
 
-    // 4. Aggiungi Event Listener ad ogni checkbox
+    // Gestione selezione slot: solo uno slot selezionabile
     slotCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', calculateTotalCost);
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                // Deseleziona tutti gli altri
+                slotCheckboxes.forEach(cb => {
+                    if (cb !== checkbox) {
+                        cb.checked = false;
+                        cb.nextElementSibling.classList.remove('selected');
+                    }
+                });
+                // Aggiungi la classe selected al pill
+                checkbox.nextElementSibling.classList.add('selected');
+            } else {
+                // Rimuovi la classe selected se deselezionato
+                checkbox.nextElementSibling.classList.remove('selected');
+            }
+
+            calculateTotalCost();
+        });
     });
 
-    // 5. Gestione Invio Modulo
+    // Gestione Invio Modulo
     bookingForm.addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -55,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     redirectUrl = baseUrl + selectedPayment.value + '.php';
                     break;
                 default:
-                    // Se il metodo non è gestito, invia il form all'azione predefinita
                     this.submit();
                     return;
             }
@@ -64,9 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData(this);
             const params = new URLSearchParams();
 
-            // Copia tutti i dati del form nell'oggetto URLSearchParams
             for (let [key, value] of formData.entries()) {
-                 // FormData gestisce già gli array (time_slot[]) correttamente.
                 params.append(key, value);
             }
 
@@ -82,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = `${redirectUrl}?${params.toString()}`;
 
         } else {
-            // Messaggio di errore se non sono state fatte selezioni importanti
             alert('Please select at least one time slot and a payment method.');
         }
     });

@@ -8,64 +8,6 @@
   <link rel="stylesheet" href="../css/book_parking.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    /* Lista scrollabile */
-    #slotOptionsContainer {
-      max-height: 220px;
-      overflow-y: auto;
-      border: 1px solid #ccc;
-      padding: 10px;
-      border-radius: 8px;
-      background-color: #f8f9fa;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    /* Slot disponibili */
-    .slot-pill {
-      padding: 8px 14px;
-      border-radius: 25px;
-      background-color: #9671c3ff;
-      cursor: pointer;
-      display: inline-block;
-      margin: 2px 0;
-      font-weight: 500;
-      transition: background-color 0.2s, transform 0.1s, color 0.2s;
-    }
-
-    .slot-pill:hover {
-      background-color: #5e25a5;
-      transform: scale(1.03);
-    }
-
-    .slot-pill.selected {
-      background-color: #5e25a5;
-      color: white;
-    }
-
-    /* Barra calendario con pulsanti */
-    .calendar-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .calendar-wrapper button {
-      padding: 6px 12px;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 5px;
-      border: 1px solid #888;
-      background-color: #fff;
-      transition: background-color 0.2s;
-    }
-
-    .calendar-wrapper button:hover {
-      background-color: #eee;
-    }
-  </style>
 </head>
 <body>
   <?php
@@ -101,13 +43,15 @@
         </div>
 
         <div class="time-slot-selection">
-          <label>Time Slot (Select one)</label>
+          <br>
+          <label>Time Slot</label>
           <div class="slot-options" id="slotOptionsContainer">
             <!-- Gli slot saranno generati dinamicamente da JS -->
           </div>
         </div>
 
         <div>
+          <br>
           <label for="plate">Vehicle License Plate</label>
           <input type="text" id="plate" name="plate" placeholder="e.g. AB123CD" maxlength="8" required>
         </div>
