@@ -18,10 +18,11 @@ else if ($_SESSION['role'] != 'user') // Redirect the user to the correct homepa
   <title>Available Parking Spots — Search & Filters</title>
   <link rel="stylesheet" href="../css/navbar.css" />
   <link rel="stylesheet" href="../css/search_parking.css" />
+  <link rel="stylesheet" href="../css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body style="background: white;">
   <?php
   $nav = generate_navbar($_SESSION['role']);
   echo $nav;
@@ -53,11 +54,6 @@ else if ($_SESSION['role'] != 'user') // Redirect the user to the correct homepa
               <label class="filter-item">
                 <input type="checkbox" name="filters[]" value="low_price">
                 <span class="filter-label-text">Low Price</span>
-              </label>
-
-              <label class="filter-item">
-                <input type="checkbox" name="filters[]" value="high_capacity">
-                <span class="filter-label-text">High Capacity</span>
               </label>
 
               <label class="filter-item">
@@ -134,14 +130,15 @@ else if ($_SESSION['role'] != 'user') // Redirect the user to the correct homepa
 
   <main class="parking-container" id="parkingList" aria-live="polite" style="display: none;">
     <!-- sample cards -->
-    <article class="parking-card" data-price="2.5" data-capacity="150" data-rating="4">
+    <article class="parking-card" data-price="2.5"  data-rating="4">
       <div>
         <h3>Central Park Garage</h3>
         <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>
-          <div><span class="meta-strong">Capacity:</span> 150 spots</div>
+          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
+          <div><span class="meta-strong">Distance from me:</span> 1km </div>
           <div><span class="meta-strong">Rating Threshold:</span> 4 / 5</div>
-          <div><span class="meta-strong">Price per Slot:</span> €2.50/hour</div>
+          <div><span class="meta-strong">Price per hour:</span> €2.50/hour</div>
+          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
         </div>
       </div>
       <div class="card-actions">
@@ -149,14 +146,15 @@ else if ($_SESSION['role'] != 'user') // Redirect the user to the correct homepa
       </div>
     </article>
 
-    <article class="parking-card" data-price="1.8" data-capacity="80" data-rating="3">
+    <article class="parking-card" data-price="1.8" data-rating="3">
       <div>
         <h3>Riverside Parking</h3>
         <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 45.4642, 9.19</div>
-          <div><span class="meta-strong">Capacity:</span> 80 spots</div>
+          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
+          <div><span class="meta-strong">Distance from me:</span> 1km </div>
           <div><span class="meta-strong">Rating Threshold:</span> 3 / 5</div>
-          <div><span class="meta-strong">Price per Slot:</span> €1.80/hour</div>
+          <div><span class="meta-strong">Price per hour:</span> €1.80/hour</div>
+          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>          
         </div>
       </div>
       <div class="card-actions">
@@ -164,14 +162,15 @@ else if ($_SESSION['role'] != 'user') // Redirect the user to the correct homepa
       </div>
     </article>
 
-    <article class="parking-card" data-price="3.2" data-capacity="100" data-rating="5">
+    <article class="parking-card" data-price="3.2" data-rating="5">
       <div>
         <h3>City Center Lot</h3>
         <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 40.8518, 14.2681</div>
-          <div><span class="meta-strong">Capacity:</span> 100 spots</div>
+          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
+          <div><span class="meta-strong">Distance from me:</span> 1km </div>
           <div><span class="meta-strong">Rating Threshold:</span> 5 / 5</div>
-          <div><span class="meta-strong">Price per Slot:</span> €3.20/hour</div>
+          <div><span class="meta-strong">Price per hour:</span> €3.20/hour</div>
+          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
         </div>
       </div>
       <div class="card-actions">
@@ -180,14 +179,15 @@ else if ($_SESSION['role'] != 'user') // Redirect the user to the correct homepa
     </article>
 
     <!-- sample cards -->
-    <article class="parking-card" data-price="2.5" data-capacity="150" data-rating="4">
+    <article class="parking-card" data-price="2.5" data-rating="4">
       <div>
         <h3>Central Park Garage</h3>
         <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>
-          <div><span class="meta-strong">Capacity:</span> 150 spots</div>
+          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
+          <div><span class="meta-strong">Distance from me:</span> 1km </div>
           <div><span class="meta-strong">Rating Threshold:</span> 4 / 5</div>
-          <div><span class="meta-strong">Price per Slot:</span> €2.50/hour</div>
+          <div><span class="meta-strong">Price per hour:</span> €2.50/hour</div>
+          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
         </div>
       </div>
       <div class="card-actions">
@@ -195,14 +195,15 @@ else if ($_SESSION['role'] != 'user') // Redirect the user to the correct homepa
       </div>
     </article>
 
-    <article class="parking-card" data-price="1.8" data-capacity="80" data-rating="3">
+    <article class="parking-card" data-price="1.8" data-rating="3">
       <div>
         <h3>Riverside Parking</h3>
         <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 45.4642, 9.19</div>
-          <div><span class="meta-strong">Capacity:</span> 80 spots</div>
+          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
+          <div><span class="meta-strong">Distance from me:</span> 1km </div>
           <div><span class="meta-strong">Rating Threshold:</span> 3 / 5</div>
-          <div><span class="meta-strong">Price per Slot:</span> €1.80/hour</div>
+          <div><span class="meta-strong">Price per hour:</span> €1.80/hour</div>
+          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
         </div>
       </div>
       <div class="card-actions">
@@ -210,59 +211,15 @@ else if ($_SESSION['role'] != 'user') // Redirect the user to the correct homepa
       </div>
     </article>
 
-    <article class="parking-card" data-price="3.2" data-capacity="100" data-rating="5">
+    <article class="parking-card" data-price="3.2"data-rating="5">
       <div>
         <h3>City Center Lot</h3>
         <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 40.8518, 14.2681</div>
-          <div><span class="meta-strong">Capacity:</span> 100 spots</div>
+          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
+          <div><span class="meta-strong">Distance from me:</span> 1km </div>
           <div><span class="meta-strong">Rating Threshold:</span> 5 / 5</div>
-          <div><span class="meta-strong">Price per Slot:</span> €3.20/hour</div>
-        </div>
-      </div>
-      <div class="card-actions">
-        <button class="book-btn">Book Now</button>
-      </div>
-    </article>
-    <!-- sample cards -->
-    <article class="parking-card" data-price="2.5" data-capacity="150" data-rating="4">
-      <div>
-        <h3>Central Park Garage</h3>
-        <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>
-          <div><span class="meta-strong">Capacity:</span> 150 spots</div>
-          <div><span class="meta-strong">Rating Threshold:</span> 4 / 5</div>
-          <div><span class="meta-strong">Price per Slot:</span> €2.50/hour</div>
-        </div>
-      </div>
-      <div class="card-actions">
-        <button class="book-btn">Book Now</button>
-      </div>
-    </article>
-
-    <article class="parking-card" data-price="1.8" data-capacity="80" data-rating="3">
-      <div>
-        <h3>Riverside Parking</h3>
-        <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 45.4642, 9.19</div>
-          <div><span class="meta-strong">Capacity:</span> 80 spots</div>
-          <div><span class="meta-strong">Rating Threshold:</span> 3 / 5</div>
-          <div><span class="meta-strong">Price per Slot:</span> €1.80/hour</div>
-        </div>
-      </div>
-      <div class="card-actions">
-        <button class="book-btn">Book Now</button>
-      </div>
-    </article>
-
-    <article class="parking-card" data-price="3.2" data-capacity="100" data-rating="5">
-      <div>
-        <h3>City Center Lot</h3>
-        <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 40.8518, 14.2681</div>
-          <div><span class="meta-strong">Capacity:</span> 100 spots</div>
-          <div><span class="meta-strong">Rating Threshold:</span> 5 / 5</div>
-          <div><span class="meta-strong">Price per Slot:</span> €3.20/hour</div>
+          <div><span class="meta-strong">Price per hour:</span> €3.20/hour</div>
+          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
         </div>
       </div>
       <div class="card-actions">
@@ -274,10 +231,12 @@ else if ($_SESSION['role'] != 'user') // Redirect the user to the correct homepa
       <div>
         <h3>Central Park Garage</h3>
         <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>
+          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
+          <div><span class="meta-strong">Distance from me:</span> 1km </div>
           <div><span class="meta-strong">Capacity:</span> 150 spots</div>
           <div><span class="meta-strong">Rating Threshold:</span> 4 / 5</div>
-          <div><span class="meta-strong">Price per Slot:</span> €2.50/hour</div>
+          <div><span class="meta-strong">Price per hour:</span> €2.50/hour</div>
+          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
         </div>
       </div>
       <div class="card-actions">
@@ -285,14 +244,15 @@ else if ($_SESSION['role'] != 'user') // Redirect the user to the correct homepa
       </div>
     </article>
 
-    <article class="parking-card" data-price="1.8" data-capacity="80" data-rating="3">
+    <article class="parking-card" data-price="1.8" data-rating="3">
       <div>
         <h3>Riverside Parking</h3>
         <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 45.4642, 9.19</div>
-          <div><span class="meta-strong">Capacity:</span> 80 spots</div>
+          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
+          <div><span class="meta-strong">Distance from me:</span> 1km </div>
           <div><span class="meta-strong">Rating Threshold:</span> 3 / 5</div>
-          <div><span class="meta-strong">Price per Slot:</span> €1.80/hour</div>
+          <div><span class="meta-strong">Price per hour:</span> €1.80/hour</div>
+          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
         </div>
       </div>
       <div class="card-actions">
@@ -300,14 +260,63 @@ else if ($_SESSION['role'] != 'user') // Redirect the user to the correct homepa
       </div>
     </article>
 
-    <article class="parking-card" data-price="3.2" data-capacity="100" data-rating="5">
+    <article class="parking-card" data-price="3.2" data-rating="5">
       <div>
         <h3>City Center Lot</h3>
         <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 40.8518, 14.2681</div>
-          <div><span class="meta-strong">Capacity:</span> 100 spots</div>
+          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
+          <div><span class="meta-strong">Distance from me:</span> 1km </div>
           <div><span class="meta-strong">Rating Threshold:</span> 5 / 5</div>
-          <div><span class="meta-strong">Price per Slot:</span> €3.20/hour</div>
+          <div><span class="meta-strong">Price per hour:</span> €3.20/hour</div>
+          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button class="book-btn">Book Now</button>
+      </div>
+    </article>
+    <!-- sample cards -->
+    <article class="parking-card" data-price="2.5" data-rating="4">
+      <div>
+        <h3>Central Park Garage</h3>
+        <div class="meta-row">
+          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
+          <div><span class="meta-strong">Distance from me:</span> 1km </div>
+          <div><span class="meta-strong">Rating Threshold:</span> 4 / 5</div>
+          <div><span class="meta-strong">Price per hour:</span> €2.50/hour</div>
+          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button class="book-btn">Book Now</button>
+      </div>
+    </article>
+
+    <article class="parking-card" data-price="1.8" data-rating="3">
+      <div>
+        <h3>Riverside Parking</h3>
+        <div class="meta-row">
+          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
+          <div><span class="meta-strong">Distance from me:</span> 1km </div>
+          <div><span class="meta-strong">Rating Threshold:</span> 3 / 5</div>
+          <div><span class="meta-strong">Price per hour:</span> €1.80/hour</div>
+          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button class="book-btn">Book Now</button>
+      </div>
+    </article>
+
+    <article class="parking-card" data-price="3.2" data-rating="5">
+      <div>
+        <h3>City Center Lot</h3>
+        <div class="meta-row">
+          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
+          <div><span class="meta-strong">Distance from me:</span> 1km </div>
+          <div><span class="meta-strong">Rating Threshold:</span> 5 / 5</div>
+          <div><span class="meta-strong">Price per hour:</span> €3.20/hour</div>
+          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
         </div>
       </div>
       <div class="card-actions">

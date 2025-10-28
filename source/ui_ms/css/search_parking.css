@@ -1,13 +1,4 @@
-/* Base layout */
-html, body {
-  height: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  color: #222;
-  background: #f7f7fb;
-}
+
 
 main {
   flex: 1;
@@ -100,6 +91,7 @@ main {
 .dropdown-toggle:focus {
   box-shadow: 0 0 0 4px rgba(94,37,165,0.08);
   outline: none;
+
 }
 
 /* Dropdown panel (hidden / shown via `.open`) */
@@ -244,17 +236,8 @@ main {
   cursor: pointer;
 }
 
-/* Footer */
-footer {
-  background-color: #5e25a5;
-  color: white;
-  text-align: center;
-  padding: 1rem;
-  margin-top: auto;
-}
-
 /* Responsive tweaks */
-@media (max-width: 600px) {
+@media (min-width:375px) and (max-width: 1024px) {
 
   .header h1 {
     font-size: 1.4rem;
@@ -264,14 +247,12 @@ footer {
   .search-wrapper {
         max-width: 94%;
         flex-direction: column;
-        align-items: stretch;
         gap: 0.6rem;
         margin-left: -33px;
   }
 
   /* Controls diventano una riga orizzontale */
   .controls {
-    margin-left: 57px;
     display: flex;
     flex-direction: row;
     gap: 0.5rem;        /* distanza uniforme tra i controlli */
@@ -372,15 +353,14 @@ footer {
   background-clip: padding-box;
 }
 
-/* stato checked: riempiamo il cerchio interno */
+/*if checked, the button is colored*/
 .dropdown-panel input[type="checkbox"]:checked,
 .dropdown-panel input[type="radio"]:checked {
   border-color: #5e25a5;
   background-color: #5e25a5;
 }
 
-/* piccolo "dot" interno più piccolo per dare l'effetto pallino (contrasto) */
-/* usiamo box-shadow per compatibilità e per mantenere dimensione */
+/*dot inside button*/
 .dropdown-panel input[type="checkbox"]:checked::after,
 .dropdown-panel input[type="radio"]:checked::after {
   content: "";
@@ -394,14 +374,13 @@ footer {
   left: 2px;
 }
 
-/* focus ring per accessibilità */
+/* focus ring */
 .dropdown-panel input[type="checkbox"]:focus,
 .dropdown-panel input[type="radio"]:focus {
   outline: none;
   box-shadow: 0 0 0 4px rgba(94,37,165,0.08);
 }
 
-/* mantiene l'allineamento con il label text */
 .filter-item .filter-label-text {
   margin-left: 0.45rem;
 }

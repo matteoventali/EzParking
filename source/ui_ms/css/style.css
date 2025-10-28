@@ -49,7 +49,7 @@ body {
   cursor: pointer;
 }
 
-button:hover {
+.login-button:hover {
   background-color: #5e25a5;
 }
 

@@ -1,6 +1,6 @@
 
 .navbar {
-      background: #5e25a5;
+    background: #5e25a5;
     height: 80px;
     display: flex;
     justify-content: center;
@@ -9,7 +9,7 @@
     position: sticky;
     top: 0;
     z-index: 999;
-      border-bottom: 2.5px solid white;
+    border-bottom: 2.5px solid white;
 }
 
 .navbar__container{
@@ -17,14 +17,12 @@
     justify-content: space-between;
     height: 80px;
     z-index: 1;
-    width: 100%;
-    max-width: 1300px;
+    max-width: 100%;
     margin: 0 auto;
-    padding: 0 50px;
+    padding: 0 50px;    
+    width: 100%;
 
 }
-
-
 
 #navbar__logo{
     color: #fff;
@@ -54,7 +52,7 @@
   align-items: center;
   list-style: none;
   text-align: center;
-  margin-left: 700px; /* <-- sposta tutto il blocco di icone verso destra */
+  
 }
 
 .navbar__item{
@@ -81,37 +79,14 @@
     width: 100%;
 }
 
-
-.button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    padding: 10px 20px;
-    height: 100%;
-    width: 100%;
-    border: none;
-    outline: none;
-    border-radius: 4px;
-    color: #fff;
-}
-
-
-.button:hover{
-    background: blue;
-    transition: all 0.3s ease;
-}
-
-
-
-@media screen and (max-width: 960px){
+@media screen and (max-width:1024px) {
     .navbar__container{
         display: flex;
         justify-content: space-between;
         height: 80px;
         z-index: 1;
-        width: 100%;
-        max-width: 1300px;
+        max-width: 1024px;
+        width: 100%;       
         padding: 0;
     }
 
@@ -206,10 +181,10 @@
     }
 
 
-@media (min-width: 390px) {
+
+@media (max-width: 390px){
   .link-toggle { display: block; }
 }
-
 
     #mobile-menu{
         position: absolute;
@@ -249,17 +224,14 @@
     #mobile-menu.is-active .bar:nth-child(3) {
         transform: translateY(-8px) rotate(-45deg);
     }
-
 }
-
-
-
 footer {
     background: linear-gradient(135deg, #5e25a5, #7b3fd3);
     color: white;
     text-align: center;
     padding: 2rem;
-    margin-top: 4rem;
+    /*margin-top: 4rem;*/
+    margin-top: auto;
     }
 
   footer p {

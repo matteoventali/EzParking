@@ -2,23 +2,17 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif; /* Changed from Inter to Poppins */
+    font-family: 'Poppins', sans-serif;
 }
 
 :root {
-    --primary-color: #5e25a5; /* Primary Violet */
-    --primary-dark: #4a1c86; /* Dark Violet */
+    --primary-color: #5e25a5;
+    --primary-dark: #4a1c86;
     --bg-light: #f7f5fb;
     --text-dark: #222;
     --text-light: #777;
     --white: #fff;
     --shadow: rgba(0, 0, 0, 0.1);
-
-    /* Status Colors */
-    --available-color: #28a745; /* Green for Available */
-    --available-bg: #e6f7e9;
-    --full-color: #dc3545; /* Red for Full */
-    --full-bg: #f8d7da;
 }
 
 body {
@@ -34,145 +28,12 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2.5rem 1rem;
+    padding: 2rem 1rem;
     width: 100%;
     gap: 2rem;
-    padding: 2rem 1rem;
 }
 
-.dashboard-header {
-    text-align: center;
-    margin-bottom: 2rem;
-    max-width: 800px;
-}
-
-.dashboard-header h1 {
-    color: var(--primary-color);
-    font-size: 2.2rem;
-    margin-bottom: 0.5rem;
-}
-
-.dashboard-header p {
-    color: var(--text-light);
-    font-size: 1.1rem;
-}
-
-.add-new-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background-color: var(--primary-color);
-    color: var(--white);
-    font-weight: 600;
-    padding: 1rem 1.5rem;
-    border-radius: 10px;
-    text-decoration: none;
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    transition: background 0.2s ease-in-out, transform 0.1s;
-    box-shadow: 0 4px 10px rgba(94, 37, 165, 0.3);
-    width: 100%;
-    max-width: 800px;
-    box-sizing: border-box;
-}
-
-.add-new-button:hover {
-    background-color: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(94, 37, 165, 0.4);
-}
-
-.add-new-button i {
-    font-size: 1.2rem;
-}
-
-.garage-list-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 800px;
-}
-
-.garage-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 2rem;
-    background: var(--white);
-    border-radius: 12px;
-    text-decoration: none;
-    color: var(--text-dark);
-    box-shadow: 0 4px 12px var(--shadow);
-    border: 1px solid #e0e0e0;
-    transition: all 0.2s ease-in-out;
-}
-
-.garage-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    border-color: var(--primary-color);
-}
-
-.garage-name {
-    margin: 0;
-    font-size: 1.3rem;
-    color: var(--primary-dark);
-}
-
-.garage-address {
-    margin: 0.5rem 0 0 0;
-    color: var(--text-light);
-    font-size: 0.95rem;
-}
-
-.garage-address i {
-    margin-right: 5px;
-    color: var(--primary-color);
-}
-
-.card-status {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.status-indicator {
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    min-width: 80px; /* Ensures status boxes have uniform width */
-    text-align: center;
-}
-
-.garage-card.available .status-indicator {
-    background-color: var(--available-bg);
-    color: var(--available-color);
-    border: 1px solid var(--available-color);
-}
-
-/* Style for Full Status (Red) */
-.garage-card.full .status-indicator {
-    background-color: var(--full-bg);
-    color: var(--full-color);
-    border: 1px solid var(--full-color);
-}
-
-/* Redirection arrow */
-.card-status .fa-arrow-right {
-    font-size: 1.2rem;
-    color: var(--primary-color);
-    transition: transform 0.2s;
-}
-
-.garage-card:hover .fa-arrow-right {
-    transform: translateX(5px);
-}
-
+/* Card styles */
 .card {
     background: var(--white);
     border-radius: 16px;
@@ -187,6 +48,7 @@ main {
     transform: translateY(-3px);
 }
 
+/* Garage details (lasciate come all’inizio) */
 .garage-info h1 {
     color: var(--primary-color);
     font-size: 1.9rem;
@@ -212,6 +74,7 @@ main {
     margin: 0;
 }
 
+/* Booking form title */
 .booking-form h2 {
     color: var(--primary-color);
     font-size: 1.5rem;
@@ -219,28 +82,24 @@ main {
     margin-bottom: 1.5rem;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-}
-
 label {
-    font-weight: 600;
-    margin-bottom: 0.3rem;
-    display: block;
+    color: var(--primary-color);
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1.5rem;
 }
 
+/* Input fields */
 input[type="date"],
 input[type="text"],
-input[type="time"] { /* Aggiunto il tipo time per coerenza */
+input[type="time"] {
     padding: 0.8rem 1rem;
     border-radius: 8px;
     border: 1px solid #ccc;
     font-size: 1rem;
     transition: 0.2s;
     width: 100%;
-    box-sizing: border-box;
 }
 
 input:focus {
@@ -249,21 +108,38 @@ input:focus {
     box-shadow: 0 0 0 3px rgba(94, 37, 165, 0.2);
 }
 
-.time-range {
+/* Calendar buttons */
+.calendar-wrapper {
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
-.time-range input {
-    flex: 1;
+.calendar-wrapper button {
+    padding: 6px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid #888;
+    background-color: #fff;
+    transition: background-color 0.2s;
 }
 
-/* Slot Selection Pills */
-.slot-options {
+.calendar-wrapper button:hover {
+    background-color: #eee;
+}
+
+/* Slot selection pills */
+#slotOptionsContainer {
+    max-height: 220px;
+    overflow-y: auto;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 0.5rem;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 12px;
+    background-color: #f8f8f8;
 }
 
 .slot-options input[type="checkbox"] {
@@ -272,47 +148,49 @@ input:focus {
 
 .slot-pill {
     padding: 0.7rem 1.1rem;
-    border: 2px solid #ddd;
-    border-radius: 20px;
+    border-radius: 25px;
     cursor: pointer;
-    background-color: var(--white);
-    color: var(--text-dark);
     font-weight: 500;
     font-size: 0.95rem;
     transition: all 0.2s ease;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     user-select: none;
+    text-align: center;
+    background-color: #d8bff7; /* viola chiaro */
+    color: var(--primary-color);
+    border: 2px solid transparent;
 }
 
-.slot-pill:not(.disabled-slot):hover {
-    background-color: #f0eafb;
-    border-color: var(--primary-color);
-    box-shadow: 0 2px 5px rgba(94, 37, 165, 0.15);
-}
-
-.slot-options input[type="checkbox"]:checked + .slot-pill {
+.slot-pill:hover {
     background-color: var(--primary-color);
-    border-color: var(--primary-dark);
     color: var(--white);
-    font-weight: 600;
-    transform: translateY(-1px);
-    box-shadow: 0 3px 6px rgba(94, 37, 165, 0.3);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
 }
 
-.disabled-slot {
-    background-color: #eee;
-    color: var(--text-light);
-    border-color: #ddd;
-    cursor: not-allowed;
-    opacity: 0.7;
-    text-decoration: line-through;
-    box-shadow: none;
-}
-.disabled-slot:hover {
-    background-color: #eee;
-    border-color: #ddd;
+.slot-pill.selected {
+    background-color: var(--primary-color);
+    color: #d8bff7;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
 
+/* Scrollbar custom */
+#slotOptionsContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+#slotOptionsContainer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 8px;
+}
+
+#slotOptionsContainer::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 8px;
+}
+
+/* Price display */
 .price-display {
     background-color: #faf8ff;
     border-left: 5px solid var(--primary-color);
@@ -320,12 +198,13 @@ input:focus {
     padding: 1rem;
     font-weight: 600;
     font-size: 1.1rem;
-    color: var(--primary-dark);
+    color: var(--primary-color);
     text-align: center;
     box-shadow: 0 2px 8px var(--shadow);
     margin-top: 1rem;
 }
 
+/* Book Now Button */
 button#bookNowButton {
     background-color: var(--primary-color);
     color: var(--white);
@@ -336,9 +215,9 @@ button#bookNowButton {
     cursor: pointer;
     font-size: 1rem;
     margin-top: 0.5rem;
-    transition: background 0.2s ease-in-out, transform 0.1s ease-out;
+    transition: background 0.2s, transform 0.1s;
+    width: 100%;
     box-shadow: 0 4px 10px rgba(94, 37, 165, 0.4);
-    width: 100%; /* Aggiunto per coerenza con gli input */
 }
 
 button#bookNowButton:hover {
@@ -352,7 +231,7 @@ button#bookNowButton:active {
     box-shadow: 0 4px 10px rgba(94, 37, 165, 0.4);
 }
 
-/* Payment Selection */
+/* Payment options - kept original */
 .payment-method-selection {
     margin-top: 25px;
     padding-top: 20px;
@@ -399,14 +278,12 @@ button#bookNowButton:active {
 .payment-options label i {
     font-size: 2.2em;
     margin-bottom: 5px;
-    transition: color 0.3s ease;
 }
 
 .payment-options label:hover {
     border-color: var(--primary-color);
-    color: var(--primary-color);
     background-color: var(--bg-light);
-    box-shadow: 0 4px 8px rgba(94, 37, 165, 0.1);
+    color: var(--primary-color);
 }
 
 .payment-options input[type="radio"]:checked + label {
@@ -422,64 +299,15 @@ button#bookNowButton:active {
     color: var(--primary-color);
 }
 
+/* Responsive */
 @media (max-width: 390px) {
     main {
         padding: 1.5rem 0.5rem;
     }
 
-    .dashboard-header h1 {
-        font-size: 1.6rem;
-    }
-
-    .dashboard-header p {
-        font-size: 1rem;
-    }
-
-    .garage-card {
-        padding: 1rem 1rem;
-    }
-
-    .garage-name {
-        font-size: 1.1rem;
-    }
-
-    .status-indicator {
-        min-width: 70px;
-        font-size: 0.85rem;
-    }
-
-    .add-new-button {
-        padding: 0.8rem 1rem;
-        font-size: 1rem;
-        box-shadow: 0 2px 5px rgba(94, 37, 165, 0.2);
-    }
-
-    .card {
-        padding: 1rem;
-        border-radius: 12px;
-    }
-
-    .garage-info h1 {
-        font-size: 1.5rem;
-    }
-
+    .garage-info h1,
     .booking-form h2 {
-        font-size: 1.3rem;
-    }
-
-    .garage-details-single-column p {
-        padding: 0.8rem;
-        font-size: 0.95rem;
-    }
-
-    label {
-        font-size: 0.95rem;
-    }
-
-    input[type="date"],
-    input[type="text"],
-    input[type="time"] {
-        padding: 0.7rem 0.8rem;
+        font-size: 1.5rem;
     }
 
     .slot-pill {
