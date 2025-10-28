@@ -82,10 +82,7 @@ def add_user():
 # ------------ PARKING SPOTS ------------
 @app.route("/parking_spots/<int:spot_id>", methods=["GET"])
 def get_parking_spot(spot_id):
-    """
-    Returned time slots are not only the availables ones, but them involve all time slots in the history
-    of the parking spot.
-    """
+
     try:
         spot = ParkingSpot.query.get(spot_id)
 
@@ -147,6 +144,50 @@ def get_parking_spot(spot_id):
             "code": "99"
         }), 500
 
+@app.route("/parking_spots/users/<int:user_id>", methods=["GET"])
+def get_user_spots(user_id):
+
+    try:
+        user = User.query.filter_by(id=user_id).first()
+        if not user:
+            return jsonify({'desc': 'The user doesn\'t exists', 'code': 1}), 404
+        spots = ParkingSpot.query.filter_by(user_id=user_id).all()
+        if not spots:
+            return jsonify({'desc': 'The user has not parking spots', 
+                            'code': 2, 
+                            'parking_spots': []}), 400
+        
+        results = []
+
+        for spot in spots: 
+
+            point = to_shape(spot.spot_location)
+            lat = point.y
+            lon = point.x
+
+            results.append(
+                {
+                    'spot_id': spot.id, 
+                    'spot_name': spot.name, 
+                    'latitude': lat, 
+                    'longitude': lon,
+                    'rep_treshold': spot.rep_treshold, 
+                    'slot_price': spot.slot_price
+                }
+            )
+        
+        return jsonify({
+            'desc':'Parking spots retrieved successfully', 
+            'code': 0,
+            'parking_spots': results 
+        })
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'desc': f'Database error: {str(e)}',
+            'code': '99'
+        }), 500
 
 @app.route("/parking_spots", methods=["POST"])
 def create_parking_spot():
