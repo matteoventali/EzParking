@@ -26,6 +26,10 @@
         <i class="fas fa-plus"></i> Add New Parking
     </a>
 
+    <a href="./manage_request.php" class="add-new-button">
+         See pending requests 
+    </a>
+
     <section class="garage-list-container">
 
         <a href="./manage_garage.php?id=101" class="garage-card available">
