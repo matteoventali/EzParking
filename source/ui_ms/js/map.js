@@ -9,7 +9,8 @@ let markers = [];
 // Initialize the map centered on user's location (if available)
 document.addEventListener("DOMContentLoaded", () => 
 {
-    map = L.map('map').setView([41.9028, 12.4964], 13); // Default localization is Rome
+    map = L.map('map'); // Default localization is Rome
+    map.setView([41.8719, 12.5674], 6); // Default localization is Italy
 
     // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -39,13 +40,16 @@ document.addEventListener("DOMContentLoaded", () =>
             search_parking_spots_nearby(lat, lon);
         }, 
         () => { // Fail
-            map.setView([41.8719, 12.5674], 6); // Default localization is Italy
+            // Search the parking spots in all Italy
+            search_parking_spots_nearby(41.8719, 12.5674);
         });
     }
 });
 
 function addParkingMarker(map, park) 
 {
+    console.log(park);
+    
     // Creation of the marker
     const marker = L.marker([park.latitude, park.longitude]).addTo(map);
 
@@ -53,13 +57,15 @@ function addParkingMarker(map, park)
     marker.parkingId = park.parking_spot_id;
     
     // Bind a simple popup
-    marker.bindPopup(`<b>${park.name}</b>`);
-
-    // When we click on the mark start the search
-    marker.on('click', () => {
-        fetchParkingDetailsAndShow(marker.parkingId);
-    });
-
+    const popup_content = `
+        <div>
+            <b style="text-align: center;">${park.name}</b><br>
+            <a href="/ui_ms/php/parking_spot_detail.php?id=${park.parking_spot_id}" target="_blank">
+                View details
+            </a>
+        </div>
+    `;
+    marker.bindPopup(popup_content);
     markers.push(marker); // Keep track of the marker
     return marker;
 }
@@ -80,11 +86,6 @@ function removeMarker(map, lat, lon)
     }
 }
 
-function fetchParkingDetailsAndShow(parkingId) 
-{
-    /* To be filled */
-}
-
 function search_parking_spots_nearby(lat, lon)
 {
     // XMLHttpRequest to fetch parking spots nearby
@@ -99,8 +100,7 @@ function search_parking_spots_nearby(lat, lon)
     {
         // Parsing the JSON response
         const response = JSON.parse(xhr.responseText);
-        console.log(response);
-        
+
         // Showing the parking spots on the map if the code is 0
         if ( response.body.code === "0")
         {
@@ -109,5 +109,5 @@ function search_parking_spots_nearby(lat, lon)
                 addParkingMarker(map, park);
             });
         };
-    }  
+    } 
 }
