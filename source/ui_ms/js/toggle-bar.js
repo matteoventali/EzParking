@@ -18,7 +18,7 @@ menu.addEventListener('click', function() {
 
 
 window.addEventListener('resize', function() {
-    if (window.innerWidth > 960) {
+    if (window.innerWidth >= 960) {
         toggleBarLinks.forEach(link => {
             link.style.display = 'none';
         });
@@ -26,3 +26,4 @@ window.addEventListener('resize', function() {
         menuLinks.classList.remove('active');
     }
 });
+
