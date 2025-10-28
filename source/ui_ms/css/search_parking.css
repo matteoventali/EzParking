@@ -237,7 +237,7 @@ main {
 }
 
 /* Responsive tweaks */
-@media (min-width:390px) and (max-width: 1100px) {
+@media (min-width:375px) and (max-width: 1024px) {
 
   .header h1 {
     font-size: 1.4rem;
@@ -253,7 +253,6 @@ main {
 
   /* Controls diventano una riga orizzontale */
   .controls {
-    margin-left: 57px;
     display: flex;
     flex-direction: row;
     gap: 0.5rem;        /* distanza uniforme tra i controlli */
