@@ -132,14 +132,25 @@ input:focus {
 
 /* Slot selection pills */
 #slotOptionsContainer {
+    border: 2px solid  #a679dc ;
     max-height: 220px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 10px;
     padding: 10px;
     border-radius: 12px;
     background-color: #f8f8f8;
+}
+/* Messaggio quando non ci sono slot disponibili */
+#slotOptionsContainer .no-slots-message {
+    text-align: center;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--primary-color); /* usa il tuo colore principale */
+    padding: 1rem;
+    background-color: #f0eafb; /* viola molto chiaro */
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .slot-options input[type="checkbox"] {
@@ -181,12 +192,12 @@ input:focus {
 }
 
 #slotOptionsContainer::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #c2b9ce;
     border-radius: 8px;
 }
 
 #slotOptionsContainer::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
+    background: #925fd0;
     border-radius: 8px;
 }
 
