@@ -27,7 +27,6 @@
 }
 
 body {
-    /* Rimosso margin: 0 e font-family qui, ora gestiti dal reset universale */
     background-color: var(--bg-light);
     color: var(--text-dark);
     display: flex;
@@ -179,7 +178,6 @@ main {
     color: var(--full-color);
     border: 1px solid var(--full-color);
 }
-
 
 .garage-card.no-time-slot .status-indicator {
     background-color: var(--noTimeSlot-bg);

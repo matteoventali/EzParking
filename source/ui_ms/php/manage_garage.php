@@ -25,7 +25,25 @@
             $spot_html = $template;
             $spot_html = str_replace("%PARK_ID%", $spot["spot_id"], $spot_html);
             $spot_html = str_replace("%PARK_NAME%", $spot["spot_name"], $spot_html);
-            $spot_html = str_replace("%PARK_COO RD%", 'Lat:' . $spot["latitude"] . " Lon:" . $spot['longitude'], $spot_html);
+            $spot_html = str_replace("%PARK_COORD%", 'Lat:' . $spot["latitude"] . " Lon:" . $spot['longitude'], $spot_html);
+
+            // Status
+            if ( $spot["available"] )
+            {
+                $spot_html = str_replace("%PARK_STATUS%", 'available', $spot_html);
+                $spot_html = str_replace("%PARK_STATUS_DESC%", strtoupper('available'), $spot_html);
+            }
+            else if ( $spot["available"] == null )
+            {
+                $spot_html = str_replace("%PARK_STATUS%", 'no-time-slot', $spot_html);
+                $spot_html = str_replace("%PARK_STATUS_DESC%", strtoupper('no-time-slot'), $spot_html);
+            }
+            else
+            {
+                $spot_html = str_replace("%PARK_STATUS%", 'full', $spot_html);
+                $spot_html = str_replace("%PARK_STATUS_DESC%", strtoupper('full'), $spot_html);
+            }
+                
             $parking_spots_html .= $spot_html;
         }
     }
@@ -33,7 +51,7 @@
     {
         // The user has no parking spots yet
         $parking_spots_html = '<p class="no-garages-message">You have no parking spots yet. Click the "Add New Parking" button to create one.</p>';
-    }   
+    }  
 ?>
 
 <!DOCTYPE html>
@@ -59,7 +77,7 @@
         <p>Manage your owned spots and check their current status.</p>
     </section>
 
-    <a href="./add_new_garage.php" class="add-new-button">
+    <a href="./insert_spot.php" class="add-new-button">
         <i class="fas fa-plus"></i> Add New Parking
     </a>
 

@@ -22,8 +22,8 @@ document.addEventListener("DOMContentLoaded", () =>
     if ( navigator.geolocation ) 
     {
         // Set in the map the last position known during the waiting for the new position
-        const saved_lat = localStorage.getItem("user_latitude");
-        const saved_lon = localStorage.getItem("user_longitude");
+        const saved_lat = sessionStorage.getItem("user_latitude");
+        const saved_lon = sessionStorage.getItem("user_longitude");
         if ( saved_lat && saved_lon )
         {
             map.setView([saved_lat, saved_lon], 15);
@@ -57,8 +57,8 @@ document.addEventListener("DOMContentLoaded", () =>
             userCircle.bindPopup("You are here");
 
             // Save user position in the local storage for future use
-            localStorage.setItem("user_latitude", lat);
-            localStorage.setItem("user_longitude", lon);
+            sessionStorage.setItem("user_latitude", lat);
+            sessionStorage.setItem("user_longitude", lon);
 
             // Search the parking spots near the user position
             search_parking_spots_nearby(lat, lon);
