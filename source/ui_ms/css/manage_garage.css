@@ -3,23 +3,27 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif; /* Changed from Inter to Poppins */
+    font-family: 'Poppins', sans-serif;
+    /* Changed from Inter to Poppins */
 }
 
 :root {
-    --primary-color: #5e25a5; /* Primary Violet */
-    --primary-dark: #4a1c86; /* Dark Violet */
+    --primary-color: #5e25a5;
+    /* Primary Violet */
+    --primary-dark: #4a1c86;
+    /* Dark Violet */
     --bg-light: #f7f5fb;
     --text-dark: #222;
     --text-light: #777;
     --white: #fff;
     --shadow: rgba(0, 0, 0, 0.1);
 
-    /* Status Colors */
-    --available-color: #28a745; /* Green for Available */
+    --available-color: #28a745;
     --available-bg: #e6f7e9;
-    --full-color: #dc3545; /* Red for Full */
+    --full-color: #dc3545;
     --full-bg: #f8d7da;
+    --noTimeSlot-color: #ffc107;
+    --noTimeSlot-bg: #fffbe6;
 }
 
 body {
@@ -57,11 +61,7 @@ main {
     font-size: 1.1rem;
 }
 
-/* --- */
 
-/* ======================================= */
-/* ADD NEW PARKING BUTTON */
-/* ======================================= */
 
 .add-new-button {
     display: inline-flex;
@@ -161,7 +161,8 @@ main {
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    min-width: 80px; /* Ensures status boxes have uniform width */
+    min-width: 80px;
+    /* Ensures status boxes have uniform width */
     text-align: center;
 }
 
@@ -179,6 +180,14 @@ main {
     border: 1px solid var(--full-color);
 }
 
+
+.garage-card.no-time-slot .status-indicator {
+    background-color: var(--noTimeSlot-bg);
+    color: var(--noTimeSlot-color);
+    border: 1px solid var(--noTimeSlot-color);
+}
+
+
 /* Redirection arrow */
 .card-status .fa-arrow-right {
     font-size: 1.2rem;
@@ -193,11 +202,13 @@ main {
 
 @media (max-width: 390px) {
     main {
-        padding: 1.5rem 0.5rem; /* Riduci il padding generale */
+        padding: 1.5rem 0.5rem;
+        /* Riduci il padding generale */
     }
 
     .dashboard-header h1 {
-        font-size: 1.6rem; /* Riduci la dimensione del titolo */
+        font-size: 1.6rem;
+        /* Riduci la dimensione del titolo */
     }
 
     .dashboard-header p {
@@ -207,7 +218,8 @@ main {
     .garage-card {
         flex-direction: column;
         align-items: flex-start;
-        padding: 1rem 1rem; /* Riduci il padding delle card */
+        padding: 1rem 1rem;
+        /* Riduci il padding delle card */
     }
 
     .garage-name {
@@ -231,7 +243,8 @@ main {
     }
 
     .status-indicator {
-        min-width: 70px; /* Riduci la larghezza minima */
+        min-width: 70px;
+        /* Riduci la larghezza minima */
         font-size: 0.85rem;
     }
 
@@ -240,7 +253,8 @@ main {
     }
 
     .add-new-button {
-        padding: 0.8rem 1rem; /* Riduci il padding del pulsante */
+        padding: 0.8rem 1rem;
+        /* Riduci il padding del pulsante */
         font-size: 1rem;
         box-shadow: 0 2px 5px rgba(94, 37, 165, 0.2);
     }
