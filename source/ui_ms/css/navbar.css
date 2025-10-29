@@ -16,7 +16,7 @@
     display: flex;
     justify-content: space-between;
     height: 80px;
-    z-index: 1;
+    z-index: 1000;
     max-width: 100%;
     margin: 0 auto;
     padding: 0 50px;    
@@ -238,5 +238,10 @@ footer {
     font-size: 0.9rem;
   }
 
-
-
+.leaflet-control-container {
+    z-index: 1 !important;
+}
+.leaflet-top,
+.leaflet-bottom {
+    z-index: 1 !important;
+}

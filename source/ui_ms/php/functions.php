@@ -168,4 +168,25 @@
         // Returning the resulting array
         return $status;    
     }
+
+    // Function to get address from latitude and longitude using Nominatim API
+    function get_address_from_coordinates($lat, $lon) 
+    {
+        $url = "https://nominatim.openstreetmap.org/reverse?lat={$lat}&lon={$lon}&format=json";
+
+        // Init Curl
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, "EzParking/1.0");
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        // Checking the response
+        if ($response === false)
+            return null;
+        
+        $data = json_decode($response, true);
+        return $data["display_name"] ?? null;
+    }
 ?>
