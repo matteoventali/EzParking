@@ -158,24 +158,55 @@ def get_user_spots(user_id):
                             'code': 2, 
                             'parking_spots': []}), 404
         
+        now = datetime.now()
+        today = date.today()
+        current_time = now.time()
+
         results = []
 
         for spot in spots: 
-
             point = to_shape(spot.spot_location)
             lat = point.y
             lon = point.x
 
-            results.append(
-                {
-                    'spot_id': spot.id, 
-                    'spot_name': spot.name, 
-                    'latitude': lat, 
-                    'longitude': lon,
-                    'rep_treshold': spot.rep_treshold, 
-                    'slot_price': spot.slot_price
-                }
-            )
+            future_slots = AvailabilitySlot.query.filter(
+                AvailabilitySlot.parking_spot_id == spot.id,
+                or_(
+                    AvailabilitySlot.slot_date > today,
+                    and_(
+                        AvailabilitySlot.slot_date == today,
+                        AvailabilitySlot.end_time > current_time
+                    )
+                )
+            ).all()
+
+            if not future_slots:
+                available_flag = None
+            else:
+                slot_ids = [s.id for s in future_slots]
+
+                active_reservations = db.session.query(Reservation.slot_id).filter(
+                    Reservation.slot_id.in_(slot_ids),
+                    Reservation.reservation_status.in_(["pending", "confirmed"])
+                ).all()
+
+                active_slot_ids = {r.slot_id for r in active_reservations}
+
+                if any(s.id not in active_slot_ids for s in future_slots):
+                    available_flag = True
+                else:
+                    available_flag = False
+
+            results.append({
+                'spot_id': spot.id, 
+                'spot_name': spot.name, 
+                'latitude': lat, 
+                'longitude': lon,
+                'rep_treshold': spot.rep_treshold, 
+                'slot_price': spot.slot_price,
+                'available': available_flag
+            })
+
         
         return jsonify({
             'desc':'Parking spots retrieved successfully', 
