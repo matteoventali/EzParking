@@ -120,6 +120,7 @@ input[type="number"] {
     background: var(--bg-secondary);
     color: var(--text-primary);
     font-family: inherit;
+    border: 2px solid #5e25a5;
 }
 
 input[type="text"]:focus,
@@ -142,7 +143,7 @@ input::placeholder {
 
 .input-prefix {
     position: absolute;
-    left: 1rem;
+    left: 0.5rem;
     color: var(--text-secondary);
     font-weight: 600;
     font-size: 1rem;
@@ -357,9 +358,7 @@ input:valid:not(:placeholder-shown) {
     }
 }
 
-
-
-
+/* Controls: dropdowns, buttons, etc. */
 .controls {
   display: flex;
   gap: 0.5rem;
@@ -370,6 +369,7 @@ input:valid:not(:placeholder-shown) {
 .dropdown {
   position: relative;
   display: inline-block;
+  width: 100%;
 }
 
 .dropdown-toggle {
@@ -432,7 +432,7 @@ input:valid:not(:placeholder-shown) {
   background: #f4f2fb;
 }
 
-.filter-item input[type="checkbox"] {
+.filter-item input[type="radio"] {
   width: 18px;
   height: 18px;
   margin: 0;
@@ -459,4 +459,62 @@ input:valid:not(:placeholder-shown) {
   font-size: 0.85rem;
   color: #5e25a5;
   background: #fff;
+}
+
+
+
+#dropdownToggle {
+    width: 100%; /* scegli tu la dimensione */
+}
+
+
+
+/* --- Normalize inputs to custom circular controls --- */
+.dropdown-panel input[type="checkbox"],
+.dropdown-panel input[type="radio"] {
+  /* rimuove l'aspetto nativo */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #cfc7e8; /* bordo non selezionato */
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+  cursor: pointer;
+  background-clip: padding-box;
+}
+
+/*if checked, the button is colored*/
+.dropdown-panel input[type="checkbox"]:checked,
+.dropdown-panel input[type="radio"]:checked {
+  border-color: #5e25a5;
+  background-color: #5e25a5;
+}
+
+/*dot inside button*/
+.dropdown-panel input[type="checkbox"]:checked::after,
+.dropdown-panel input[type="radio"]:checked::after {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+  position: relative;
+  top: 2px;
+  left: 2px;
+}
+
+/* focus ring */
+.dropdown-panel input[type="checkbox"]:focus,
+.dropdown-panel input[type="radio"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(94,37,165,0.08);
 }
