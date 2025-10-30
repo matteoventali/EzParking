@@ -77,15 +77,15 @@
 
   <!-- Search form: invia q, filters[] e distance via GET -->
   <section class="search-section" id="searchSection" aria-label="Search parking">
-    <form id="searchForm" class="search-wrapper" role="search" aria-label="Search parking" action="/search" method="GET" novalidate>
-      <div class="search-input" role="search">
-        <input id="searchText" name="q" type="text" placeholder="Find a parking spot..." aria-label="Search parking spots">
-      </div>
+    <form id="searchForm" class="search-wrapper" role="search" aria-label="Search parking" action="search_parking.php" method="POST">
+        <div class="search-input" role="search">
+        <input id="searchText" name="query" type="text" placeholder="Find a parking spot... (Address, City)" aria-label="Search parking spots">
+        </div>
 
         <div class="controls">
         <!-- Filters dropdown -->
         <div class="dropdown" id="filtersDropdown">
-          <button
+            <button
             class="dropdown-toggle"
             id="dropdownToggle"
             aria-haspopup="true"
@@ -117,7 +117,7 @@
 
         <!-- Distance dropdown (same style as filters) -->
         <div class="dropdown" id="distanceDropdown">
-          <button
+            <button
             class="dropdown-toggle"
             id="distanceToggle"
             aria-haspopup="true"
@@ -173,206 +173,14 @@
     ?>
   </div>
 
-  <main class="parking-container" id="parkingList" aria-live="polite" style="display: none;">
-    <!-- sample cards -->
-    <article class="parking-card" data-price="2.5"  data-rating="4">
-      <div>
-        <h3>Central Park Garage</h3>
-        <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
-          <div><span class="meta-strong">Distance from me:</span> 1km </div>
-          <div><span class="meta-strong">Rating Threshold:</span> 4 / 5</div>
-          <div><span class="meta-strong">Price per hour:</span> €2.50/hour</div>
-          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
-        </div>
-      </div>
-      <div class="card-actions">
-        <button class="book-btn"><a style="text-decoration:none; color:white;" href="book_parking.php">Book Now</a></button>
-      </div>
-    </article>
-
-    <article class="parking-card" data-price="1.8" data-rating="3">
-      <div>
-        <h3>Riverside Parking</h3>
-        <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
-          <div><span class="meta-strong">Distance from me:</span> 1km </div>
-          <div><span class="meta-strong">Rating Threshold:</span> 3 / 5</div>
-          <div><span class="meta-strong">Price per hour:</span> €1.80/hour</div>
-          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>          
-        </div>
-      </div>
-      <div class="card-actions">
-        <button class="book-btn">Book Now</button>
-      </div>
-    </article>
-
-    <article class="parking-card" data-price="3.2" data-rating="5">
-      <div>
-        <h3>City Center Lot</h3>
-        <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
-          <div><span class="meta-strong">Distance from me:</span> 1km </div>
-          <div><span class="meta-strong">Rating Threshold:</span> 5 / 5</div>
-          <div><span class="meta-strong">Price per hour:</span> €3.20/hour</div>
-          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
-        </div>
-      </div>
-      <div class="card-actions">
-        <button class="book-btn">Book Now</button>
-      </div>
-    </article>
-
-    <!-- sample cards -->
-    <article class="parking-card" data-price="2.5" data-rating="4">
-      <div>
-        <h3>Central Park Garage</h3>
-        <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
-          <div><span class="meta-strong">Distance from me:</span> 1km </div>
-          <div><span class="meta-strong">Rating Threshold:</span> 4 / 5</div>
-          <div><span class="meta-strong">Price per hour:</span> €2.50/hour</div>
-          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
-        </div>
-      </div>
-      <div class="card-actions">
-        <button class="book-btn">Book Now</button>
-      </div>
-    </article>
-
-    <article class="parking-card" data-price="1.8" data-rating="3">
-      <div>
-        <h3>Riverside Parking</h3>
-        <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
-          <div><span class="meta-strong">Distance from me:</span> 1km </div>
-          <div><span class="meta-strong">Rating Threshold:</span> 3 / 5</div>
-          <div><span class="meta-strong">Price per hour:</span> €1.80/hour</div>
-          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
-        </div>
-      </div>
-      <div class="card-actions">
-        <button class="book-btn">Book Now</button>
-      </div>
-    </article>
-
-    <article class="parking-card" data-price="3.2"data-rating="5">
-      <div>
-        <h3>City Center Lot</h3>
-        <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
-          <div><span class="meta-strong">Distance from me:</span> 1km </div>
-          <div><span class="meta-strong">Rating Threshold:</span> 5 / 5</div>
-          <div><span class="meta-strong">Price per hour:</span> €3.20/hour</div>
-          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
-        </div>
-      </div>
-      <div class="card-actions">
-        <button class="book-btn">Book Now</button>
-      </div>
-    </article>
-    <!-- sample cards -->
-    <article class="parking-card" data-price="2.5" data-capacity="150" data-rating="4">
-      <div>
-        <h3>Central Park Garage</h3>
-        <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
-          <div><span class="meta-strong">Distance from me:</span> 1km </div>
-          <div><span class="meta-strong">Capacity:</span> 150 spots</div>
-          <div><span class="meta-strong">Rating Threshold:</span> 4 / 5</div>
-          <div><span class="meta-strong">Price per hour:</span> €2.50/hour</div>
-          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
-        </div>
-      </div>
-      <div class="card-actions">
-        <button class="book-btn">Book Now</button>
-      </div>
-    </article>
-
-    <article class="parking-card" data-price="1.8" data-rating="3">
-      <div>
-        <h3>Riverside Parking</h3>
-        <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
-          <div><span class="meta-strong">Distance from me:</span> 1km </div>
-          <div><span class="meta-strong">Rating Threshold:</span> 3 / 5</div>
-          <div><span class="meta-strong">Price per hour:</span> €1.80/hour</div>
-          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
-        </div>
-      </div>
-      <div class="card-actions">
-        <button class="book-btn">Book Now</button>
-      </div>
-    </article>
-
-    <article class="parking-card" data-price="3.2" data-rating="5">
-      <div>
-        <h3>City Center Lot</h3>
-        <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
-          <div><span class="meta-strong">Distance from me:</span> 1km </div>
-          <div><span class="meta-strong">Rating Threshold:</span> 5 / 5</div>
-          <div><span class="meta-strong">Price per hour:</span> €3.20/hour</div>
-          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
-        </div>
-      </div>
-      <div class="card-actions">
-        <button class="book-btn">Book Now</button>
-      </div>
-    </article>
-    <!-- sample cards -->
-    <article class="parking-card" data-price="2.5" data-rating="4">
-      <div>
-        <h3>Central Park Garage</h3>
-        <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
-          <div><span class="meta-strong">Distance from me:</span> 1km </div>
-          <div><span class="meta-strong">Rating Threshold:</span> 4 / 5</div>
-          <div><span class="meta-strong">Price per hour:</span> €2.50/hour</div>
-          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
-        </div>
-      </div>
-      <div class="card-actions">
-        <button class="book-btn">Book Now</button>
-      </div>
-    </article>
-
-    <article class="parking-card" data-price="1.8" data-rating="3">
-      <div>
-        <h3>Riverside Parking</h3>
-        <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
-          <div><span class="meta-strong">Distance from me:</span> 1km </div>
-          <div><span class="meta-strong">Rating Threshold:</span> 3 / 5</div>
-          <div><span class="meta-strong">Price per hour:</span> €1.80/hour</div>
-          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
-        </div>
-      </div>
-      <div class="card-actions">
-        <button class="book-btn">Book Now</button>
-      </div>
-    </article>
-
-    <article class="parking-card" data-price="3.2" data-rating="5">
-      <div>
-        <h3>City Center Lot</h3>
-        <div class="meta-row">
-          <div><span class="meta-strong">Location:</span> 41.9028, 12.4964</div>          
-          <div><span class="meta-strong">Distance from me:</span> 1km </div>
-          <div><span class="meta-strong">Rating Threshold:</span> 5 / 5</div>
-          <div><span class="meta-strong">Price per hour:</span> €3.20/hour</div>
-          <div><span class="meta-strong">Time Slot Availability:</span> 8:20-9:20</div>
-        </div>
-      </div>
-      <div class="card-actions">
-        <button class="book-btn">Book Now</button>
-      </div>
-    </article>
-  </main>
-  <?php
-  $footer = file_get_contents(FOOTER);
-  echo $footer;
-  ?>
+    <main class="parking-container" id="parkingList" aria-live="polite" style="display: none;">
+        <!-- SECTION TO BE POPULATED AFTER THE SEARCH -->
+    </main>
+    
+    <?php
+        $footer = file_get_contents(FOOTER);
+        echo $footer;
+    ?>
 
   <script src="../js/search_parking.js"></script>
 </body>
