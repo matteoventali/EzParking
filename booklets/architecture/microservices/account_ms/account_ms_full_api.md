@@ -91,7 +91,8 @@ http://10.5.0.11:5000/
     "phone": "",
     "role": "",
     "session_token": "",
-    "account_status": true
+    "account_status": true,
+    "score": ""
   }
 }
 

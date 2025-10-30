@@ -7,8 +7,7 @@ let map;
 let markers = [];
 
 // Initialize the map centered on user's location (if available)
-document.addEventListener("DOMContentLoaded", () => 
-{
+document.addEventListener('DOMContentLoaded', function () {
     map = L.map('map'); // Default localization is Rome
     map.setView([41.8719, 12.5674], 6); // Default localization is Italy
 
@@ -39,34 +38,36 @@ document.addEventListener("DOMContentLoaded", () =>
             // Search the parking spots near the user position
             search_parking_spots_nearby(saved_lat, saved_lon);
         }
-            
-        navigator.geolocation.watchPosition(pos => { // Success location of the user
-            const lat = pos.coords.latitude;
-            const lon = pos.coords.longitude;
+        else
+        {
+            navigator.geolocation.getCurrentPosition(pos => { // Success location of the user
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
 
-            map.setView([lat, lon], 15);
+                map.setView([lat, lon], 15);
 
-            // Add a circular marker for the user position
-            const userCircle = L.circleMarker([lat, lon], {
-                radius: 8,           
-                color: circle_marker_border_color,
-                fillColor: circle_marker_color,
-                fillOpacity: 0.6,    
-                weight: 2
-            }).addTo(map);
-            userCircle.bindPopup("You are here");
+                // Add a circular marker for the user position
+                const userCircle = L.circleMarker([lat, lon], {
+                    radius: 8,           
+                    color: circle_marker_border_color,
+                    fillColor: circle_marker_color,
+                    fillOpacity: 0.6,    
+                    weight: 2
+                }).addTo(map);
+                userCircle.bindPopup("You are here");
 
-            // Save user position in the local storage for future use
-            sessionStorage.setItem("user_latitude", lat);
-            sessionStorage.setItem("user_longitude", lon);
+                // Save user position in the local storage for future use
+                sessionStorage.setItem("user_latitude", lat);
+                sessionStorage.setItem("user_longitude", lon);
 
-            // Search the parking spots near the user position
-            search_parking_spots_nearby(lat, lon);
-        }, 
-        () => { // Fail
-            // Search the parking spots in all Italy
-            search_parking_spots_nearby(41.8719, 12.5674);
-        });
+                // Search the parking spots near the user position
+                search_parking_spots_nearby(lat, lon);
+            }, 
+            () => { // Fail
+                // Search the parking spots in all Italy
+                search_parking_spots_nearby(41.8719, 12.5674);
+            });
+        }  
     }
 });
 
@@ -111,6 +112,8 @@ function removeMarker(map, lat, lon)
 
 function search_parking_spots_nearby(lat, lon)
 {
+    console.log("VOlta");
+    
     // XMLHttpRequest to fetch parking spots nearby
     query_string = "lat=" + lat + "&lon=" + lon;
     
@@ -123,7 +126,7 @@ function search_parking_spots_nearby(lat, lon)
     {
         // Parsing the JSON response
         const response = JSON.parse(xhr.responseText);
-
+        
         // Showing the parking spots on the map if the code is 0
         if ( response.body.code === "0")
         {
@@ -131,6 +134,6 @@ function search_parking_spots_nearby(lat, lon)
             response.body.results.forEach(park => {
                 addParkingMarker(map, park);
             });
-        };
+        }
     } 
 }
