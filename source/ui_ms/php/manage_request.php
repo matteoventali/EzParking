@@ -10,9 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<style>
-    
-</style>
+
 
 <body>
     <?php
@@ -27,7 +25,7 @@
             <header class="top">
                 <div>
                     <h1 id="queue-title">Reservation Requests Queue</h1>
-                    <div class="subtitle">Manage incoming parking reservation requests</div>
+                    <div class="subtitle">Manage incoming  reservation requests</div>
                 </div>
                 <div class="controls">
                     <div class="search" role="search">
