@@ -189,4 +189,38 @@
         $data = json_decode($response, true);
         return $data["display_name"] ?? null;
     }
+
+    // Function to get coordinates (latitude, longitude) from an address using Nominatim API
+    function get_coordinates_from_address($address)
+    {
+        // Encode address for URL
+        $encoded_address = urlencode($address);
+        $url = "https://nominatim.openstreetmap.org/search?q={$encoded_address}&format=json&limit=1";
+
+        // Init Curl
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, "EzParking/1.0");
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        // Checking the response
+        if ($response === false)
+            return null;
+
+        $data = json_decode($response, true);
+
+        // Check if valid data found
+        if (isset($data[0]['lat']) && isset($data[0]['lon'])) {
+            return [
+                'latitude' => $data[0]['lat'],
+                'longitude' => $data[0]['lon']
+            ];
+        }
+
+        // No results
+        return null;
+    }
+
 ?>

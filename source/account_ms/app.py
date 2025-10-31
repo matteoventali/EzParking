@@ -114,6 +114,13 @@ def login():
             session_token = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
             user.session_token = session_token
 
+            reviews = list_reviews(user)
+            received_reviews = reviews["received_reviews"]
+            if ( len(received_reviews) == 0 ):
+                score = 0
+            else:
+                score = statistics.mean([r["star"] for r in received_reviews])
+
         return jsonify({
             'desc': 'Login successful',
             'code': '0',
@@ -125,7 +132,8 @@ def login():
                 'phone': user.phone,
                 'role': user.user_role,
                 'session_token': user.session_token,
-                'account_status' : user.account_status
+                'account_status' : user.account_status,
+                'score': score
             }
         }), 200
 
