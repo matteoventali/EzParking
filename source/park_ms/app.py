@@ -236,6 +236,7 @@ def create_parking_spot():
     slot_price = data['slot_price']
     rep_treshold = data.get('rep_treshold', 0)
     user_id = data['user_id']
+    labels = data['labels']
 
     if not isinstance(latitude, (int, float)) or not isinstance(longitude, (int, float)):
         return jsonify({'desc': 'Latitude and longitude must be numeric', 'code': '3'}), 400
@@ -263,7 +264,21 @@ def create_parking_spot():
             )
 
             db.session.add(new_spot)
+            db.session.flush()
 
+            if labels:
+
+                parking_spot_labels = [
+                    ParkingSpotLabel(
+                        parking_spot_id = new_spot.id,
+                        label_id = l
+                    ) for l in labels
+                ]
+
+                for spot_label in parking_spot_labels:
+                    db.session.add(spot_label)
+
+        
         return jsonify({
             'desc': 'Parking spot created successfully',
             'code': '0',
@@ -274,7 +289,8 @@ def create_parking_spot():
                 'longitude': longitude,
                 'slot_price': new_spot.slot_price,
                 'rep_treshold': new_spot.rep_treshold,
-                'user_id': user.id
+                'user_id': user.id,
+                'labels': labels
             }
         }), 201
 
