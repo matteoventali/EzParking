@@ -223,4 +223,13 @@
         return null;
     }
 
+
+    // Function to get hours difference
+    function calculate_duration($start, $end)
+    {
+        $startTime = DateTime::createFromFormat('H:i', $start);
+        $endTime = DateTime::createFromFormat('H:i', $end);
+        $diff = $startTime->diff($endTime);
+        return $diff->h + ($diff->i / 60);
+    }
 ?>

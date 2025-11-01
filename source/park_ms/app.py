@@ -119,8 +119,8 @@ def get_parking_spot(spot_id):
         spot_data = {
             "id": spot.id,
             "name": spot.name,
-            "longitude": latitude,
-            "latitude": longitude,
+            "longitude": longitude,
+            "latitude": latitude,
             "rep_treshold": spot.rep_treshold,
             "slot_price": spot.slot_price,
             "user": {
