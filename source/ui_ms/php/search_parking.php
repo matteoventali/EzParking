@@ -41,15 +41,28 @@
         $card_template = file_get_contents('../html/parking_spot_card_search.html');
         $html_result = "";
 
-        var_dump($response["body"]["results"]);
-
         // For each parking spot found create a card
         foreach ( $response["body"]["results"] as $spot)
         {   
             // Replace the info
-            $html_result .= $card_template;
-        }
+            $card = str_replace("%PARKING_NAME%", $spot["name"], $card_template);
+            $card = str_replace("%LOCATION%", "Lat:" . $spot["latitude"] . " Long:" . $spot["longitude"], $card);
+            $card = str_replace("%LOCATION%", "Lat:" . $spot["latitude"] . " Long:" . $spot["longitude"], $card);
             
+            if ( floatval($spot["distance_meters"]) > 1000 )
+                $card = str_replace("%DISTANCE%", round(floatval($spot["distance_meters"])/1000, 2) . " km", $card);
+            else
+                $card = str_replace("%DISTANCE%", $spot["distance_meters"] . " m", $card);
+            
+            $card = str_replace("%THRESHOLD%", $spot["rep_treshold"], $card);
+            $card = str_replace("%PRICE%", $spot["slot_price"], $card);
+            $slot = $spot["next_slot"];
+
+            $card = str_replace("%FIRST_SLOT%", $slot["slot_date"] . ": " . $slot["start_time"] . "-" . $slot["end_time"], $card);
+            $card = str_replace("%PARKING_ID%", $spot["parking_spot_id"], $card);
+
+            $html_result .= $card;
+        }
     }
 ?>
 
@@ -128,6 +141,8 @@
         $footer = file_get_contents(FOOTER);
         echo $footer;
     ?>
+
+    <script src="../js/search_parking.js"></script>
 </body>
 
 </html>

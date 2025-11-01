@@ -83,7 +83,7 @@ function addParkingMarker(map, park)
     const popup_content = `
         <div>
             <b style="text-align: center;">${park.name}</b><br>
-            <a href="/ui_ms/php/parking_spot_detail.php?id=${park.parking_spot_id}" target="_blank">
+            <a href="/../php/book_parking.php?id=${park.parking_spot_id}" target="_blank">
                 View details
             </a>
         </div>
