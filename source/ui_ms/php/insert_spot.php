@@ -7,6 +7,9 @@
         header("Location: " . $starting_page);
     else if ( $_SESSION['role'] != 'user' ) // Redirect the user to the correct homepage
         header("Location: " . $homepage);
+
+    // Gets the available labels to populate the add select
+    $labels = get_labels_content();
 ?>
 
 <!DOCTYPE html>
@@ -81,10 +84,8 @@
                 </div>
 
                 <label for="filtersSelect">Filters:</label>
-                <select id="filtersSelect" name="filters" style="min-width:150px;">
-                    <option value="">-- Select --</option>
-                    <option value="low_price">Low Price</option>
-                    <option value="high_rating">High Rating</option>
+                <select id="filtersSelect" name="filters[]" style="min-width:150px"; multiple>
+                    <?php echo $labels; ?>
                 </select>
 
                 <label> Location Map </label>

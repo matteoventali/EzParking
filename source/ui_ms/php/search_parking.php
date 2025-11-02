@@ -8,6 +8,9 @@
     else if ($_SESSION['role'] != 'user') // Redirect the user to the correct homepage
         header("Location: " . $homepage);
 
+    // Gets the available labels to populate the search select
+    $labels = get_labels_content();
+    
     if (count($_POST)) // If there is at least one parameter we must perform the search
     {
         if (isset($_POST["query"]) && !empty($_POST["query"])) {
@@ -41,27 +44,32 @@
         $card_template = file_get_contents('../html/parking_spot_card_search.html');
         $html_result = "";
 
-        // For each parking spot found create a card
-        foreach ( $response["body"]["results"] as $spot)
-        {   
-            // Replace the info
-            $card = str_replace("%PARKING_NAME%", $spot["name"], $card_template);
-            $card = str_replace("%LOCATION%", "Lat:" . $spot["latitude"] . " Long:" . $spot["longitude"], $card);
-            $card = str_replace("%LOCATION%", "Lat:" . $spot["latitude"] . " Long:" . $spot["longitude"], $card);
-            
-            if ( floatval($spot["distance_meters"]) > 1000 )
-                $card = str_replace("%DISTANCE%", round(floatval($spot["distance_meters"])/1000, 2) . " km", $card);
-            else
-                $card = str_replace("%DISTANCE%", $spot["distance_meters"] . " m", $card);
-            
-            $card = str_replace("%THRESHOLD%", $spot["rep_treshold"], $card);
-            $card = str_replace("%PRICE%", $spot["slot_price"], $card);
-            $slot = $spot["next_slot"];
+        if ( $response["body"]["code"] != "0" )
+            $html_result = "<p> No parking slot has been found <p>";
+        else
+        {
+            // For each parking spot found create a card
+            foreach ( $response["body"]["results"] as $spot )
+            {   
+                // Replace the info
+                $card = str_replace("%PARKING_NAME%", $spot["name"], $card_template);
+                $card = str_replace("%LOCATION%", "Lat:" . $spot["latitude"] . " Long:" . $spot["longitude"], $card);
+                $card = str_replace("%LOCATION%", "Lat:" . $spot["latitude"] . " Long:" . $spot["longitude"], $card);
+                
+                if ( floatval($spot["distance_meters"]) > 1000 )
+                    $card = str_replace("%DISTANCE%", round(floatval($spot["distance_meters"])/1000, 2) . " km", $card);
+                else
+                    $card = str_replace("%DISTANCE%", $spot["distance_meters"] . " m", $card);
+                
+                $card = str_replace("%THRESHOLD%", $spot["rep_treshold"], $card);
+                $card = str_replace("%PRICE%", $spot["slot_price"], $card);
+                $slot = $spot["next_slot"];
 
-            $card = str_replace("%FIRST_SLOT%", $slot["slot_date"] . ": " . $slot["start_time"] . "-" . $slot["end_time"], $card);
-            $card = str_replace("%PARKING_ID%", $spot["parking_spot_id"], $card);
+                $card = str_replace("%FIRST_SLOT%", $slot["slot_date"] . ": " . $slot["start_time"] . "-" . $slot["end_time"], $card);
+                $card = str_replace("%PARKING_ID%", $spot["parking_spot_id"], $card);
 
-            $html_result .= $card;
+                $html_result .= $card;
+            }
         }
     }
 ?>
@@ -106,10 +114,8 @@
             <div class="controls">
                 <!-- Filters select -->
                 <label for="filtersSelect">Filters:</label>
-                <select id="filtersSelect" name="filters" style="min-width:150px;">
-                    <option value="">-- Select --</option>
-                    <option value="low_price">Low Price</option>
-                    <option value="high_rating">High Rating</option>
+                <select id="filtersSelect" name="filters[]" style="min-width:150px"; multiple>
+                    <?php echo $labels; ?>
                 </select>
 
                 <!-- Distance select -->
