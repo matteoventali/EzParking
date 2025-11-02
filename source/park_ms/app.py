@@ -236,7 +236,7 @@ def create_parking_spot():
     slot_price = data['slot_price']
     rep_treshold = data.get('rep_treshold', 0)
     user_id = data['user_id']
-    labels = data['labels']
+    labels = data.get('labels', [])
 
     if not isinstance(latitude, (int, float)) or not isinstance(longitude, (int, float)):
         return jsonify({'desc': 'Latitude and longitude must be numeric', 'code': '3'}), 400
