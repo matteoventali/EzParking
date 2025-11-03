@@ -83,7 +83,7 @@ function addParkingMarker(map, park)
     const popup_content = `
         <div>
             <b style="text-align: center;">${park.name}</b><br>
-            <a href="/ui_ms/php/parking_spot_detail.php?id=${park.parking_spot_id}" target="_blank">
+            <a href="/../php/book_parking.php?id=${park.parking_spot_id}">
                 View details
             </a>
         </div>
@@ -112,8 +112,6 @@ function removeMarker(map, lat, lon)
 
 function search_parking_spots_nearby(lat, lon)
 {
-    console.log("VOlta");
-    
     // XMLHttpRequest to fetch parking spots nearby
     query_string = "lat=" + lat + "&lon=" + lon;
     

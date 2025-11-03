@@ -6,10 +6,10 @@
           <div><span class="meta-strong">Distance from me:</span>%DISTANCE%</div>
           <div><span class="meta-strong">Rating Threshold:</span>%THRESHOLD%/5</div>
           <div><span class="meta-strong">Price per hour:</span>%PRICE%</div>
-          <div><span class="meta-strong">Time Slot Availability:</span>$FIRST_SLOT%</div>          
+          <div><span class="meta-strong">Time Slot Availability:</span>%FIRST_SLOT%</div>          
         </div>
       </div>
       <div class="card-actions">
-        <button class="book-btn">Book Now</button>
+        <button class="book-btn" onclick="location.href = '../php/book_parking.php?=%PARKING_ID%'">Book Now</button>
       </div>
 </article>

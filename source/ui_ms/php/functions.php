@@ -223,4 +223,39 @@
         return null;
     }
 
+    // Function to generate labels select content
+    function get_labels_content()
+    {
+        global $protocol, $socket_park_ms;
+        
+        $api_url = compose_url($protocol, $socket_park_ms, '/labels');
+        $response = perform_rest_request('GET', $api_url, null, null);
+        $options_html = '';
+
+        if ( $response["body"]["code"] != "0" )
+            return $options_html;
+
+        foreach ($response["body"]["labels"] as $label) 
+        {
+            $id = htmlspecialchars($label['id'] ?? '');
+            $name = htmlspecialchars($label['name'] ?? '');
+            $description = htmlspecialchars($label['description'] ?? '');
+
+            $text = "$name -- $description";
+
+            // Genera il tag option
+            $options_html .= "<option value=\"$id\">$text</option>\n";
+        }
+
+        return $options_html;
+    }
+
+    // Function to get hours difference
+    function calculate_duration($start, $end)
+    {
+        $startTime = DateTime::createFromFormat('H:i', $start);
+        $endTime = DateTime::createFromFormat('H:i', $end);
+        $diff = $startTime->diff($endTime);
+        return $diff->h + ($diff->i / 60);
+    }
 ?>

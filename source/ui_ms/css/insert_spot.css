@@ -232,43 +232,13 @@ input::placeholder {
     color: var(--text-primary);
 }
 
-.map-placeholder {
-    margin-top: 2rem;
-}
-
-.map-container {
+#map {
+    height: 500px;
     width: 100%;
-    height: 300px;
-    background: var(--bg-secondary);
-    border: 2px dashed var(--border-color);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 0.5rem;
-    transition: all 0.3s ease;
+    border-radius: 10px;
+    z-index: 1;
 }
 
-.map-container:hover {
-    border-color: var(--primary-light);
-    background: rgba(94, 37, 165, 0.02);
-}
-
-.map-placeholder-content {
-    text-align: center;
-    color: var(--text-light);
-}
-
-.map-placeholder-content svg {
-    color: var(--primary-color);
-    opacity: 0.4;
-    margin-bottom: 0.75rem;
-}
-
-.map-placeholder-content p {
-    font-size: 0.95rem;
-    font-weight: 500;
-}
 
 .form-actions {
     display: flex;

@@ -60,4 +60,9 @@ CREATE TABLE IF NOT EXISTS Reservations (
 INSERT INTO Users (id, name, surname) VALUES
 (3, 'Serena', 'Ragaglia'),
 (4, 'Pierluca', 'Grasso'),
-(5, 'Federico', 'De Lullo')
+(5, 'Federico', 'De Lullo');
+
+INSERT INTO Labels (id, name, label_description) VALUES
+(1, 'Car spot', "Park spot for cars"),
+(2, 'Motorbike spot', "Park spot for motorbikes"),
+(3, 'Handicap spot', "Park spot for handicap peoples");

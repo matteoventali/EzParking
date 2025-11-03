@@ -84,6 +84,9 @@ services:
     networks:
       ezparking_network:
         ipv4_address: 10.5.0.16
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
 
 networks:
