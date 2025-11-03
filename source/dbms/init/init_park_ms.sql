@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS Parking_Spots (
     rep_treshold                INT NOT NULL DEFAULT 0 CHECK (rep_treshold >= 0 AND rep_treshold <= 5),       
     slot_price                  DOUBLE NOT NULL CHECK (slot_price >= 0),
     user_id                     INT NOT NULL,
+    UNIQUE (user_id, spot_location),
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES Users(id)
 );
 

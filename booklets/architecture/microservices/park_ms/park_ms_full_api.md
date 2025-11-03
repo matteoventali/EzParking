@@ -107,7 +107,19 @@ http://10.5.0.12:5002/
 {
   "desc": "Parking spots retrieved successfully",
   "code": "0",
-  "parking_spots": []
+  "parking_spots": [
+    {
+      "spot_id": spot.id, 
+      "spot_name": spot.name, 
+      "latitude": lat, 
+      "longitude": lon,
+      "rep_treshold": spot.rep_treshold, 
+      "slot_price": spot.slot_price,
+      "available": available_flag // true: there are available time slots;
+                                  // false: there are not available time slots;
+                                  // none: there are not time slots associated to the parking spot with start_time > now.
+    }
+  ]
 }
 
 // 404 Not Found
