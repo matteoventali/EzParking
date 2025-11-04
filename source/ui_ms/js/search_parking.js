@@ -1,138 +1,74 @@
-document.addEventListener('DOMContentLoaded', function () 
-{
-    const searchBtn = document.getElementById('searchBtn');
-    const searchSection = document.getElementById('searchSection');
-    const parkingList = document.getElementById('parkingList');
-    const activePills = document.getElementById('activePills');
-    const loader = document.querySelector('.loader-section');
+document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("searchForm");
+            const searchSection = document.getElementById("searchSection");
+            const parkingList = document.getElementById("parkingList");
+            const searchBtn = document.getElementById("searchBtn");
+            const loaderSection = document.querySelector(".loader-section");
+      
+            const LOADER_MS = 3000;  
+            const POST_SHOW_DELAY = 250; 
 
-    // --- Generic dropdown logic  ---
-    const dropdowns = document.querySelectorAll('.dropdown');
-    dropdowns.forEach(drop => {
-        const toggle = drop.querySelector('.dropdown-toggle');
-        const panel = drop.querySelector('.dropdown-panel');
-
-        toggle.addEventListener('click', function (e) {
-            const isOpen = drop.classList.contains('open');
-            // Close other open dropdowns
-            document.querySelectorAll('.dropdown.open').forEach(d => {
-            if (d !== drop) {
-                d.classList.remove('open');
-                const t = d.querySelector('.dropdown-toggle');
-                if (t) t.setAttribute('aria-expanded', 'false');
+         
+            function applyPostSearchIfCards() {
+                const hasCard = parkingList && parkingList.querySelector(".parking-card") !== null;
+                if (!hasCard) return false;
+                searchSection.classList.add("is-raised");
+                parkingList.classList.add("visible");
+                
+                if (loaderSection) loaderSection.style.display = "none";
+                return true;
             }
+
+            
+            if (sessionStorage.getItem("searchAnimated") === "1") {
+                window.requestAnimationFrame(() => {
+                    const applied = applyPostSearchIfCards();
+                    
+                    sessionStorage.removeItem("searchAnimated");
+                   
+                });
+            }
+
+            
+            form.addEventListener("submit", (e) => {
+             
+                if (form.dataset.animating === "1") return;
+
+                e.preventDefault();
+
+             
+                sessionStorage.setItem("searchAnimated", "1");
+
+                form.dataset.animating = "1";
+                if (searchBtn) {
+                    searchBtn.disabled = true;
+                    searchBtn.setAttribute("aria-busy", "true");
+                }
+
+                
+                searchSection.classList.add("is-raised");
+
+                
+                if (loaderSection) {
+                    loaderSection.style.display = "block";
+                }
+         
+                parkingList.classList.remove("visible");
+
+               
+                setTimeout(() => {
+                    if (loaderSection) loaderSection.style.display = "none";
+
+                  
+                    parkingList.classList.add("visible");
+
+                 
+                    setTimeout(() => {
+                       
+                        form.submit();
+                    }, POST_SHOW_DELAY);
+
+                }, LOADER_MS);
             });
 
-            if (isOpen) {
-            drop.classList.remove('open');
-            toggle.setAttribute('aria-expanded', 'false');
-            } else {
-            drop.classList.add('open');
-            toggle.setAttribute('aria-expanded', 'true');
-            }
-            e.stopPropagation();
         });
-
-        if (panel) panel.addEventListener('click', e => e.stopPropagation());
-    });
-
-    // --- Pills refresh ---
-    function refreshPills() 
-    {
-        if (!activePills) return;
-        activePills.innerHTML = '';
-
-        const checkedFilters = Array.from(document.querySelectorAll('.dropdown#filtersDropdown input[type="checkbox"]:checked'));
-        checkedFilters.forEach(inp => {
-            const labelText = inp.closest('label')?.querySelector('.filter-label-text')?.textContent || inp.value;
-            const pill = document.createElement('div');
-            pill.className = 'pill';
-            pill.textContent = labelText;
-            activePills.appendChild(pill);
-        });
-
-        const selectedDistance = document.querySelector('.dropdown#distanceDropdown input[name="distance"]:checked');
-        if (selectedDistance) {
-            const labelText = selectedDistance.closest('label')?.querySelector('.filter-label-text')?.textContent || selectedDistance.value;
-            const pill = document.createElement('div');
-            pill.className = 'pill';
-            pill.textContent = `Distance: ${labelText}`;
-            activePills.appendChild(pill);
-        }
-
-        activePills.setAttribute('aria-hidden', activePills.children.length === 0 ? 'true' : 'false');
-    }
-
-    document.addEventListener('click', function () 
-    {
-        document.querySelectorAll('.dropdown.open').forEach(d => {
-            d.classList.remove('open');
-            const t = d.querySelector('.dropdown-toggle');
-            if (t) t.setAttribute('aria-expanded', 'false');
-        });
-    });
-
-    document.querySelectorAll('#filtersDropdown input[type="checkbox"]').forEach(cb => cb.addEventListener('change', refreshPills));
-    document.querySelectorAll('#distanceDropdown input[name="distance"]').forEach(r => {
-        r.addEventListener('change', function () {
-            const dd = document.getElementById('distanceDropdown');
-            if (dd) {
-            dd.classList.remove('open');
-            const t = dd.querySelector('.dropdown-toggle');
-            if (t) t.setAttribute('aria-expanded', 'false');
-            }
-            refreshPills();
-        });
-    });
-
-    refreshPills(); // init
-
-    // --- Search / loader logic---
-    if (!searchBtn || !searchSection || !parkingList) return;
-
-    let busy = false;
-    let loaderTimeoutId = null;
-    let showCardsTimeoutId = null;
-
-    searchBtn.addEventListener('click', function () {
-        // do not refresh again if already loaded
-        if (searchSection.classList.contains('is-raised') || busy) return;
-
-        busy = true;
-
-        // close open dropdowns
-        document.querySelectorAll('.dropdown.open').forEach(d => {
-            d.classList.remove('open');
-            const t = d.querySelector('.dropdown-toggle');
-            if (t) t.setAttribute('aria-expanded', 'false');
-        });
-
-        // show loader
-        if (loader) {
-            searchSection.classList.add('is-raised');
-            loader.style.display = 'block';
-            loader.setAttribute('aria-hidden', 'false');
-        }
-
-        // clean old timeouts
-        if (loaderTimeoutId) clearTimeout(loaderTimeoutId);
-        if (showCardsTimeoutId) clearTimeout(showCardsTimeoutId);
-
-        // after four seconds close loader and show results
-        loaderTimeoutId = setTimeout(() => {
-        if (loader) {
-            loader.style.display = 'none';
-            loader.setAttribute('aria-hidden', 'true');
-        }
-    
-        showCardsTimeoutId = setTimeout(() => {
-            parkingList.style.display = 'grid';
-            parkingList.classList.add('visible');
-            busy = false;
-            }, 280);
-        }, 2500);
-    });
-});
-
-
-
