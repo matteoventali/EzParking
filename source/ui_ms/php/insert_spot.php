@@ -84,7 +84,7 @@
                 </div>
 
                 <label for="filtersSelect">Filters:</label>
-                <select id="filtersSelect" name="filters[]" style="min-width:150px"; multiple>
+                <select class = "dropdown-toggle" id="filtersSelect" name="filters[]" style="min-width:150px"; multiple>
                     <?php echo $labels; ?>
                 </select>
 

@@ -112,13 +112,13 @@ if (count($_POST)) // If there is at least one parameter we must perform the sea
             <div class="controls">
                 <!-- Filters select -->
                 <label for="filtersSelect">Filters:</label>
-                <select id="filtersSelect" name="filters[]" style="min-width:150px" ; multiple>
+                <select class="dropdown-toggle" id="filtersSelect" name="filters[]" style="min-width:150px" ; multiple>
                     <?php echo $labels; ?>
                 </select>
 
                 <!-- Distance select -->
                 <label for="distanceSelect">Distance:</label>
-                <select id="distanceSelect" name="distance" style="min-width:120px;">
+                <select class="dropdown-toggle" id="distanceSelect" name="distance" style="min-width:120px;">
                     <option value="">-- Select --</option>
                     <option value="5">5 km</option>
                     <option value="10">10 km</option>
