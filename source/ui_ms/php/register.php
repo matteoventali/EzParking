@@ -10,7 +10,7 @@
     $ok_message = $error_message = null;
 
     // Triggering the registration only after a request for it
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') 
+    if ($_SERVER['REQUEST_METHOD'] === 'POST')
     {
         // Reading the fields
         $name = trim($_POST['name'] ?? '');
