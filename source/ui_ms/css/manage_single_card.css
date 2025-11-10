@@ -1,0 +1,131 @@
+:root {
+  --brand: #5e25a5;
+  --bg: #f7f6fb;
+  --text: #333;
+  --card-bg: #ffffff;
+  --shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+* {
+  margin: 0;
+  padding: 0;
+  
+  font-family: "Poppins", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+
+  background: linear-gradient(180deg, var(--bg), #ffffff);
+  padding: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #111;
+}
+
+.container {
+  background: var(--card-bg);
+  box-shadow: var(--shadow);
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 600px;
+  width: 100%;
+  animation: fadeIn 0.4s ease-in-out;
+    max-width: 700px;
+  margin: 0 auto; /* centra orizzontalmente */
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+
+h1, h2, h3 {
+  color: var(--brand);
+  margin-bottom: 1rem;
+}
+
+.parking-info {
+  margin-bottom: 2rem;
+}
+
+.details p {
+  margin: 0.4rem 0;
+  font-size: 1rem;
+}
+
+.timeslot-section {
+  border-top: 1px solid #ddd;
+  padding-top: 1.5rem;
+}
+
+.timeslot-list {
+  list-style: none;
+  margin-bottom: 1.5rem;
+}
+
+.timeslot-list li {
+  background: var(--bg);
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  box-shadow: var(--shadow);
+}
+
+.add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+input[type="time"] {
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: var(--brand);
+  color: #fff;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 0.6rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #4c1f88;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .container {
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+}
