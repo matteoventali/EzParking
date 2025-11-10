@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const slots = slotData[date];
         slotContainer.innerHTML = "";
 
-        if (!slots || slots.length === 0) 
+        if (!slots || slots.length === 0)
         {
             const msg = document.createElement("div");
             msg.className = "no-slots-message";
@@ -72,12 +72,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function changeDate(days) 
     {
-        const date = new Date(dateInput.value);
-        date.setDate(date.getDate() + days);
-        const newDateStr = date.toISOString().split('T')[0];
+        const dateInput = document.getElementById("date");
+        const minDateStr = dateInput.getAttribute("min");
+        const minDate = new Date(minDateStr);
+        const currentDate = new Date(dateInput.value);
+        const newDate = new Date(currentDate);
+        newDate.setDate(currentDate.getDate() + days);
+
+        if (newDate < minDate) 
+        {
+            dateInput.value = minDateStr;
+            updateSlots(minDateStr);
+            return;
+        }
+
+        const newDateStr = newDate.toISOString().split('T')[0];
         dateInput.value = newDateStr;
         updateSlots(newDateStr);
     }
+
 
     prevDayBtn.addEventListener("click", () => changeDate(-1));
     nextDayBtn.addEventListener("click", () => changeDate(1));

@@ -133,6 +133,16 @@
     <script>
         const slotData = <?php echo json_encode($slots, JSON_PRETTY_PRINT); ?>;
         const pricePerHour = <?php echo $spot["slot_price"]; ?>;
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const dateInput = document.getElementById("date");
+
+            // Get today's date in YYYY-MM-DD format
+            const today = new Date().toISOString().split("T")[0];
+
+            // Set the minimum selectable date
+            dateInput.setAttribute("min", today);
+        });
     </script>
     <script src="../js/book_parking.js"></script>
 </body>
