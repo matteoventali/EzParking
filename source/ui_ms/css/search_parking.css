@@ -385,7 +385,7 @@ main {
 
 /* Evita che il dropdown esca dai bordi del container */
 @media (max-width: 768px) {
-  .controls {
+  .control {
     position: relative;
   }
 
