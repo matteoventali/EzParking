@@ -380,24 +380,3 @@ main {
 }
 
 
-
-
-
-/* Evita che il dropdown esca dai bordi del container */
-@media (max-width: 768px) {
-  .control {
-    position: relative;
-  }
-
-  .controls select {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  /* Se è un multiple select, limitiamo anche l’altezza */
-  .controls select[multiple] {
-    height: auto;
-    max-height: 160px;
-    overflow-y: auto;
-  }
-}
