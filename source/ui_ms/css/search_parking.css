@@ -331,56 +331,73 @@ main {
 }
 
 
-/* --- Normalize inputs to custom circular controls --- */
-.dropdown-panel input[type="checkbox"],
-.dropdown-panel input[type="radio"] {
-  /* rimuove l'aspetto nativo */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
 
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 2px solid #cfc7e8; /* bordo non selezionato */
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  position: relative;
-  cursor: pointer;
-  background-clip: padding-box;
+/* Tablets (max 768px) */
+@media (max-width: 768px) {
+  .search-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controls label {
+    margin-top: 0.5rem;
+  }
+
+  .controls select {
+    width: 100%;
+  }
+
+  .search-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
 }
 
-/*if checked, the button is colored*/
-.dropdown-panel input[type="checkbox"]:checked,
-.dropdown-panel input[type="radio"]:checked {
-  border-color: #5e25a5;
-  background-color: #5e25a5;
+/* Smartphones (max 480px) */
+@media (max-width: 480px) {
+  .search-section {
+    padding: 1rem;
+  }
+
+  .search-input input {
+    font-size: 0.95rem;
+  }
+
+  .controls label {
+    font-size: 0.85rem;
+  }
+
+  .controls select,
+  .search-btn {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
 }
 
-/*dot inside button*/
-.dropdown-panel input[type="checkbox"]:checked::after,
-.dropdown-panel input[type="radio"]:checked::after {
-  content: "";
-  display: block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: white;
-  position: relative;
-  top: 2px;
-  left: 2px;
-}
 
-/* focus ring */
-.dropdown-panel input[type="checkbox"]:focus,
-.dropdown-panel input[type="radio"]:focus {
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(94,37,165,0.08);
-}
 
-.filter-item .filter-label-text {
-  margin-left: 0.45rem;
+
+
+/* Evita che il dropdown esca dai bordi del container */
+@media (max-width: 768px) {
+  .controls {
+    position: relative;
+  }
+
+  .controls select {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Se è un multiple select, limitiamo anche l’altezza */
+  .controls select[multiple] {
+    height: auto;
+    max-height: 160px;
+    overflow-y: auto;
+  }
 }
