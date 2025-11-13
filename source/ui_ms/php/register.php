@@ -107,6 +107,10 @@
                 <label for="phone">Phone</label>
                 <input type="text" id="phone" class="login-input" name="phone" required>
             </div>
+            <div class="input-group">
+                <label for="card">Credit Card Number</label>
+                <input type="text" id="card" class="login-input" name="card" required>
+            </div>                     
             <button type="submit" class="login-button">Register</button>
             <p class="error-message" id="error-message">
                 <?php if(isset($error_message)) echo $error_message; else echo '';  ?>

@@ -97,11 +97,14 @@
         <label for="phone">Phone</label>
         <input type="tel" id="phone" name="phone" value="<?php echo $_SESSION['user']['phone'];?>" required>
 
+        <label for="card">Credit Card Number</label>
+        <input type="text" id="card" name="card" value="" required>    
+        
         <label for="password">Insert new Password</label>
         <input type="password" id="new" name="password" value="" required>
 
         <label for="password">Confirm new Password</label>
-        <input type="password" id="confirm" name="password" value="" required>
+        <input type="password" id="confirm" name="password" value="" required>   
 
         <button id="edit-button" type="submit" class="save-btn" >
           <i class="fas fa-check"></i> Save Changes

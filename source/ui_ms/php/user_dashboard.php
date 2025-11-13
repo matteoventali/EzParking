@@ -64,6 +64,10 @@
           <span><strong>Phone: </strong><?php echo $_SESSION['user']['phone']; ?></span>
         </div>
         <div class="info-item">
+          <i class="fas fa-phone"></i>
+          <span><strong>Credit Card Number: </strong></span>
+        </div>        
+        <div class="info-item">
           <i class="fas "></i>
           <span><strong>Role: </strong><?php echo strtoupper($_SESSION['role']); ?></span>
         </div>
