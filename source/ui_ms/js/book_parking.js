@@ -62,11 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        const hours = selectedSlots[0].dataset.duration ? parseInt(selectedSlots[0].dataset.duration) : 0;
+        const hours = selectedSlots[0].dataset.duration ? selectedSlots[0].dataset.duration : 0;
         const cost = hours * pricePerHour;
 
         totalCostEl.textContent = hours > 0
-            ? `Total cost: €${cost.toFixed(2)} (${hours} hour${hours !== 1 ? "s" : ""})`
+            ? `Total cost: €${cost.toFixed(2)}`
             : `Total cost: €0.00`;
     }
 

@@ -9,11 +9,19 @@
         header("Location: " . $homepage);
 
     // If we haven't the id of the parking redirecting on the homepage
-    if ( ! isset($_GET["id"]) || ! is_numeric($_GET["id"]) )
+    $id = null;
+    if ( ! isset($_GET["id"]) && ! isset($_POST["id"]) )
         header("Location: " . $homepage);
+    else if ( isset($_GET["id"]) )
+        $id = $_GET["id"];
+    else
+        $id = $_POST["id"];
+
+    // Informative variables
+    $error_message = null;
 
     // Gets all the info of the parking 
-    $api_url = compose_url($protocol, $socket_park_ms, "/parking_spots/" . $_GET["id"]);
+    $api_url = compose_url($protocol, $socket_park_ms, "/parking_spots/" . $id);
     $response_park = perform_rest_request('GET', $api_url, null, null);
 
     if ( $response_park["body"]["code"] != "0" )
@@ -22,10 +30,14 @@
 
     // Convert the location in address
     $address = get_address_from_coordinates(floatval($spot["latitude"]), floatval($spot["longitude"]));
-    
+
+    // Get the timeslot available for the parking
+    $api_url = compose_url($protocol, $socket_park_ms, "/time_slots/" . $id);
+    $response_slot = perform_rest_request('GET', $api_url, null, null);
+
     // Setting the information to be visualizaed client side
     $slots = [];
-    foreach ( $spot["time_slots"] as $slot )
+    foreach ( $response_slot["body"]["available_slots"] as $slot )
     {
         $date = $slot['slot_date'];
         $timeRange = "{$slot['start_time']}-{$slot['end_time']}";
@@ -35,12 +47,36 @@
         if ( !isset($slots[$date]) )
             $slots[$date] = [];
         
-
         $slots[$date][] = [
             "id" => $slot['id'],
             "time" => $timeRange,
             "duration" => $duration
         ];
+    }
+
+    // Veryfing if we have to add a new reservation
+    if ( count($_POST) )
+    {
+        // Preparing the payload for the microservice
+        $payload = [
+            "slot_id" => intval($_POST["time_slot"][0]),
+            "car_plate" => strtoupper($_POST["plate"]),
+            "user_id" => intval($_SESSION["user"]["id"])
+        ];
+
+        // Perform the request to the microservice
+        $api_url = compose_url($protocol, $socket_park_ms, "/reservations");
+        $response = perform_rest_request('POST', $api_url, $payload, null);
+
+        if ( $response["status"] == 201 )
+        {
+            // Adding the payment in a pending state until the reservation is not accepted or rejected
+
+            // Changing pages
+            header("Location: ../php/manage_my_bookings.php");
+        }
+        else // Showing the error into the page
+            $error_message = $response["body"]["desc"];
     }
 ?>
 
@@ -71,23 +107,29 @@
           <p><strong>📍 Location: </strong><?php echo $address; ?></p>
         </div>
         <div class="garage-column">
-          <p><strong>⭐ Rating Threshold: </strong><?php echo $spot["rep_treshold"]; ?>/ 5</p>
+          <p><strong>⭐ Rating Threshold: </strong><?php echo $spot["rep_treshold"]; ?> / 5</p>
         </div>
         <div class="garage-column">
           <p><strong>💰 Price: </strong>€<?php echo $spot["slot_price"]; ?> / hour</p>
         </div>
       </div>
+
+        <p class="error-message" id="error-message" style="color:red; text-align:center">
+            <?php if(isset($error_message)) echo $error_message; else echo '';  ?>
+        </p>
     </section>
 
     <section class="card booking-form">
       <h2>Book Your Spot</h2>
-      <form action="../php/perform_payment.php" method="POST" id="bookingForm">
+      <form action="../php/book_parking.php" method="POST" id="bookingForm">
 
         <div class="calendar-wrapper">
           <button type="button" id="prevDay" class="nav-day-btn"><i class="fas fa-chevron-left"></i></button>
           <input type="date" id="date" name="date" required value="<?php echo date('Y-m-d'); ?>">
           <button type="button" id="nextDay" class="nav-day-btn"><i class="fas fa-chevron-right"></i></button>
         </div>
+
+        <input type="hidden" name="id" value="<?php echo $id; ?>" required>
 
         <div class="time-slot-selection">
           <br>
