@@ -69,8 +69,7 @@
     />
     <script
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        crossorigin=""
-    ></script>
+        crossorigin=""></script>
     <script src="../js/map_insert.js" type="text/javascript"></script>
     <script type="text/javascript">
         function checkPosition()
@@ -88,7 +87,7 @@
     
 </head>
 
-<body>
+<body style="background: linear-gradient(180deg, var(--bg), #ffffff); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;">
     <?php
         $nav = generate_navbar($_SESSION['role']);
         echo $nav;

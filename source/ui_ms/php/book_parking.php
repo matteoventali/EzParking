@@ -119,6 +119,51 @@
         </p>
     </section>
 
+    <section class="card garage-info reviews-section">
+      <h1>Reviews</h1>
+      <div class="review-box">
+        <div class="garage-details-single-column">
+          <div class="review-column">
+              <div class="review-header">
+                <span> <strong>User:</strong> email</span>
+                <span> <strong>Stars:</strong> stars</span>          
+              </div>   
+              <p class="review-text">Buono</p>       
+          </div>
+        </div>
+        <div class="garage-details-single-column">
+          <div class="review-column">
+              <div class="review-header">
+                <span> <strong>User:</strong> email</span>
+                <span> <strong>Stars:</strong> stars</span>          
+              </div>   
+              <p class="review-text">Utente maleducato!</p>       
+          </div>
+        </div>
+        <div class="garage-details-single-column">
+          <div class="review-column">
+              <div class="review-header">
+                <span> <strong>User:</strong> email</span>
+                <span> <strong>Stars:</strong> stars</span>          
+              </div>   
+              <p class="review-text">No</p>       
+          </div>
+        </div>
+        <div class="garage-details-single-column">
+          <div class="review-column">
+              <div class="review-header">
+                <span> <strong>User:</strong> email</span>
+                <span> <strong>Stars:</strong> stars</span>          
+              </div>   
+              <p class="review-text">Bello</p>       
+          </div>
+        </div>  
+      </div>                
+        <p class="error-message" id="error-message" style="color:red; text-align:center">
+            <?php if(isset($error_message)) echo $error_message; else echo '';  ?>
+        </p>
+    </section>    
+
     <section class="card booking-form">
       <h2>Book Your Spot</h2>
       <form action="../php/book_parking.php" method="POST" id="bookingForm">

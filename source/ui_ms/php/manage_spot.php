@@ -63,12 +63,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Parking Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/navbar.css" />
     <link rel="stylesheet" href="../css/manage_single_card.css" />
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body>
+<body style="background: linear-gradient(180deg, var(--bg), #ffffff);">
    <?php
         $nav = generate_navbar($_SESSION['role']);
         echo $nav;
@@ -90,7 +91,7 @@
                 <h3>Add New Time Slot</h3>
                 <div class="form-group">
                     <label for="slot_date">Date</label>
-                    <input name="slot_date" type="date" id="slot_date" required />
+                    <input class="slot-date" name="slot_date" type="date" id="slot_date" required />
                 </div>
                 <div class="form-group">
                     <label for="start_time">Start Time</label>

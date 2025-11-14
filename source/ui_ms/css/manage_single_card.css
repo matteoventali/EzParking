@@ -6,39 +6,11 @@
   --shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-
-
-* {
-  margin: 0;
-  padding: 0;
-  
-  font-family: "Poppins", sans-serif;
-}
-
-html,
-body {
-  height: 100%;
-  margin: 0;
-}
-
-body {
-  display: flex;
-
-  background: linear-gradient(180deg, var(--bg), #ffffff);
-  padding: 0;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #111;
-}
-
 .container {
   background: var(--card-bg);
   box-shadow: var(--shadow);
   border-radius: 1rem;
   padding: 2rem;
-  max-width: 600px;
   width: 100%;
   animation: fadeIn 0.4s ease-in-out;
     max-width: 700px;
@@ -90,7 +62,21 @@ h1, h2, h3 {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  width: 100%;
+  padding: 1px;
 }
+
+.form-group label{
+  font-weight: bold;
+}
+
+.form-group input[type="date"]{
+  height: 50px;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  padding: 0.6rem;
+}
+
 
 input[type="time"] {
   padding: 0.6rem;
@@ -123,6 +109,7 @@ input[type="time"] {
 @media (max-width: 600px) {
   .container {
     padding: 1.5rem;
+    width: 90%;
   }
 
   h1 {
