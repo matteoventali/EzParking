@@ -224,7 +224,7 @@
     }
 
     // Function to generate labels select content
-    function get_labels_content()
+    /*function get_labels_content()
     {
         global $protocol, $socket_park_ms;
         
@@ -242,12 +242,40 @@
             $description = htmlspecialchars($label['description'] ?? '');
 
             $text = "$name -- $description";
-
-            // Genera il tag option
             $options_html .= "<option value=\"$id\">$text</option>\n";
         }
 
         return $options_html;
+    }*/
+
+    function get_labels_content()
+    {
+        global $protocol, $socket_park_ms;
+        
+        $api_url = compose_url($protocol, $socket_park_ms, '/labels');
+        $response = perform_rest_request('GET', $api_url, null, null);
+        $html = '';
+
+        if ( $response["body"]["code"] != "0" )
+            return $html;
+
+        foreach ($response["body"]["labels"] as $label) 
+        {
+            $id = htmlspecialchars($label['id'] ?? '');
+            $name = htmlspecialchars($label['name'] ?? '');
+            $description = htmlspecialchars($label['description'] ?? '');
+
+            $text = "$name -- $description";
+
+            $html .= "
+                    <label style=\"display:block; margin-bottom:6px;\">
+                    <input type=\"checkbox\" name=\"filters[]\" value=\"$id\">
+                    $text
+                    </label>
+            ";
+        }
+
+        return $html;
     }
 
     // Function to get hours difference

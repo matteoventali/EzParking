@@ -51,12 +51,15 @@
             </div>
 
             <div class="controls">
-                <!-- Filters select -->
+                <!--
                 <label for="filtersSelect">Filters:</label>
                 <select class="dropdown-toggle" id="filtersSelect" name="filters[]" style="min-width:150px" ; multiple>
-                    <?php echo $labels; ?>
-                </select>
-
+                    KEEP THIS COMMENT FOR BACKUP!
+                </select> -->
+                
+                <label for="filtersSelect">Filters:</label>
+                <?php echo $labels; ?>
+                
                 <!-- Distance select -->
                 <label for="distanceSelect">Distance:</label>
                 <select class="dropdown-toggle" id="distanceSelect" name="distance" style="min-width:120px;">
