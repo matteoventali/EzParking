@@ -1045,13 +1045,14 @@ def update_reservation(res_id):
 
     try:
         data = request.get_json()
-        if not data or "new_status" not in data:
+        if not data or "new_status" not in data or "user_id" not in data: 
             return jsonify({
-                'desc': 'Missing new_status in request body',
+                'desc': 'Missing new_status or user_id in request body',
                 'code': '1'
             }), 400
 
         new_status = data["new_status"].lower().strip()
+        user_id = data["user_id"]
 
         valid_statuses = ["pending", "confirmed", "cancelled", "completed"]
         if new_status not in valid_statuses:
@@ -1075,18 +1076,32 @@ def update_reservation(res_id):
                     'code': '3'
                 }), 404
 
+            slot_id = reservation.slot_id
+            slot = AvailabilitySlot.query.filter_by(id=slot_id).with_for_update().first()
+            spot_id = slot.parking_spot_id
+            spot = ParkingSpot.query.filter_by(id=spot_id).with_for_update().first()
+
+            resident_id = spot.user_id
+            driver_id = reservation.user_id
+            allowed_users = [resident_id, driver_id]
+
+            if user_id not in allowed_users:
+                return jsonify({
+                    'desc': "operation not allowed: neither driver nor resident.",
+                    'code': '4'
+                }), 400
             current_status = reservation.reservation_status
 
             if new_status == current_status:
                 return jsonify({
                     'desc': f"Reservation already in status '{new_status}'",
-                    'code': '4'
+                    'code': '5'
                 }), 200
 
             if new_status not in allowed_transitions.get(current_status, []):
                 return jsonify({
                     'desc': f"Transition from '{current_status}' to '{new_status}' not allowed",
-                    'code': '5'
+                    'code': '6'
                 }), 400
 
             reservation.reservation_status = new_status
