@@ -159,9 +159,6 @@
           </div>
         </div>  
       </div>                
-        <p class="error-message" id="error-message" style="color:red; text-align:center">
-            <?php if(isset($error_message)) echo $error_message; else echo '';  ?>
-        </p>
     </section>    
 
     <section class="card booking-form">
