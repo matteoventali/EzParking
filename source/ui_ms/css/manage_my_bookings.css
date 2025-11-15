@@ -1,6 +1,3 @@
-
-
-
 :root {
     --primary-color: #5e25a5; 
     --primary-dark: #4a1c86; 
@@ -194,9 +191,6 @@ main {
     border: 1px solid var(--completed-color);
 }
 
-
-
-
 .delete-booking-btn {
     background: none;
     border: none;
@@ -226,7 +220,43 @@ main {
     background-color: var(--cancelled-bg);
 }
 
+.map-booking-btn {
+    background: var(--primary-color);
+    border: none;
+    cursor: pointer;
+    color: var(--white);
+    font-size: 1.2rem;
+    padding: 8px;
+    border-radius: 50%;
+    transition: color 0.2s, background-color 0.2s;
+    line-height: 1;
+}
 
+.map-booking-btn:hover {
+    background-color: var(--primary-dark);
+    color: var(--white);
+}
+
+#closeMapBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+    z-index: 1001;
+}
+
+#mapModal .modal-content {
+    position: relative;
+}
+
+#mapContainer {
+    width: 100%;
+    height: 400px;
+}
 
 
 @media (max-width: 480px) { 

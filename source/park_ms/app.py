@@ -882,7 +882,7 @@ def search_parking_spot():
 def get_reservations(user_id):
 
     try:
-        reservations = Reservation.query.filter_by(user_id=user_id).all()
+        reservations = Reservation.query.filter_by(user_id=user_id).order_by(Reservation.reservation_status, Reservation.reservation_ts.desc()).all()
         if not reservations:
             return jsonify({
                 "desc": "No reservations found for this user",
@@ -898,11 +898,17 @@ def get_reservations(user_id):
         for res in reservations:
             slot = slot_map.get(res.slot_id)
             results.append({
-                "res_id": res.id,
+                "id": res.id,
                 "user_id": res.user_id,
                 "ts": res.reservation_ts.isoformat(),
                 "status": res.reservation_status,
                 "slot_id": res.slot_id,
+                "plate": res.car_plate,
+                "spot_name": res.slot.parking_spot.name,
+                "spot_latitude": to_shape(res.slot.parking_spot.spot_location).y,
+                "spot_longitude": to_shape(res.slot.parking_spot.spot_location).x,
+                "resident_name": res.slot.parking_spot.owner.name,
+                "resident_surname": res.slot.parking_spot.owner.surname,
                 "start_time": slot.start_time.strftime("%H:%M") if slot else None,
                 "end_time": slot.end_time.strftime("%H:%M") if slot else None,
                 "slot_date": slot.slot_date.isoformat() if slot else None

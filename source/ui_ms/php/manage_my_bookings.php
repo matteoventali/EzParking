@@ -1,3 +1,56 @@
+<?php
+    require_once "./config.php";
+    require_once "./functions.php";
+
+    // We must be logged in to access this page
+    if ( !verify_session() )
+        header("Location: " . $starting_page);
+    else if ( $_SESSION['role'] != 'user' ) // Redirect the user to the correct homepage
+        header("Location: " . $homepage);
+
+    // Get the bookings of the user logged in
+    $api_url = compose_url($protocol, $socket_park_ms, '/reservations/users/' . $_SESSION["user"]["id"]);
+    $response = perform_rest_request('GET', $api_url, null, null);
+
+    // Output variable
+    $html = '';
+
+    // Checking errors
+    if ( $response["status"] == 200 && $response["body"]["code"] == "0" )
+    {
+        // Reading the template of the card
+        $card_template = file_get_contents('../html/my_booking_card.html');
+
+        // Preparing the content
+        foreach ( $response["body"]["reservations"] as $reservation )
+        {
+            // Replace the info
+            $card = str_replace("%PARKING_NAME%", $reservation["spot_name"], $card_template);
+            $card = str_replace("%PLATE%", $reservation["plate"], $card);
+            $card = str_replace("%LATITUDE%", $reservation["spot_latitude"], $card);
+            $card = str_replace("%LONGITUDE%", $reservation["spot_longitude"], $card);
+
+            if ( $reservation["status"] === "pending" )
+                $card = str_replace("%BUTTON%", '<button class="delete-booking-btn" onclick="setCurrentReservation(%ID%)" title="Cancel Reservation">
+                                                        <i class="fas fa-trash-alt"></i></button>', $card);
+            else
+                $card = str_replace("%BUTTON%", '', $card);
+            
+            $card = str_replace("%STATUS%", $reservation["status"], $card);
+            $card = str_replace("%ID%", $reservation["id"], $card);
+            $card = str_replace("%RESIDENT%", $reservation["resident_name"] . " " . $reservation["resident_surname"], $card);
+
+            $card = str_replace("%DATE%", $reservation["slot_date"], $card);
+            $card = str_replace("%START%", $reservation["start_time"], $card);
+            $card = str_replace("%END%", $reservation["end_time"], $card);
+
+            $html .= $card; 
+        }
+    }
+    else
+        $html = '<p>No reservation has been found</p>';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,13 +63,23 @@
     <link rel="stylesheet" href="../css/popup.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Map setup --> 
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        crossorigin=""
+    />
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        crossorigin=""
+    ></script>
 </head>
 
 <body>
     <?php
-    include './functions.php';
-    $nav = generate_navbar('user');
-    echo $nav;
+        $nav = generate_navbar($_SESSION["role"]);
+        echo $nav;
     ?>
 
     <main>
@@ -30,6 +93,9 @@
         </a>
 
         <section class="booking-list-container">
+            <?php echo $html; ?>
+            <!--
+
             <div class="booking-card confirmed" data-booking-id="B101">
                 <div class="card-details">
                     <h2 class="garage-name">Central Park Garage</h2>
@@ -71,20 +137,7 @@
                 </div>
             </div>
 
-
-            <div class="booking-card completed" data-booking-id="B101">
-                <div class="card-details">
-                    <h2 class="garage-name">Central Park Garage</h2>
-                    <p class="car-license">Vehicle Plate: **RM123AB**</p>
-                    <p class="garage-address"><i class="fas fa-location-dot"></i> Via Colonna, 15, Rome</p>
-                </div>
-                <div class="card-status">
-                    <span class="status-indicator">Completed</span>
-                    <button class="delete-booking-btn" title="Cancel Reservation">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </div>
-            </div>
+            !-->
         </section>
     </main>
 
@@ -108,21 +161,24 @@
 
             <div class="modal-buttons">
                 <button class="btn btn-cancel" id="cancelBtn">Cancel</button>
-                <button class="btn btn-confirm" id="confirmBtn">Confirm</button>
+                <button class="btn btn-confirm" id="confirmBtn" onclick="performDelete();">Confirm</button>
             </div>
         </div>
     </div>
 
+    <!-- MAP -->
+    <div id="mapModal" class="modal-overlay">
+        <div class="modal-backdrop"></div>
+            <div class="modal-content map-modal-content">
+            <button class="modal-close-btn" id="closeMapBtn">&times;</button>
+            <div id="mapContainer" style="height: 500px; width: 100%; border-radius: 10px;"></div>
+        </div>
+    </div>
+
     <?php
-    $footer = file_get_contents(FOOTER);
-    echo $footer;
+        $footer = file_get_contents(FOOTER);
+        echo $footer;
     ?>
+    <script src="../js/popup.js"></script>
 </body>
-
-
-<script src="../js/popup.js"></script>
-
-
-
-
 </html>

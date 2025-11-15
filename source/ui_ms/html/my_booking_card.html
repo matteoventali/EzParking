@@ -1,0 +1,19 @@
+<div class="booking-card %STATUS%" data-booking-id="%ID%">
+    <div class="card-details">
+        <h2 class="garage-name">%PARKING_NAME%</h2>
+        <p class="car-license">Plate: %PLATE%</p>
+        <p class="car-license">Resident: %RESIDENT%</p>
+        <p class="car-license">On %DATE% from %START% to %END%</p>
+        <p class="garage-address"><i class="fas fa-location-dot"></i> Lat: %LATITUDE% Long: %LONGITUDE%</p>
+    </div>
+    <div class="card-status">
+        <span class="status-indicator">%STATUS%</span>
+        <button class="map-booking-btn" title="Show map" 
+                data-lat="%LATITUDE%" data-lon="%LONGITUDE%">
+            <i class="fas fa-map-marker-alt"></i>
+        </button>
+        
+        %BUTTON%
+        <!-- NEW BUTTON SHOW MAP -->
+    </div>
+</div>
