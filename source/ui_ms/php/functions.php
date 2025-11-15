@@ -268,7 +268,7 @@
             $text = "$name -- $description";
 
             $html .= "
-                    <label style=\"display:block; margin-bottom:6px;\">
+                    <label class=\"filter-item\" style=\"display:block; margin-bottom:6px;\">
                     <input type=\"checkbox\" name=\"filters[]\" value=\"$id\">
                     $text
                     </label>

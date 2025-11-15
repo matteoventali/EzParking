@@ -79,13 +79,13 @@
     width: 100%;
 }
 
-@media screen and (max-width:390px) {
+@media screen and (max-width:1024px) {
     .navbar__container{
         display: flex;
         justify-content: space-between;
         height: 80px;
         z-index: 1;
-        /*max-width: 1024px;*/
+        max-width: 1024px;
         width: 100%;       
         padding: 0;
     }

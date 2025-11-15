@@ -14,13 +14,12 @@ main {
   margin: 0;
 }
 
-/* ---------- Search section ---------- */
+/* Search section */
 .search-section {
   width: 100%;
   display: flex;
   justify-content: center;
   padding: 1rem;
-
   margin-top: 12rem;
   position: relative;
   z-index: 10;
@@ -30,6 +29,7 @@ main {
   width: 100%;
   max-width: 980px;
   display: flex;
+  flex-direction: row;
   gap: 0.75rem;
   align-items: center;
   padding: 0 0.5rem;
@@ -64,8 +64,9 @@ main {
 /* Controls: dropdowns, buttons, etc. */
 .controls {
   display: flex;
-  gap: 0.5rem;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
 }
 
 /* Dropdown */
@@ -86,12 +87,21 @@ main {
   font-weight: 600;
   cursor: pointer;
   user-select: none;
+  font-size: medium;
 }
 
 .dropdown-toggle:focus {
   box-shadow: 0 0 0 4px rgba(94,37,165,0.08);
   outline: none;
+}
 
+#filtersDropdown .dropdown-toggle i {
+    transition: transform 0.25s ease;
+}
+
+/*to rotate the arrow when the curtain is open*/
+#filtersDropdown.open .dropdown-toggle i {
+    transform: rotate(180deg);
 }
 
 /* Dropdown panel (hidden / shown via `.open`) */
@@ -110,6 +120,8 @@ main {
 
 .dropdown.open .dropdown-panel {
   display: block;
+  overflow-y: scroll;
+  height: 10rem;
 }
 
 /* Filters inside dropdown */
@@ -146,7 +158,7 @@ main {
   color: #222;
 }
 
-/* Label pills (outside dropdown, for quick view) */
+/* Label pills*/
 .label-pills {
   display: flex;
   gap: 0.5rem;
@@ -172,13 +184,14 @@ main {
   color: #fff;
   font-weight: 600;
   cursor: pointer;
+  font-size: medium;
 }
 
 .search-btn:active {
   transform: translateY(1px);
 }
 
-/* ---------- Parking Cards ---------- */
+/* Parking Cards*/
 .parking-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -243,7 +256,6 @@ main {
     font-size: 1.4rem;
   }
 
-  /* Manteniamo la barra di ricerca su una riga separata sopra i controlli */
   .search-wrapper {
         max-width: 94%;
         flex-direction: column;
@@ -251,37 +263,39 @@ main {
         margin-left: -33px;
   }
 
-  /* Controls diventano una riga orizzontale */
+  .search-input{
+    width: 100%;
+  }
+
   .controls {
     display: flex;
     flex-direction: row;
-    gap: 0.5rem;        /* distanza uniforme tra i controlli */
-    align-items: center;
-    justify-content: flex-start; /* non forziamo larghezza uguale */
-    flex-wrap: wrap;     /* se manca spazio, vanno a capo */
+    gap: 0.5rem;      
+    align-items: center;    
+    flex-wrap: nowrap;     
+    justify-content: center;
   }
 
-  /* Ogni controllo mantiene la propria larghezza naturale */
   .controls > .dropdown,
   .controls > .search-btn {
-    flex: 0 0 auto;      /* larghezza automatica secondo il contenuto */
+    flex: 0 0 auto;    
+    
   }
 
-  /* Dropdown toggle: larghezza automatica e caret a destra */
+  /* Dropdown toggle */
   .dropdown-toggle {
-    width: auto;
     justify-content: space-between;
-    white-space: nowrap; /* non andare a capo */
+    white-space: nowrap;
+    width: 100%;
   }
 
-  /* Dropdown panel: si apre sotto il toggle, larghezza minima come desktop */
+  /* Dropdown panel*/
   .dropdown-panel {
     left: 0;
     right: auto;
     min-width: 220px;
   }
 
-  /* Piccolo tweak: padding uniforme per toggle e search button */
   .search-btn,
   .dropdown-toggle {
     padding: 0.66rem 0.9rem;
@@ -304,10 +318,9 @@ main {
   will-change: transform, margin-bottom;
 }
 
-/* quando la barra si solleva, le diamo anche un piccolo margine inferiore */
 .search-section.is-raised {
-  transform: translateY(-8rem); /* sposta verso l'alto (regolabile) */
-  margin-bottom: 1.5rem; /* piccolo spazio tra barra e card */
+  transform: translateY(-8rem);
+  margin-bottom: 1.5rem; 
   box-shadow: 0 12px 30px rgba(19,12,44,0.08);
   margin-top: 8rem;
 
@@ -323,7 +336,6 @@ main {
   margin-top: -4rem;
 }
 
-/* quando diventa visibile */
 .parking-container.visible {
   display: grid !important;
   opacity: 1;
@@ -356,6 +368,12 @@ main {
     width: 100%;
     margin-top: 0.5rem;
   }
+
+  .dropdown-toggle{
+    width: 100%;
+    justify-content: space-between;
+    font-size: medium;
+  }
 }
 
 /* Smartphones (max 480px) */
@@ -376,6 +394,12 @@ main {
   .search-btn {
     font-size: 0.9rem;
     padding: 0.6rem;
+  }
+
+  .dropdown-toggle{
+    width: 100%;
+    justify-content: space-between;
+    font-size: medium;
   }
 }
 

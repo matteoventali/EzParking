@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="../css/search_parking.css" />
     <link rel="stylesheet" href="../css/style.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <script type="text/javascript">
         function set_hidden_fields() 
@@ -57,13 +58,21 @@
                     KEEP THIS COMMENT FOR BACKUP!
                 </select> -->
                 
-                <label for="filtersSelect">Filters:</label>
-                <?php echo $labels; ?>
-                
+                <div class="dropdown" id="filtersDropdown">
+                    <div class="dropdown-toggle">Filters<i class="fa-solid fa-angle-down"></i></div>
+
+                    <div class="dropdown-panel">
+                        <div class="filters">
+                            <?php echo $labels; ?>                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="label-pills" id="activeFilters"></div>
+                    
                 <!-- Distance select -->
-                <label for="distanceSelect">Distance:</label>
                 <select class="dropdown-toggle" id="distanceSelect" name="distance" style="min-width:120px;">
-                    <option value="">-- Select --</option>
+                    <option value="">Distance</option>
                     <option value="500">500 m</option>
                     <option value="1000">1 km</option>
                     <option value="5000">5 km</option>

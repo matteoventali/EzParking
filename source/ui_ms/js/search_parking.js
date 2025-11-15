@@ -1,3 +1,56 @@
+function setupFilterDropdown() {
+    const dropdown = document.getElementById("filtersDropdown");
+    const toggle = dropdown.querySelector(".dropdown-toggle");
+    const checkboxes = dropdown.querySelectorAll("input[type=checkbox]");
+    const pillsContainer = document.getElementById("activeFilters");
+
+    // Apri/chiudi tendina
+    toggle.addEventListener("click", () => {
+        dropdown.classList.toggle("open");
+    });
+
+    // Chiudi cliccando fuori
+    document.addEventListener("click", (e) => {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove("open");
+        }
+    });
+
+    // Gestione pills
+    checkboxes.forEach(cb => {
+        cb.addEventListener("change", () => {
+            updatePills();
+        });
+    });
+
+    function updatePills() {
+        pillsContainer.innerHTML = ""; // pulisci
+
+        checkboxes.forEach(cb => {
+            if (cb.checked) {
+                const pill = document.createElement("div");
+                pill.className = "pill";
+                pill.textContent = cb.value;
+
+                // cliccando la pill → rimuovi filtro
+                pill.addEventListener("click", () => {
+                    cb.checked = false;
+                    updatePills();
+                });
+
+                pillsContainer.appendChild(pill);
+            }
+        });
+    }
+}
+
+// Attiva tutto
+document.addEventListener("DOMContentLoaded", setupFilterDropdown);
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("searchForm");
     const searchSection = document.getElementById("searchSection");
@@ -72,5 +125,3 @@ document.addEventListener("DOMContentLoaded", () => {
         xhr.send(formData);
     });
 });
-
-
