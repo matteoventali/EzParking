@@ -1160,6 +1160,8 @@ def get_requests(user_id):
                 "driver_id": res.user_id,
                 "parking_spot_id": spot.id,
                 "parking_spot_name": spot.name,
+                "latitude": to_shape(spot.spot_location).y,
+                "longitude": to_shape(spot.spot_location).x,
                 "slot_id": slot.id,
                 "slot_date": slot.slot_date.isoformat(),
                 "start_time": slot.start_time.strftime("%H:%M"),
