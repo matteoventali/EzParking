@@ -58,7 +58,8 @@
     <title>Book Central Park Garage</title>
     <link rel="stylesheet" href="../css/navbar.css" />
     <link rel="stylesheet" href="../css/insert_spot.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/search_parking.css" />    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- Map setup --> 
@@ -84,6 +85,7 @@
                 return true;
         }
     </script>
+    <script src="../js/search_parking.js"></script>
     
 </head>
 
@@ -140,12 +142,24 @@
                     <small class="input-hint">Cost per hour for parking slot</small>
                 </div>
 
-                <label for="filtersSelect">Filters:</label>
-                <select class = "dropdown-toggle" id="filtersSelect" name="filters[]" style="min-width:150px"; multiple>
-                    <?php echo $labels; ?>
-                </select>
+            <!--   <label for="filtersSelect">Filters:</label>
+                <select class = "dropdown-toggle" id="filtersSelect" name="filters[]" style="min-width:150px"; multiple>                    
+                </select>-->
+            
+                <label> Parking Type:</label>
+                <div class="dropdown" id="filtersDropdown" style="width: 100%;">
+                    <div class="dropdown-toggle" style="width: 100%; justify-content: space-between"  >Select type of parking<i class="fa-solid fa-angle-down"></i></div>
 
-                <label> Location Map </label>
+                    <div class="dropdown-panel">
+                        <div class="filters">
+                            <?php echo $labels; ?>                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="label-pills" id="activeFilters"></div>                 
+
+                <label style="margin-top: 1rem;"> Location Map </label>
                 <div id="map" style="height: 500px; width: 100%; border-radius: 10px;"></div>
 
                 <input type="hidden" id="latitude" name="latitude" required>
