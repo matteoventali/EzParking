@@ -35,6 +35,8 @@
             $card = str_replace("%LATITUDE%", $req["latitude"], $card);
             $card = str_replace("%LONGITUDE%", $req["longitude"], $card);
             $card = str_replace("%STATUS%", strtoupper($req["status"]), $card);
+            $driver_fullname = htmlspecialchars($req["driver_name"] . ' ' . $req["driver_surname"]);
+            $card = str_replace("%DRIVER%", $driver_fullname, $card);
          
             $html .= $card;
         }
@@ -52,8 +54,20 @@
     <title>My Garages Dashboard</title>
     <link rel="stylesheet" href="../css/navbar.css" />
     <link rel="stylesheet" href="../css/manage_request.css" />
+    <link rel="stylesheet" href="../css/popup.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Map setup --> 
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        crossorigin=""
+    />
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        crossorigin=""
+    ></script>
 </head>
 
 
@@ -62,7 +76,6 @@
         $nav = generate_navbar($_SESSION["role"]);
         echo $nav;
     ?>
-
 
     <main class="container">
         <section class="panel" aria-labelledby="queue-title">
@@ -77,7 +90,7 @@
                             <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                             <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.5"></circle>
                         </svg>
-                        <input id="search" placeholder="Search by parking or street" aria-label="Search requests">
+                        <input id="search" placeholder="Search by parking or driver" aria-label="Search requests">
                     </div>
                     <div class="stats" aria-hidden="true">
                         <div class="stat">Total <strong id="total-count"><?php echo $count; ?></strong></div>
@@ -95,7 +108,29 @@
         echo $footer;
     ?>
 
+    <!-- MAP -->
+    <div id="mapModal" class="modal-overlay">
+        <div class="modal-backdrop"></div>
+            <div class="modal-content map-modal-content">
+            <button class="modal-close-btn" id="closeMapBtn">&times;</button>
+            <div id="mapContainer" style="height: 500px; width: 100%; border-radius: 10px;"></div>
+        </div>
+    </div>
+
+    <!-- USER INFO POPUP -->
+    <div id="userInfoModal" class="modal-overlay">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content user-modal-content">
+            <button class="modal-close-btn" id="closeUserInfoBtn">&times;</button>
+
+            <div id="userInfoContent">
+                <p>User info will appear here...</p>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/manage_request.js"></script>
+    <script src="../js/popup.js"></script>
 </body>
 
 </html>

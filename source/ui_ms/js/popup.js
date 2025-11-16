@@ -4,15 +4,23 @@ let currentReservationId = null;
     // DELETE MODAL
     const deleteBtns = document.querySelectorAll('.delete-booking-btn');
     const deleteModal = document.getElementById('deleteModal');
-    const deleteBackdrop = deleteModal.querySelector('.modal-backdrop');
-    const cancelBtn = document.getElementById('cancelBtn');
+
+    let deleteBackdrop = null;
+    let cancelBtn = null;
+
+    if (deleteModal) {
+        deleteBackdrop = deleteModal.querySelector('.modal-backdrop');
+        cancelBtn = document.getElementById('cancelBtn');
+    }
 
     function openDeleteModal() {
+        if (!deleteModal) return;
         deleteModal.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
 
     function closeDeleteModal() {
+        if (!deleteModal) return;
         deleteModal.classList.remove('active');
         document.body.style.overflow = '';
     }
@@ -27,12 +35,20 @@ let currentReservationId = null;
     // MAP MODAL
     const mapBtns = document.querySelectorAll('.map-booking-btn');
     const mapModal = document.getElementById('mapModal');
-    const mapBackdrop = mapModal.querySelector('.modal-backdrop');
-    const closeMapBtn = document.getElementById('closeMapBtn');
-    
+
+    let mapBackdrop = null;
+    let closeMapBtn = null;
+
+    if (mapModal) {
+        mapBackdrop = mapModal.querySelector('.modal-backdrop');
+        closeMapBtn = document.getElementById('closeMapBtn');
+    }
+
     let mapInstance = null;
 
     function openMapModal(lat, lon) {
+        if (!mapModal) return;
+
         mapModal.classList.add('active');
         document.body.style.overflow = 'hidden';
 
@@ -51,8 +67,11 @@ let currentReservationId = null;
     }
 
     function closeMapModal() {
+        if (!mapModal) return;
+
         mapModal.classList.remove('active');
         document.body.style.overflow = '';
+
         if (mapInstance) {
             mapInstance.remove();
             mapInstance = null;
@@ -70,14 +89,52 @@ let currentReservationId = null;
     if (closeMapBtn) closeMapBtn.addEventListener('click', closeMapModal);
     if (mapBackdrop) mapBackdrop.addEventListener('click', closeMapModal);
 
+    // USER INFO MODAL
+    const userInfoBtns = document.querySelectorAll('.user-info-btn');
+    const userInfoModal = document.getElementById('userInfoModal');
+    let userBackdrop = null;
+    let closeUserInfoBtn = null;
+
+    if (userInfoModal) {
+        userBackdrop = userInfoModal.querySelector('.modal-backdrop');
+        closeUserInfoBtn = document.getElementById('closeUserInfoBtn');
+    }
+
+    function openUserInfoModal(userId) {
+        if (!userInfoModal) return;
+
+        userInfoModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // Per ora non facciamo nulla, ma potresti fare una fetch AJAX qui
+    }
+
+    function closeUserInfoModal() {
+        if (!userInfoModal) return;
+
+        userInfoModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    userInfoBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const userId = btn.dataset.userid;
+            openUserInfoModal(userId);
+        });
+    });
+
+    if (closeUserInfoBtn) closeUserInfoBtn.addEventListener('click', closeUserInfoModal);
+    if (userBackdrop) userBackdrop.addEventListener('click', closeUserInfoModal);
+
+    // ESC key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            if (deleteModal.classList.contains('active')) closeDeleteModal();
-            if (mapModal.classList.contains('active')) closeMapModal();
+            if (deleteModal && deleteModal.classList.contains('active')) closeDeleteModal();
+            if (mapModal && mapModal.classList.contains('active')) closeMapModal();
         }
     });
 
-    // Expose globally
+    // Expose only if they exist
     window.DeleteModal = { open: openDeleteModal, close: closeDeleteModal };
     window.MapModal = { open: openMapModal, close: closeMapModal };
 })();

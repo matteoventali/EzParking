@@ -1,29 +1,29 @@
 const list = document.getElementById("requests-list");
 const totalCount = document.getElementById("total-count");
-const pendingCount = document.getElementById("pending-count");
-const empty = document.getElementById("empty");
+// Remove pendingCount if non usato
+// const pendingCount = document.getElementById("pending-count");
 
-function updateStats() 
-{
+function updateStats() {
     const cards = [...list.querySelectorAll(".card")];
     totalCount.textContent = cards.length;
+    /*
     const pend = cards.filter((c) =>
-    c.querySelector(".status").classList.contains("pending")
+        c.querySelector(".status").classList.contains("pending")
     ).length;
     pendingCount.textContent = pend;
+    */
 }
 
-document.getElementById("search").addEventListener("input", (e) => 
-{
+document.getElementById("search").addEventListener("input", (e) => {
     const q = e.target.value.trim().toLowerCase();
     const cards = [...list.querySelectorAll(".card")];
+
     cards.forEach((c) => {
-    const text = (
-        c.querySelector(".parking").textContent +
-        " " +
-        c.querySelector(".address").textContent
-    ).toLowerCase();
-    c.style.display = text.includes(q) ? "flex" : "none";
+        const parkingName = c.querySelector(".parking").textContent.toLowerCase();
+        const requesterName = c.querySelector(".requester-name").textContent.toLowerCase();
+        const matches = parkingName.includes(q) || requesterName.includes(q);
+        c.style.display = matches ? "flex" : "none";
     });
+
     updateStats();
 });

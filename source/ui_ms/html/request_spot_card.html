@@ -3,17 +3,28 @@
         <div class="title">
             <div>
                 <div class="parking">%SPOT_NAME%</div>
-                <div class="address">Lat: %LATITUDE% Long: %LONGITUDE%</div>
             </div>
             <div class="status pending" aria-live="polite">%STATUS%</div>
+            <div class="requester">
+                <span class="requester-name">Requestor driver: %DRIVER%</span>
+                <i class="fa-solid fa-circle-info user-info-btn"
+                data-userid="%REQUESTER_ID%"></i>
+            </div>
         </div>
         <div class="badges">
             <div class="badge">Time slot: %START% - %END%</div>
             <div class="badge">Booking date: %DATE%</div>
         </div>
     </div>
+
     <div class="actions">
         <button class="btn accept" data-action="accept">Accept</button>
         <button class="btn reject" data-action="reject">Reject</button>
+
+        <button class="btn map-booking-btn"
+                data-lat="%LATITUDE%"
+                data-lon="%LONGITUDE%">
+            <i class="fa-solid fa-map-location-dot"></i> Map
+        </button>
     </div>
 </article>

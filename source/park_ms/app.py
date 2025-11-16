@@ -1158,6 +1158,8 @@ def get_requests(user_id):
             results.append({
                 "reservation_id": res.id,
                 "driver_id": res.user_id,
+                "driver_name": res.user.name,
+                "driver_surname": res.user.surname,
                 "parking_spot_id": spot.id,
                 "parking_spot_name": spot.name,
                 "latitude": to_shape(spot.spot_location).y,
