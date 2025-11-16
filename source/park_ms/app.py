@@ -557,7 +557,7 @@ def get_availability_slots(park_id):
                 or_(
                     AvailabilitySlot.slot_date > today,
                     and_(
-                        AvailabilitySlot.slot_date >= today,
+                        AvailabilitySlot.slot_date == today,
                         AvailabilitySlot.start_time > current_time
                     )
                 )
