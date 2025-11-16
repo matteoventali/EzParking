@@ -531,6 +531,7 @@ def delete_parking_spot_label(spot_id, label_id):
 def get_availability_slots(park_id):
 
     try:
+
         spot = ParkingSpot.query.get(park_id)
         if not spot:
             return jsonify({
@@ -556,8 +557,8 @@ def get_availability_slots(park_id):
                 or_(
                     AvailabilitySlot.slot_date > today,
                     and_(
-                        AvailabilitySlot.slot_date == today,
-                        AvailabilitySlot.end_time > current_time
+                        AvailabilitySlot.slot_date >= today,
+                        AvailabilitySlot.start_time > current_time
                     )
                 )
             )
