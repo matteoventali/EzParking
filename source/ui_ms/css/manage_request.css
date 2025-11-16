@@ -335,3 +335,21 @@ h1 {
     width: 100%;
   }
 }
+
+.requester {
+    margin-top: 4px;
+    display: block;
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
+
+.user-info-btn {
+    cursor: pointer;
+    font-size: 18px;
+    color: #0077cc;
+}
+
+.user-info-btn:hover {
+    color: #005fa3;
+}
