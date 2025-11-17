@@ -5,6 +5,7 @@ from sqlalchemy import func, and_, or_
 from geoalchemy2.shape import to_shape
 from datetime import datetime, date
 from geoalchemy2.elements import WKTElement
+from zoneinfo import ZoneInfo
 
 
 # -------------------------------
@@ -163,7 +164,7 @@ def get_user_spots(user_id):
                             'code': 2, 
                             'parking_spots': []}), 404
         
-        now = datetime.now()
+        now = datetime.now(ZoneInfo("Europe/Rome"))
         today = date.today()
         current_time = now.time()
 
@@ -180,7 +181,7 @@ def get_user_spots(user_id):
                     AvailabilitySlot.slot_date > today,
                     and_(
                         AvailabilitySlot.slot_date == today,
-                        AvailabilitySlot.end_time > current_time
+                        AvailabilitySlot.start_time > current_time
                     )
                 )
             ).all()
@@ -196,17 +197,12 @@ def get_user_spots(user_id):
                 ).all()
 
                 active_slot_ids = {r.slot_id for r in active_reservations}
-
-                for fs in future_slots:
-                    if fs.slot_date == today and fs.start_time > current_time:
-                        available_today = True
-                        break
                 
                 if any(s.id not in active_slot_ids for s in future_slots):
-                    available_flag = True and available_today
+                    available_flag = True 
                 else:
                     available_flag = False
-
+                
             results.append({
                 'spot_id': spot.id, 
                 'spot_name': spot.name, 
@@ -627,13 +623,13 @@ def create_time_slot(park_id):
 
     try:
 
-        now = datetime.now()
+        now = datetime.now(ZoneInfo("Europe/Rome"))
         today = now.date()
         current_time = now.time()
 
-        if slot_date == today and current_time <= start_time:
+        if slot_date == today and current_time >= start_time:
             return jsonify({
-                'desc': "Start time must be greater than the current time.",
+                'desc': f"{current_time}, {start_time}",
                 'code': 1
             }), 400
         
@@ -858,7 +854,6 @@ def search_parking_spot():
                     "name": spot.name,
                     "rep_treshold": spot.rep_treshold,
                     "slot_price": spot.slot_price,
-                    "resident_id": spot.user_id,
                     "distance_meters": round(distance, 2),
                     "next_slot": {
                         "id": next_slot.id,
