@@ -149,6 +149,11 @@ def get_parking_spot(spot_id):
 def get_user_spots(user_id):
 
     try:
+
+        now = datetime.now()
+        today = now.date()
+        current_time = now.time()
+
         user = User.query.filter_by(id=user_id).first()
         if not user:
             return jsonify({'desc': 'The user doesn\'t exists', 'code': 1}), 404
@@ -192,8 +197,13 @@ def get_user_spots(user_id):
 
                 active_slot_ids = {r.slot_id for r in active_reservations}
 
+                for fs in future_slots:
+                    if fs.slot_date == today and fs.start_time > current_time:
+                        available_today = True
+                        break
+                
                 if any(s.id not in active_slot_ids for s in future_slots):
-                    available_flag = True
+                    available_flag = True and available_today
                 else:
                     available_flag = False
 
