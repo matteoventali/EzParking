@@ -45,9 +45,11 @@
         
         if ($response["body"]["code"] != "0")
             $html_result = "<p> No parking slot has been found <p>";
-        else {
+        else 
+        {
             // For each parking spot found create a card
-            foreach ($response["body"]["results"] as $spot) {
+            foreach ($response["body"]["results"] as $spot) 
+            {
                 // Replace the info
                 $card = str_replace("%PARKING_NAME%", $spot["name"], $card_template);
                 $card = str_replace("%LOCATION%", "Lat:" . $spot["latitude"] . " Long:" . $spot["longitude"], $card);
@@ -64,6 +66,16 @@
 
                 $card = str_replace("%FIRST_SLOT%", $slot["slot_date"] . ": " . $slot["start_time"] . "-" . $slot["end_time"], $card);
                 $card = str_replace("%PARKING_ID%", $spot["parking_spot_id"], $card);
+
+                if ( $spot["resident_id"] == $_SESSION["user"]["id"] ) 
+                {
+                    // The parking spot belongs to the user, hide the book button
+                    $card = str_replace("%BUTTON%", "", $card);
+                } else {
+                    $card = str_replace("%BUTTON%", '<div class="card-actions">
+                        <button class="book-btn" onclick="location.href = \'../php/book_parking.php?id=%PARKING_ID%\'">Book Now</button>
+                    </div>', $card);
+                }
 
                 $html_result .= $card;
             }
