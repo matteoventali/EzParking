@@ -848,6 +848,7 @@ def search_parking_spot():
                     "name": spot.name,
                     "rep_treshold": spot.rep_treshold,
                     "slot_price": spot.slot_price,
+                    "resident_id": spot.user_id,
                     "distance_meters": round(distance, 2),
                     "next_slot": {
                         "id": next_slot.id,
