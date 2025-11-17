@@ -616,6 +616,10 @@ def create_time_slot(park_id):
         return jsonify({'desc': 'Invalid time range (end_time must be after start_time)', 'code': '4'}), 400
 
     try:
+
+        now = datetime.now()
+        today = now.date()
+        current_time = now.time()
         with db.session.begin():
             spot = ParkingSpot.query.filter_by(id=park_id).with_for_update().first()
             if not spot:
@@ -626,7 +630,11 @@ def create_time_slot(park_id):
                     AvailabilitySlot.parking_spot_id == spot.id,
                     AvailabilitySlot.slot_date == slot_date,
                     AvailabilitySlot.start_time < end_time,
-                    AvailabilitySlot.end_time > start_time
+                    AvailabilitySlot.end_time > start_time,
+                    and_(
+                        AvailabilitySlot.start_time > current_time,
+                        AvailabilitySlot.slot_date == today
+                    )
                 ).first()
             )
 
