@@ -620,6 +620,13 @@ def create_time_slot(park_id):
         now = datetime.now()
         today = now.date()
         current_time = now.time()
+
+        if slot_date == today and current_time <= start_time:
+            return jsonify({
+                'desc': "Start time must be greater than the current time.",
+                'code': 1
+            }), 400
+        
         with db.session.begin():
             spot = ParkingSpot.query.filter_by(id=park_id).with_for_update().first()
             if not spot:
@@ -630,11 +637,7 @@ def create_time_slot(park_id):
                     AvailabilitySlot.parking_spot_id == spot.id,
                     AvailabilitySlot.slot_date == slot_date,
                     AvailabilitySlot.start_time < end_time,
-                    AvailabilitySlot.end_time > start_time,
-                    and_(
-                        AvailabilitySlot.start_time > current_time,
-                        AvailabilitySlot.slot_date == today
-                    )
+                    AvailabilitySlot.end_time > start_time
                 ).first()
             )
 
