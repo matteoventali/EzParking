@@ -88,6 +88,28 @@
       </p>
     </div>
 
+    <div class="dashboard-card review-card">
+      <div class="section-title">Reviews</div>
+        <div class="review-box">
+          <div class="review-column">
+            <div class="review-header">
+              <span><strong>User:</strong> Name</span>
+              <span><strong>Rating:</strong> Stars</span>
+            </div>
+            <p class="review-text">Review's text</p>
+          </div>
+
+          <div class="review-column">
+            <div class="review-header">
+              <span><strong>User:</strong> Name</span>
+              <span><strong>Rating:</strong> Stars</span>
+            </div>
+            <p class="review-text">Review's text</p>
+          </div>          
+        </div>              
+    </div>
+
+
     <!-- Reservations Section -->
     <div class="dashboard-card reservations-card">
       <div class="section-title">Your Parking Reservations</div>
