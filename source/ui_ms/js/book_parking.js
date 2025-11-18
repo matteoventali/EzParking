@@ -9,18 +9,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const totalCostEl = document.getElementById("totalCost");
     const bookingForm = document.getElementById("bookingForm");
 
-    // Se non ci sono date disponibili, disabilita input
     if (availableDates.length === 0) {
         if (dateInput) dateInput.setAttribute("disabled", true);
         return;
     }
 
-    // Imposta min e max sull'input nativo
     dateInput.setAttribute("min", availableDates[0]);
     dateInput.setAttribute("max", availableDates[availableDates.length - 1]);
     dateInput.value = availableDates[0];
 
-    // Flatpickr (se usato)
     const fpInstance = flatpickr("#date", {
         dateFormat: "Y-m-d",
         defaultDate: availableDates[0],
@@ -38,9 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
             currentIndex = availableDates.indexOf(dateStr);
         }
     });
-
-    // indice della data corrente
-    let currentIndex = 0;
 
     function updateSlots(date) {
         const slots = slotsData[date];
@@ -105,28 +99,18 @@ document.addEventListener("DOMContentLoaded", function () {
     function changeDate(days) 
     {
         const dateInput = document.getElementById("date");
-        const minDateStr = dateInput.getAttribute("min");
-        const minDate = new Date(minDateStr);
         const index = availableDates.indexOf(dateInput.value);        
         const newIndex = index + days;
 
         const newDate = availableDates[newIndex];
 
-        console.log(newIndex)
-
-        console.log(  newDate );
-
-        if (newDate < minDate) 
+        if ( newDate != undefined ) 
         {
-            dateInput.value = minDateStr;
-            updateSlots(minDateStr);
-            return;
+            dateInput.value = newDate;
+            const newDateStr = new Date(newDate + "T00:00:00");
+            if (fpInstance) fpInstance.setDate(newDateStr, true);        
+            updateSlots(newDate);
         }
-
-        dateInput.value = newDate;
-        const newDateStr = new Date(newDate);
-        if (fpInstance) fpInstance.setDate(newDateStr, true);        
-        updateSlots(newDateStr);
     }
 
     prevDayBtn.addEventListener("click", () => changeDate(-1));
@@ -151,6 +135,5 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // inizializza con la prima data disponibile
     updateSlots(dateInput.value);
 });

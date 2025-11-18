@@ -165,7 +165,7 @@
           </div>
         </div>  
       </div>                
-    </section>    
+    </section>
 
     <section class="card booking-form">
       <h2>Book Your Spot</h2>
@@ -198,13 +198,13 @@
             <input type="radio" id="applepay" name="payment_method" value="applepay" required>
             <label for="applepay"><i class="fab fa-apple-pay"></i> Apple Pay</label>
 
-            <input type="radio" id="googlepay" name="payment_method" value="googlepay">
+            <input type="radio" id="googlepay" name="payment_method" value="googlepay" required>
             <label for="googlepay"><i class="fab fa-google-pay"></i> Google Pay</label>
 
-            <input type="radio" id="paypal" name="payment_method" value="paypal">
+            <input type="radio" id="paypal" name="payment_method" value="paypal" required>
             <label for="paypal"><i class="fab fa-paypal"></i> PayPal</label>
 
-            <input type="radio" id="creditcard" name="payment_method" value="creditcard">
+            <input type="radio" id="creditcard" name="payment_method" value="creditcard" required>
             <label for="creditcard"><i class="fa-solid fa-credit-card"></i> Credit Card</label>
           </div>
         </div>
