@@ -1,18 +1,52 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const totalCostEl = document.getElementById('totalCost');
-    const bookingForm = document.getElementById('bookingForm');
+document.addEventListener("DOMContentLoaded", function () {
+    const slotsData = window.slots || {};
+    const availableDates = Object.keys(slotsData).sort();
+
     const dateInput = document.getElementById("date");
-    const slotContainer = document.getElementById("slotOptionsContainer");
     const prevDayBtn = document.getElementById("prevDay");
     const nextDayBtn = document.getElementById("nextDay");
+    const slotContainer = document.getElementById("slotOptionsContainer");
+    const totalCostEl = document.getElementById("totalCost");
+    const bookingForm = document.getElementById("bookingForm");
 
-    function updateSlots(date) 
-    {
-        const slots = slotData[date];
+    // Se non ci sono date disponibili, disabilita input
+    if (availableDates.length === 0) {
+        if (dateInput) dateInput.setAttribute("disabled", true);
+        return;
+    }
+
+    // Imposta min e max sull'input nativo
+    dateInput.setAttribute("min", availableDates[0]);
+    dateInput.setAttribute("max", availableDates[availableDates.length - 1]);
+    dateInput.value = availableDates[0];
+
+    // Flatpickr (se usato)
+    const fpInstance = flatpickr("#date", {
+        dateFormat: "Y-m-d",
+        defaultDate: availableDates[0],
+        enable: availableDates,
+        minDate: availableDates[0],
+        maxDate: availableDates[availableDates.length - 1],
+        onDayCreate: function (dObj, dStr, fp, dayElem) {
+            const date = fp.formatDate(dayElem.dateObj, "Y-m-d");
+            if (availableDates.includes(date)) {
+                dayElem.classList.add("slot-available");
+            }
+        },
+        onChange: function (selectedDates, dateStr) {
+            updateSlots(dateStr);
+            currentIndex = availableDates.indexOf(dateStr);
+        }
+    });
+
+    // indice della data corrente
+    let currentIndex = 0;
+
+    function updateSlots(date) {
+        const slots = slotsData[date];
         slotContainer.innerHTML = "";
 
-        if (!slots || slots.length === 0)
-        {
+        if (!slots || slots.length === 0) {
             const msg = document.createElement("div");
             msg.className = "no-slots-message";
             msg.textContent = "No parking slot available";
@@ -21,8 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        slots.forEach((slot, index) => 
-        {
+        slots.forEach((slot, index) => {
             const slotId = `slot-${index}`;
 
             const input = document.createElement("input");
@@ -53,15 +86,14 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTotalCost();
     }
 
-    function updateTotalCost() 
-    {
+    function updateTotalCost() {
         const selectedSlots = document.querySelectorAll('input[name="time_slot[]"]:checked');
-        
+
         if (selectedSlots.length === 0) {
             totalCostEl.textContent = `Total cost: €0.00`;
             return;
         }
-        
+
         const hours = selectedSlots[0].dataset.duration ? selectedSlots[0].dataset.duration : 0;
         const cost = hours * pricePerHour;
 
@@ -75,9 +107,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const dateInput = document.getElementById("date");
         const minDateStr = dateInput.getAttribute("min");
         const minDate = new Date(minDateStr);
-        const currentDate = new Date(dateInput.value);
-        const newDate = new Date(currentDate);
-        newDate.setDate(currentDate.getDate() + days);
+        const index = availableDates.indexOf(dateInput.value);        
+        const newIndex = index + days;
+
+        const newDate = availableDates[newIndex];
+
+        console.log(newIndex)
+
+        console.log(  newDate );
 
         if (newDate < minDate) 
         {
@@ -86,27 +123,34 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const newDateStr = newDate.toISOString().split('T')[0];
-        dateInput.value = newDateStr;
+        dateInput.value = newDate;
+        const newDateStr = new Date(newDate);
+        if (fpInstance) fpInstance.setDate(newDateStr, true);        
         updateSlots(newDateStr);
     }
 
-
     prevDayBtn.addEventListener("click", () => changeDate(-1));
     nextDayBtn.addEventListener("click", () => changeDate(1));
-    dateInput.addEventListener("change", () => updateSlots(dateInput.value));
+    dateInput.addEventListener("change", () => {
+        const val = dateInput.value;
+        if (availableDates.includes(val)) {
+            currentIndex = availableDates.indexOf(val);
+            updateSlots(val);
+        }
+    });
 
-    bookingForm.addEventListener('submit', function(event) {
+    bookingForm.addEventListener('submit', function (event) {
         const selectedPayment = document.querySelector('input[name="payment_method"]:checked');
         const selectedSlot = document.querySelector('input[name="time_slot[]"]:checked');
         const plate = document.getElementById('plate').value.trim();
         const date = document.getElementById('date').value.trim();
 
-        if (!selectedPayment || !selectedSlot || plate === "" || date === "" || plate.length != 7 ) {
+        if (!selectedPayment || !selectedSlot || plate === "" || date === "" || plate.length != 7) {
             event.preventDefault();
             alert("Please fill in all required fields (date, slot, plate, and payment method).");
         }
     });
 
+    // inizializza con la prima data disponibile
     updateSlots(dateInput.value);
 });

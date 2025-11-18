@@ -91,7 +91,13 @@
     <link rel="stylesheet" href="../css/book_parking.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script> window.slots =  <?php echo json_encode($slots); ?>;</script>
 </head>
+
 
 <body>
     <?php
@@ -167,7 +173,7 @@
 
         <div class="calendar-wrapper">
           <button type="button" id="prevDay" class="nav-day-btn"><i class="fas fa-chevron-left"></i></button>
-          <input type="date" id="date" name="date" required value="<?php echo date('Y-m-d'); ?>">
+          <input type="date" id="date" name="date" placeholder="Select a day" required >
           <button type="button" id="nextDay" class="nav-day-btn"><i class="fas fa-chevron-right"></i></button>
         </div>
 

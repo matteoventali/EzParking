@@ -155,6 +155,27 @@ input:focus {
     background-color: #eee;
 }
 
+/*calendar style*/
+.flatpickr-day.slot-available { /*available dates*/
+    border: 2px solid #2ecc71 !important;
+    border-radius: 50% !important;
+    color: #2ecc71 !important;
+    font-weight: bold;
+}
+
+.flatpickr-day.selected, /*selected date*/
+.flatpickr-day.selected:hover {
+    background: #e0e0e0 !important;
+    color: black !important;
+    border-color: #7f8c8d !important;
+}
+
+.flatpickr-day.slot-available.selected {
+    border-color: #2ecc71 !important;
+}
+
+
+
 /* Slot selection pills */
 #slotOptionsContainer {
     border: 2px solid  #a679dc ;
@@ -166,14 +187,15 @@ input:focus {
     border-radius: 12px;
     background-color: #f8f8f8;
 }
-/* Messaggio quando non ci sono slot disponibili */
+
+/* Message when no slots are available */
 #slotOptionsContainer .no-slots-message {
     text-align: center;
     font-weight: 600;
     font-size: 1rem;
-    color: var(--primary-color); /* usa il tuo colore principale */
+    color: var(--primary-color); 
     padding: 1rem;
-    background-color: #f0eafb; /* viola molto chiaro */
+    background-color: #f0eafb;
     border-radius: 12px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
