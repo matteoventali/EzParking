@@ -65,8 +65,7 @@
                 $slot = $spot["next_slot"];
 
                 $card = str_replace("%FIRST_SLOT%", $slot["slot_date"] . ": " . $slot["start_time"] . "-" . $slot["end_time"], $card);
-                $card = str_replace("%PARKING_ID%", $spot["parking_spot_id"], $card);
-
+                
                 if ( $spot["resident_id"] == $_SESSION["user"]["id"] ) 
                 {
                     // The parking spot belongs to the user, hide the book button
@@ -76,6 +75,7 @@
                         <button class="book-btn" onclick="location.href = \'../php/book_parking.php?id=%PARKING_ID%\'">Book Now</button>
                     </div>', $card);
                 }
+                $card = str_replace("%PARKING_ID%", $spot["parking_spot_id"], $card);
 
                 $html_result .= $card;
             }
