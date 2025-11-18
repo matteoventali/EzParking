@@ -173,7 +173,7 @@
 
         <div class="calendar-wrapper">
           <button type="button" id="prevDay" class="nav-day-btn"><i class="fas fa-chevron-left"></i></button>
-          <input type="date" id="date" name="date" placeholder="Select a day" required >
+          <input type="date" style="text-align: center"; id="date" name="date" placeholder="Select a day" required >
           <button type="button" id="nextDay" class="nav-day-btn"><i class="fas fa-chevron-right"></i></button>
         </div>
 

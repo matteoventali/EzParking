@@ -102,10 +102,10 @@
                     <input name="end_time" type="time" id="end_time" required />
                 </div>
                 <button type="submit" class="btn-primary">Add Slot</button>
-                <p class="error-message" id="error-message">
+                <p class="error-message" style="color:red; text-align:center" id="error-message">
                     <?php if(isset($error_message)) echo $error_message; else echo '';  ?>
                 </p>
-                <p class="error-message" style="color:green" id="ok-message">
+                <p class="error-message" style="color:green; text-align:center" id="ok-message">
                     <?php if(isset($ok_message)) echo $ok_message; else echo ''; ?>
                 </p>
             </form>
