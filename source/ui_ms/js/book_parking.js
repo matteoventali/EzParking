@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             dateInput.value = newDate;
             const newDateStr = new Date(newDate + "T00:00:00");
-            if (fpInstance) fpInstance.setDate(newDateStr, true);        
+            if (fpInstance) fpInstance.setDate(newDateStr, true);
             updateSlots(newDate);
         }
     }
