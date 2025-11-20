@@ -106,7 +106,8 @@ let currentReservationId = null;
         userInfoModal.classList.add('active');
         document.body.style.overflow = 'hidden';
 
-        // Per ora non facciamo nulla, ma potresti fare una fetch AJAX qui
+        // Fetching the info of the driver associated to the parking request
+        
     }
 
     function closeUserInfoModal() {

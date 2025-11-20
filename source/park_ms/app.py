@@ -1186,7 +1186,7 @@ def get_requests(user_id):
                 "slot_date": slot.slot_date.isoformat(),
                 "start_time": slot.start_time.strftime("%H:%M"),
                 "end_time": slot.end_time.strftime("%H:%M"),
-                "car_plate": res.car_plate,
+                "plate": res.car_plate,
                 "status": res.reservation_status,
                 "reservation_ts": res.reservation_ts.isoformat()
             })

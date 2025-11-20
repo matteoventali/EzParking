@@ -27,7 +27,6 @@
         {
             // Replace the info
             $card = str_replace("%SPOT_NAME%", $req["parking_spot_name"], $card_template);
-            $card = str_replace("%PLATE%", $req["car_plate"], $card);
             $card = str_replace("%DATE%", $req["slot_date"], $card);
             $card = str_replace("%START%", $req["start_time"], $card);
             $card = str_replace("%END%", $req["end_time"], $card);
@@ -37,7 +36,8 @@
             $card = str_replace("%STATUS%", strtoupper($req["status"]), $card);
             $driver_fullname = htmlspecialchars($req["driver_name"] . ' ' . $req["driver_surname"]);
             $card = str_replace("%DRIVER%", $driver_fullname, $card);
-         
+            $card = str_replace("%DRIVER_ID%", $req["driver_id"], $card);
+            $card = str_replace("%PLATE%", $req["plate"], $card);
             $html .= $card;
         }
     }
