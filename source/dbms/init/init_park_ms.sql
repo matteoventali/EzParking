@@ -71,7 +71,6 @@ INSERT INTO Labels (id, name, label_description) VALUES
 (3, 'Handicap spot', "Park spot for handicap peoples");
 
 DELIMITER $$
-
 CREATE PROCEDURE update_reservation_status()
 BEGIN
     -- Pending to cancelled
@@ -88,5 +87,4 @@ BEGIN
     WHERE r.reservation_status = 'confirmed'
       AND TIMESTAMP(s.slot_date, s.end_time) < NOW();
 END $$
-
 DELIMITER ;
