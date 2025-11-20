@@ -123,11 +123,41 @@
         <div class="modal-content user-modal-content">
             <button class="modal-close-btn" id="closeUserInfoBtn">&times;</button>
 
-            <div id="userInfoContent">
-                <p>User info will appear here...</p>
+            <div id="userInfoContent" class="user-info-container">
+                <h2 class="user-info-title">User Details</h2>
+
+                <div class="user-info-row">
+                    <span class="label">Name:</span>
+                    <span class="value" id="infoName">-</span>
+                </div>
+
+                <div class="user-info-row">
+                    <span class="label">Surname:</span>
+                    <span class="value" id="infoSurname">-</span>
+                </div>
+
+                <div class="user-info-row">
+                    <span class="label">Phone:</span>
+                    <span class="value" id="infoPhone">-</span>
+                </div>
+
+                <div class="user-info-row">
+                    <span class="label">Score:</span>
+                    <span class="value">
+                        <span id="infoScore">-</span>
+                        <i class="fas fa-star star-icon" style="color: gold;"></i>
+                    </span>
+                </div>
+
+                <div class="user-info-row link-row">
+                    <span class="label">Reviews:</span>
+                    <a id="infoReviews" href="#" target="_blank" class="reviews-link">View reviews</a>
+                </div>
             </div>
         </div>
     </div>
+
+    
 
     <script src="../js/manage_request.js"></script>
     <script src="../js/popup.js"></script>

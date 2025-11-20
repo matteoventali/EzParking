@@ -107,7 +107,30 @@ let currentReservationId = null;
         document.body.style.overflow = 'hidden';
 
         // Fetching the info of the driver associated to the parking request
-        
+        xhr = new XMLHttpRequest();
+        xhr.open("GET", "../php/fetch_user_info.php?id=" + encodeURIComponent(userId), true);
+        xhr.onload = function() {
+            if (this.status === 200) 
+            {
+                const response = JSON.parse(this.responseText);
+                if (response.status === 200) 
+                {
+                    const data = response.body.user;
+                    document.getElementById("infoName").textContent = data.name;
+                    document.getElementById("infoSurname").textContent = data.surname;
+                    document.getElementById("infoPhone").textContent = data.phone;
+                    document.getElementById("infoScore").textContent = data.score;
+
+                    const reviewLink = `/reviews.php?user_id=${data.id}`;
+                    document.getElementById("infoReviews").href = reviewLink;
+                } 
+                else
+                    alert("Error fetching user info: " + response.body.desc);
+            } 
+            else
+                alert("Error fetching user info: Server returned status " + this.status);
+        };
+        xhr.send();
     }
 
     function closeUserInfoModal() {

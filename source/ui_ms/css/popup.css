@@ -254,3 +254,45 @@ body {
     background: white;
     border-radius: 12px;
 }
+
+.user-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 10px 5px;
+}
+
+.user-info-title {
+    margin-bottom: 10px;
+    font-size: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.user-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.user-info-row .label {
+    font-weight: 600;
+    color: #444;
+}
+
+.user-info-row .value {
+    color: #222;
+}
+
+.link-row .reviews-link {
+    color: #5e25a5;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.link-row .reviews-link:hover {
+    text-decoration: underline;
+}
+
