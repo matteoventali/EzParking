@@ -4,6 +4,9 @@ USE db_park_ms;
 -- This script will be executed only when the container is built
 -- automatically by Docker
 
+-- Event scheduler on
+SET GLOBAL event_scheduler = ON;
+
 CREATE TABLE IF NOT EXISTS Users (
     id                          INT PRIMARY KEY,
     name                        VARCHAR(50) NOT NULL,
@@ -66,3 +69,24 @@ INSERT INTO Labels (id, name, label_description) VALUES
 (1, 'Car spot', "Park spot for cars"),
 (2, 'Motorbike spot', "Park spot for motorbikes"),
 (3, 'Handicap spot', "Park spot for handicap peoples");
+
+DELIMITER $$
+
+CREATE PROCEDURE update_reservation_status()
+BEGIN
+    -- Pending to cancelled
+    UPDATE Reservations r
+    JOIN Availability_Slots s ON r.slot_id = s.id
+    SET r.reservation_status = 'cancelled'
+    WHERE r.reservation_status = 'pending'
+      AND TIMESTAMP(s.slot_date, s.start_time) < NOW();
+
+    -- Confirmed to completed
+    UPDATE Reservations r
+    JOIN Availability_Slots s ON r.slot_id = s.id
+    SET r.reservation_status = 'completed'
+    WHERE r.reservation_status = 'confirmed'
+      AND TIMESTAMP(s.slot_date, s.end_time) < NOW();
+END $$
+
+DELIMITER ;
