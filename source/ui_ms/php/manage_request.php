@@ -8,6 +8,36 @@
     else if ( $_SESSION['role'] != 'user' ) // Redirect the user to the correct homepage
         header("Location: " . $homepage);
 
+    // Check if there is a request to manage a single request
+    if ( isset($_POST["request_id"]) && isset($_POST["action"]) )
+    {
+        $new_status = '';
+        
+        // Composing the status
+        if ( $_POST["action"] === "accept")
+            $new_status = 'confirmed';
+        else if ( $_POST["action"] === "reject" )
+            $new_status = 'cancelled';
+
+        // Request to the microservice
+        $api_url = compose_url($protocol, $socket_park_ms, '/reservations/' . $_POST["request_id"] . '/status');    
+        $payload = [
+            "user_id" => $_SESSION["user"]["id"],
+            "new_status" => $new_status
+        ];
+        $response = perform_rest_request('PUT', $api_url, $payload, null);
+
+        // If the request has been fine send a notification to the driver
+        // TODO!!!!
+
+        // Output the response
+        header('Content-Type: application/json');
+        echo json_encode($response);
+    
+        // No need to load the page
+        exit();
+    }
+
     // Get the request for parking spot of the user logged in
     $api_url = compose_url($protocol, $socket_park_ms, '/requests/' . $_SESSION["user"]["id"]);
     $response = perform_rest_request('GET', $api_url, null, null);
@@ -33,7 +63,6 @@
             $card = str_replace("%ID%", $req["reservation_id"], $card);
             $card = str_replace("%LATITUDE%", $req["latitude"], $card);
             $card = str_replace("%LONGITUDE%", $req["longitude"], $card);
-            $card = str_replace("%STATUS%", strtoupper($req["status"]), $card);
             $driver_fullname = htmlspecialchars($req["driver_name"] . ' ' . $req["driver_surname"]);
             $card = str_replace("%DRIVER%", $driver_fullname, $card);
             $card = str_replace("%DRIVER_ID%", $req["driver_id"], $card);

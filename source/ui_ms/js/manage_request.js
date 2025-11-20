@@ -1,17 +1,9 @@
 const list = document.getElementById("requests-list");
 const totalCount = document.getElementById("total-count");
-// Remove pendingCount if non usato
-// const pendingCount = document.getElementById("pending-count");
 
 function updateStats() {
     const cards = [...list.querySelectorAll(".card")];
     totalCount.textContent = cards.length;
-    /*
-    const pend = cards.filter((c) =>
-        c.querySelector(".status").classList.contains("pending")
-    ).length;
-    pendingCount.textContent = pend;
-    */
 }
 
 document.getElementById("search").addEventListener("input", (e) => {
@@ -27,3 +19,51 @@ document.getElementById("search").addEventListener("input", (e) => {
 
     updateStats();
 });
+
+function manageRequest(requestId, action) 
+{
+    // Fetching the info of the driver associated to the parking request
+    xhr = new XMLHttpRequest();
+    xhr.open("POST", "../php/manage_request.php", true);
+    
+    // Enconding the paylaod to send
+    const params = new URLSearchParams();
+    params.append('request_id', requestId);
+    params.append('action', action);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    xhr.onload = function() 
+    {
+        if (this.status === 200) 
+        {
+            const response = JSON.parse(this.responseText);
+            if (response.status === 200) 
+            {
+                // Successfully managed the request, remove the card from the list
+                removeCard(requestId, action);
+            } 
+            else
+                alert("Error managing request: " + response.body.desc);
+        }
+        else
+            alert("Error managing request: Server returned status " + this.status);
+    };
+    xhr.send(params.toString());
+}
+
+function removeCard(requestId, action) 
+{
+    const card = document.querySelector(`.card[data-id="${requestId}"]`);
+    if (!card) return;
+
+    if (action === "accept")
+        card.classList.add("card-slide-right");
+    else if (action === "reject")
+        card.classList.add("card-slide-left");
+    
+    setTimeout(() => {
+        card.remove();
+        updateStats();
+        location.reload();
+    }, 650);
+}

@@ -4,7 +4,6 @@
             <div>
                 <div class="parking">%SPOT_NAME%</div>
             </div>
-            <div class="status pending" aria-live="polite">%STATUS%</div>
             <div class="requester">
                 <span class="requester-name">Requestor driver: %DRIVER%</span>
                 <i class="fa-solid fa-circle-info user-info-btn"
@@ -19,8 +18,8 @@
     </div>
 
     <div class="actions">
-        <button class="btn accept" data-action="accept">Accept</button>
-        <button class="btn reject" data-action="reject">Reject</button>
+        <button class="btn accept" onclick="manageRequest('%ID%', 'accept')" data-action="accept">Accept</button>
+        <button class="btn reject" onclick="manageRequest('%ID%', 'reject')" data-action="reject">Reject</button>
 
         <button class="btn map-booking-btn"
                 data-lat="%LATITUDE%"

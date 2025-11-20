@@ -353,3 +353,40 @@ h1 {
 .user-info-btn:hover {
     color: #005fa3;
 }
+
+.card-slide-right, 
+.card-slide-left {
+    opacity: 0;
+    transition: 
+        transform 0.7s ease-out,
+        opacity 0.7s ease-out,
+        background-color 0.4s ease-out;
+    position: relative;
+    z-index: 999;
+    color: white;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;        /* ereditare lo stile .card */
+    align-items: center;  /* ereditare lo stile .card */
+    gap: 16px;            /* ereditare lo stile .card */
+    border: 1px solid rgba(94, 37, 165, 0.06); /* come .card */
+}
+
+.card-slide-right, 
+.card-slide-left {
+    opacity: 0;
+    transition: 
+        transform 0.65s ease-out,
+        opacity 0.65s ease-out;
+    position: relative;
+    z-index: 999;
+}
+.card-slide-right {
+    transform: translateX(160%);
+}
+.card-slide-left {
+    transform: translateX(-160%);
+}
+.cards-container, .requests-wrapper, .whatever-container {
+    overflow: visible !important;
+}
