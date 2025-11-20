@@ -5,7 +5,6 @@ USE db_park_ms;
 -- automatically by Docker
 
 -- Event scheduler on
-SET GLOBAL event_scheduler = ON;
 
 CREATE TABLE IF NOT EXISTS Users (
     id                          INT PRIMARY KEY,

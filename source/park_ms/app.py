@@ -541,7 +541,7 @@ def get_availability_slots(park_id):
                 "code": "1"
             }), 404
 
-        now = datetime.now()
+        now = datetime.now(ZoneInfo("Europe/Rome"))
         today = now.date()
         current_time = now.time()
 
@@ -1033,7 +1033,7 @@ def create_reservation():
                     }), 409
 
                 new_reservation = Reservation(
-                    reservation_ts=datetime.now(),
+                    reservation_ts=datetime.now(ZoneInfo("Europe/Rome")),
                     reservation_status='pending', 
                     car_plate=car_plate,
                     slot_id=slot.id,

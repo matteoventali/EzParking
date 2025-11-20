@@ -23,4 +23,5 @@ GRANT ALL PRIVILEGES ON db_park_ms.* TO 'user_park_ms'@'%';
 GRANT ALL PRIVILEGES ON db_payment_ms.* TO 'user_payment_ms'@'%';
 GRANT ALL PRIVILEGES ON db_notification_ms.* TO 'user_notification_ms'@'%';
 
+
 FLUSH PRIVILEGES;
