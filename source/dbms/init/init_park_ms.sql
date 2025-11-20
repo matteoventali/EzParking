@@ -88,3 +88,8 @@ BEGIN
       AND TIMESTAMP(s.slot_date, s.end_time) < NOW();
 END $$
 DELIMITER ;
+
+CREATE EVENT IF NOT EXISTS update_reservation_status
+ON SCHEDULE EVERY 10 SECOND
+DO
+    CALL update_reservation_status();

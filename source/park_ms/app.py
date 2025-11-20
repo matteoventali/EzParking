@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from config import DB_CONFIG
 from models import db, User, Label, ParkingSpot, ParkingSpotLabel, AvailabilitySlot, Reservation
-from sqlalchemy import func, and_, or_
+from sqlalchemy import func, and_, or_, text
 from geoalchemy2.shape import to_shape
 from datetime import datetime, date
 from geoalchemy2.elements import WKTElement
@@ -150,10 +150,6 @@ def get_parking_spot(spot_id):
 def get_user_spots(user_id):
 
     try:
-
-        now = datetime.now()
-        today = now.date()
-        current_time = now.time()
 
         user = User.query.filter_by(id=user_id).first()
         if not user:
@@ -759,10 +755,10 @@ def search_parking_spot():
         return jsonify({'desc': 'Latitude, longitude, reputation or radius must be numeric', 'code': '3'}), 400
 
     try:
-        now = datetime.now()
+        now = datetime.now(ZoneInfo("Europe/Rome"))
         today = date.today()
         current_time = now.time()
-
+    
         user_point = WKTElement(f'POINT({longitude} {latitude})', srid=4326)
 
         nearby_spots_query = db.session.query(
@@ -837,8 +833,16 @@ def search_parking_spot():
                 .filter(
                     AvailabilitySlot.parking_spot_id == spot.id,
                     ~AvailabilitySlot.id.in_(active_reservations),
-                    func.timestamp(AvailabilitySlot.slot_date, AvailabilitySlot.start_time) == next_slot_time
+                    or_(
+                        AvailabilitySlot.slot_date > today,
+                        and_(
+                            AvailabilitySlot.slot_date == today,
+                            AvailabilitySlot.start_time > current_time
+                        )
+                    )
                 )
+                .order_by(AvailabilitySlot.slot_date.asc(),
+                        AvailabilitySlot.start_time.asc())
                 .first()
             )
 
@@ -1291,10 +1295,10 @@ def create_label():
         }), 500
 # ------------ LABELS ------------
 
-
-
 # -------------------------------
 # MAIN
 # -------------------------------
 if __name__ == "__main__":
+
     app.run(host="0.0.0.0", port=5002, debug=True)
+        
