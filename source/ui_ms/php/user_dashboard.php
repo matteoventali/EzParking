@@ -1,17 +1,17 @@
 <?php
-require_once "./config.php";
-require_once "./functions.php";
+	require_once "./config.php";
+	require_once "./functions.php";
 
-// We must be logged in to access this page
-if (!verify_session())
-	header("Location: " . $starting_page);
-else if ($_SESSION['role'] != 'user') // We must be normal user to access this page
-	header("Location: admin_dashboard.php");
+	// We must be logged in to access this page
+	if (!verify_session())
+		header("Location: " . $starting_page);
+	else if ($_SESSION['role'] != 'user') // We must be normal user to access this page
+		header("Location: admin_dashboard.php");
 
-// Updating the user informations in the session storage to get access also to the score of the user
-$url = compose_url($protocol, $socket_account_ms, '/pdata');
-$new_data = perform_rest_request('GET', $url, null, $_SESSION['session_token']);
-$_SESSION['user'] = array_merge($_SESSION['user'], $new_data['body']['user']);
+	// Updating the user informations in the session storage to get access also to the score of the user
+	$url = compose_url($protocol, $socket_account_ms, '/pdata');
+	$new_data = perform_rest_request('GET', $url, null, $_SESSION['session_token']);
+	$_SESSION['user'] = array_merge($_SESSION['user'], $new_data['body']['user']);
 ?>
 
 <!DOCTYPE html>
@@ -68,8 +68,8 @@ $_SESSION['user'] = array_merge($_SESSION['user'], $new_data['body']['user']);
 					<span><strong>Phone: </strong><?php echo $_SESSION['user']['phone']; ?></span>
 				</div>
 				<div class="info-item">
-					<i class="fas fa-phone"></i>
-					<span><strong>Credit Card Number: </strong></span>
+					<i class="fas fa-envelope"></i>
+					<span><strong>Credit Card Number: </strong><?php echo $_SESSION['user']['cc_number']; ?></span>
 				</div>
 				<div class="info-item">
 					<i class="fas "></i>
