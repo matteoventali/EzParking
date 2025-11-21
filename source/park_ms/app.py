@@ -1149,6 +1149,39 @@ def update_reservation(res_id):
             'desc': f'Database error: {str(e)}',
             'code': '99'
         }), 500
+
+
+@app.route("/reservations/active/count", methods=["GET"])
+def get_active_reservations():
+
+    try:
+        confirmed_reservations = Reservation.query.filter_by(reservation_status="Confirmed").all()
+
+        active_reservations = 0
+
+        now = datetime.now(ZoneInfo("Europe/Rome"))
+        today = date.today()
+        current_time = now.time()
+        
+        for r in confirmed_reservations:
+            time_slot = AvailabilitySlot.query.filter_by(id=r.slot_id).first()
+            
+            if time_slot.slot_date == today and time_slot.start_time <= current_time:
+                active_reservations += 1
+
+
+        return jsonify({
+            'desc': "Active reservations retrieved successfully",
+            'code': 0,
+            'count': active_reservations
+        }), 200
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            "desc": f"Database error: {str(e)}",
+            "code": "99"
+        }), 500
 # ------------ RESERVATIONS ------------
 
 

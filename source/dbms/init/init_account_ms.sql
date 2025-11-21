@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS Users (
     surname                     VARCHAR(50) NOT NULL,
     password_hash               VARCHAR(255) NOT NULL,
     email                       VARCHAR(100) NOT NULL UNIQUE,
+    cc_number                   CHAR(6) NOT NULL UNIQUE,
     lastlogin_ts                TIMESTAMP DEFAULT NULL,
     session_token               CHAR(32) DEFAULT NULL,
     phone                       VARCHAR(15) NOT NULL UNIQUE,
@@ -32,19 +33,19 @@ CREATE TABLE IF NOT EXISTS Review (
 
 
 -- Creating some users for testing purposes
-INSERT INTO Users (id, name, surname, password_hash, email, phone, user_role, account_status) VALUES
+INSERT INTO Users (id, name, surname, password_hash, email, phone, user_role, account_status, cc_number) VALUES
 (1, 'Matteo', 'Ventali', 
 'scrypt:32768:8:1$d0OF8WM15UKJAoqf$62916af62533ab4ec4d7ae08541369a751f3eba6fb70a65a476182b6a6d3e17c9e8f6f1291310592052347a0344e88b3b949e71a8e104c87512e5ce0c8dce520', 
-'matteo.ventali@gmail.com', '3463462160', 'admin', true),
+'matteo.ventali@gmail.com', '3463462160', 'admin', true, '123456'),
 (2, 'Valerio', 'Spagnoli', 
 'scrypt:32768:8:1$d0OF8WM15UKJAoqf$62916af62533ab4ec4d7ae08541369a751f3eba6fb70a65a476182b6a6d3e17c9e8f6f1291310592052347a0344e88b3b949e71a8e104c87512e5ce0c8dce520', 
-'valerio.spagnoli@gmail.com', '3454616365', 'admin', true),
+'valerio.spagnoli@gmail.com', '3454616365', 'admin', true, '234561'),
 (3, 'Serena', 'Ragaglia', 
 'scrypt:32768:8:1$d0OF8WM15UKJAoqf$62916af62533ab4ec4d7ae08541369a751f3eba6fb70a65a476182b6a6d3e17c9e8f6f1291310592052347a0344e88b3b949e71a8e104c87512e5ce0c8dce520', 
-'serena.ragaglia@gmail.com', '3343290262', 'user', true),
+'serena.ragaglia@gmail.com', '3343290262', 'user', true, '345612'),
 (4, 'Pierluca', 'Grasso', 
 'scrypt:32768:8:1$d0OF8WM15UKJAoqf$62916af62533ab4ec4d7ae08541369a751f3eba6fb70a65a476182b6a6d3e17c9e8f6f1291310592052347a0344e88b3b949e71a8e104c87512e5ce0c8dce520', 
-'pierluca.grasso@gmail.com', '3898730182', 'user', true),
+'pierluca.grasso@gmail.com', '3898730182', 'user', true, '456123'),
 (5, 'Federico', 'De Lullo', 
 'scrypt:32768:8:1$d0OF8WM15UKJAoqf$62916af62533ab4ec4d7ae08541369a751f3eba6fb70a65a476182b6a6d3e17c9e8f6f1291310592052347a0344e88b3b949e71a8e104c87512e5ce0c8dce520', 
-'federico.delullo@gmail.com', '3293321366', 'user', true)
+'federico.delullo@gmail.com', '3293321366', 'user', true, '561234')
