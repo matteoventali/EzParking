@@ -188,6 +188,13 @@ body {
     box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.3);
 }
 
+.btn-submit-review {
+    background: green;
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(38, 220, 78, 0.3);
+}
+
+
 .btn-confirm:hover {
     background: #b91c1c;
     box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.4);
