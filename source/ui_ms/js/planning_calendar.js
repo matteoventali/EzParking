@@ -1,5 +1,3 @@
-// calendar.js
-
 function classifyEvents(spots, reservations, availabilities, currentUserId) {
     const bookedByOthers = [];
     const myBookings = [];
@@ -18,6 +16,7 @@ function classifyEvents(spots, reservations, availabilities, currentUserId) {
                 r.start >= av.start && r.end <= av.end
             );
 
+<<<<<<< Updated upstream
             if (reservationInSlot) {
                 //if the spot is reserved
                 if (reservationInSlot.userId !== currentUserId) {
@@ -45,11 +44,41 @@ function classifyEvents(spots, reservations, availabilities, currentUserId) {
     {
         //Parking spot is not property of the current user, then check if there is a reservation in the users' name
         spotReservations.forEach(r => {
+=======
+        if (reservationInSlot) {
+          //if the spot is reserved
+          if (reservationInSlot.userId !== currentUserId) {
+            bookedByOthers.push({
+              id: reservationInSlot.id,
+              title: `${spot.name}`,
+              start: reservationInSlot.start,
+              end: reservationInSlot.end,              
+              color: "#ff4d4d",
+              textColor: "#fff"
+            });
+          }
+        } else {
+          //Free slots for the spot
+          freeSpots.push({
+            id: `free-${spot.id}-${av.id}`,
+            title: `Free ${spot.name}`,
+            start: av.start,
+            end: av.end,
+            color: "#c2f7c2",
+            textColor: "#000"
+          });
+        }
+      });
+    } else {
+      //Parking spot is not property of the current user, then check if there is a reservation in the users' name
+      spotReservations.forEach(r => {
+>>>>>>> Stashed changes
         if (r.userId === currentUserId) {
             myBookings.push({
             id: r.id,
-            title: `${r.start.slice(11,16)}-${r.end.slice(11,16)} ${spot.name}`,
-            start: r.start.slice(0,10),
+            title: ` ${spot.name}`,
+            start: r.start,
+            end:r.end,
             color: "#4d94ff",
             textColor: "#fff"
             });
@@ -92,8 +121,21 @@ document.addEventListener("DOMContentLoaded", function () {
     headerToolbar: {
       left: "prev,next today",
       center: "title",
-      right: ""
+      right: "dayGridMonth,timeGridWeek,listWeek"
     },
+    eventTimeFormat: {
+      hour: '2-digit',
+      minute: '2-digit',
+      meridiem: false
+    },
+    displayEventEnd: true,
+    windowResize: function(view) {
+      if (window.innerWidth < 600) {
+        calendar.changeView('timeGridWeek');
+      } else {
+        calendar.changeView('dayGridMonth');
+      }
+    },      
     eventSources: [
       { events: bookedByOthers },
       { events: myBookings },    

@@ -30,7 +30,7 @@
         echo $nav;
     ?>
     <div class="calendar-container">
-        <div id='calendar'></div>
+        <div id="calendar" style="height: 100%;"></div>
     </div>
     <?php
         $footer = file_get_contents(FOOTER);
