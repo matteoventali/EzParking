@@ -54,6 +54,8 @@
         ];
     }
 
+    
+
     // Veryfing if we have to add a new reservation
     if ( count($_POST) )
     {
@@ -105,20 +107,20 @@
         echo $nav;
     ?>
 
-  <main>
+    <main>
     <section class="card garage-info">
-      <h1><?php echo $spot["name"]; ?></h1>
-      <div class="garage-details-single-column">
-        <div class="garage-column">
-          <p><strong>📍 Location: </strong><?php echo $address; ?></p>
+        <h1><?php echo $spot["name"]; ?></h1>
+        <div class="garage-details-single-column">
+            <div class="garage-column">
+                <p><strong>📍 Location: </strong><?php echo $address; ?></p>
+            </div>
+            <div class="garage-column">
+                <p><strong>⭐ Rating Threshold: </strong><?php echo $spot["rep_treshold"]; ?> / 5</p>
+            </div>
+            <div class="garage-column">
+                <p><strong>💰 Price: </strong>€<?php echo $spot["slot_price"]; ?> / hour</p>
+            </div>
         </div>
-        <div class="garage-column">
-          <p><strong>⭐ Rating Threshold: </strong><?php echo $spot["rep_treshold"]; ?> / 5</p>
-        </div>
-        <div class="garage-column">
-          <p><strong>💰 Price: </strong>€<?php echo $spot["slot_price"]; ?> / hour</p>
-        </div>
-      </div>
 
         <p class="error-message" id="error-message" style="color:red; text-align:center">
             <?php if(isset($error_message)) echo $error_message; else echo '';  ?>
@@ -126,95 +128,94 @@
     </section>
 
     <section class="card garage-info reviews-section">
-      <h1>Reviews</h1>
-      <div class="review-box">
-        <div class="garage-details-single-column">
-          <div class="review-column">
-              <div class="review-header">
-                <span> <strong>User:</strong> email</span>
-                <span> <strong>Stars:</strong> stars</span>          
-              </div>   
-              <p class="review-text">Buono</p>       
-          </div>
-        </div>
-        <div class="garage-details-single-column">
-          <div class="review-column">
-              <div class="review-header">
-                <span> <strong>User:</strong> email</span>
-                <span> <strong>Stars:</strong> stars</span>          
-              </div>   
-              <p class="review-text">Utente maleducato!</p>       
-          </div>
-        </div>
-        <div class="garage-details-single-column">
-          <div class="review-column">
-              <div class="review-header">
-                <span> <strong>User:</strong> email</span>
-                <span> <strong>Stars:</strong> stars</span>          
-              </div>   
-              <p class="review-text">No</p>       
-          </div>
-        </div>
-        <div class="garage-details-single-column">
-          <div class="review-column">
-              <div class="review-header">
-                <span> <strong>User:</strong> email</span>
-                <span> <strong>Stars:</strong> stars</span>          
-              </div>   
-              <p class="review-text">Bello</p>       
-          </div>
-        </div>  
-      </div>                
+        <h1>Reviews</h1>
+        <div class="review-box">
+            <div class="garage-details-single-column">
+                <div class="review-column">
+                    <div class="review-header">
+                    <span> <strong>User:</strong> email</span>
+                    <span> <strong>Stars:</strong> stars</span>          
+                    </div>   
+                    <p class="review-text">Buono</p>       
+                </div>
+            </div>
+            <div class="garage-details-single-column">
+                <div class="review-column">
+                    <div class="review-header">
+                    <span> <strong>User:</strong> email</span>
+                    <span> <strong>Stars:</strong> stars</span>          
+                    </div>   
+                    <p class="review-text">Utente maleducato!</p>       
+                </div>
+            </div>
+            <div class="garage-details-single-column">
+                <div class="review-column">
+                    <div class="review-header">
+                    <span> <strong>User:</strong> email</span>
+                    <span> <strong>Stars:</strong> stars</span>          
+                    </div>   
+                    <p class="review-text">No</p>       
+                </div>
+            </div>
+            <div class="garage-details-single-column">
+                <div class="review-column">
+                    <div class="review-header">
+                    <span> <strong>User:</strong> email</span>
+                    <span> <strong>Stars:</strong> stars</span>          
+                    </div>   
+                    <p class="review-text">Bello</p>       
+                </div>
+            </div>  
+        </div>                
     </section>
 
     <section class="card booking-form">
-      <h2>Book Your Spot</h2>
-      <form action="../php/book_parking.php" method="POST" id="bookingForm">
+        <h2>Book Your Spot</h2>
+        <form action="../php/book_parking.php" method="POST" id="bookingForm">
+            <div class="calendar-wrapper">
+                <button type="button" id="prevDay" class="nav-day-btn"><i class="fas fa-chevron-left"></i></button>
+                <input type="date" style="text-align: center"; id="date" name="date" placeholder="Select a day" required >
+                <button type="button" id="nextDay" class="nav-day-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
 
-        <div class="calendar-wrapper">
-          <button type="button" id="prevDay" class="nav-day-btn"><i class="fas fa-chevron-left"></i></button>
-          <input type="date" style="text-align: center"; id="date" name="date" placeholder="Select a day" required >
-          <button type="button" id="nextDay" class="nav-day-btn"><i class="fas fa-chevron-right"></i></button>
-        </div>
+            <input type="hidden" name="id" value="<?php echo $id; ?>" required>
 
-        <input type="hidden" name="id" value="<?php echo $id; ?>" required>
+            <div class="time-slot-selection">
+                <br>
+                <h3>Available Time Slots</h3>
+                <div class="slot-options" id="slotOptionsContainer">
+                </div>
+            </div>
 
-        <div class="time-slot-selection">
-          <br>
-          <h3>Available Time Slots</h3>
-          <div class="slot-options" id="slotOptionsContainer">
-          </div>
-        </div>
+            <div class="vehicle-section">
+                <br>
+                <label for="plate">Vehicle License Plate</label>
+                <input type="text" id="plate" name="plate" placeholder="e.g. AB123CD" maxlength="8" required>
+            </div>
 
-        <div class="vehicle-section">
-          <br>
-          <label for="plate">Vehicle License Plate</label>
-          <input type="text" id="plate" name="plate" placeholder="e.g. AB123CD" maxlength="8" required>
-        </div>
+            <div class="payment-method-selection">
+                <h3>Payment Method</h3>
+                <div class="payment-options">
+                <input type="radio" id="applepay" name="payment_method" value="applepay" required>
+                <label for="applepay"><i class="fab fa-apple-pay"></i> Apple Pay</label>
 
-        <div class="payment-method-selection">
-          <h3>Payment Method</h3>
-          <div class="payment-options">
-            <input type="radio" id="applepay" name="payment_method" value="applepay" required>
-            <label for="applepay"><i class="fab fa-apple-pay"></i> Apple Pay</label>
+                <input type="radio" id="googlepay" name="payment_method" value="googlepay" required>
+                <label for="googlepay"><i class="fab fa-google-pay"></i> Google Pay</label>
 
-            <input type="radio" id="googlepay" name="payment_method" value="googlepay" required>
-            <label for="googlepay"><i class="fab fa-google-pay"></i> Google Pay</label>
+                <input type="radio" id="paypal" name="payment_method" value="paypal" required>
+                <label for="paypal"><i class="fab fa-paypal"></i> PayPal</label>
 
-            <input type="radio" id="paypal" name="payment_method" value="paypal" required>
-            <label for="paypal"><i class="fab fa-paypal"></i> PayPal</label>
+                <input type="radio" id="creditcard" name="payment_method" value="creditcard" required>
+                <label for="creditcard"><i class="fa-solid fa-credit-card"></i> Credit Card</label>
+                </div>
+            </div>
 
-            <input type="radio" id="creditcard" name="payment_method" value="creditcard" required>
-            <label for="creditcard"><i class="fa-solid fa-credit-card"></i> Credit Card</label>
-          </div>
-        </div>
+            <div class="price-display" id="totalCost">Total cost: €0.00</div>
 
-        <div class="price-display" id="totalCost">Total cost: €0.00</div>
-
-        <button type="submit" id="bookNowButton" class="book-button">Book Now</button>
-      </form>
+            <button type="submit" id="bookNowButton" class="book-button">Book Now</button>
+        </form>
     </section>
-  </main>
+    </main>
 
     <?php
         $footer = file_get_contents(FOOTER);

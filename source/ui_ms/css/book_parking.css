@@ -79,7 +79,11 @@ main {
 
 .review-box{
     overflow-y: scroll;
-    height: 200px ;
+    max-height: 200px;
+}
+
+.review-box::scroll-marker{
+    color: grey;
 }
 
 .review-header {

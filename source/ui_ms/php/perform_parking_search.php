@@ -44,7 +44,7 @@
         $card_template = file_get_contents('../html/parking_spot_card_search.html');
         
         if ($response["body"]["code"] != "0")
-            $html_result = "<p> No parking slot has been found <p>";
+            $html_result = "<p style='text-align:center'> No parking slot has been found <p>";
         else 
         {
             // For each parking spot found create a card

@@ -45,22 +45,22 @@ function submitReview() {
         return;
     }
 
-    // Here you would typically send the review data to the server via AJAX
-    // For this example, we'll just log it to the console and close the popup
-    // Example AJAX call (uncomment and modify as needed):
-    /*
-    fetch('submit_review.php', {							
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            reservation_id: currentReservationId,
-            rating: selectedRating,
-            review_text: review
-        })
-    })*/
-    
-    closeReviewPopup();
-    alert("Review submitted successfully!");
+    // Perform the request to the server
+    xhr = new XMLHttpRequest();
+    xhr.open("POST", "../php/submit_review.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            if (response.status === 201 && response.body.code === "0") {
+                alert("Review submitted successfully!");
+                closeReviewPopup();
+                location.reload();
+            } else {
+                alert("Error submitting review: " + response.message);
+            }
+        }
+    };
+    const params = `reservation_id=${encodeURIComponent(currentReservationId)}&rating=${encodeURIComponent(selectedRating)}&review=${encodeURIComponent(review)}`;
+    xhr.send(params);
 }

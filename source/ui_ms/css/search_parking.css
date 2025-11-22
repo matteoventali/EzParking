@@ -197,7 +197,6 @@ main {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.25rem;
   padding: 2rem;
-  max-width: 1200px;
   width: 100%;
   margin: 0 auto 7rem;
   box-sizing: border-box;
@@ -213,6 +212,8 @@ main {
   justify-content: space-between;
   gap: 0.75rem;
   border: 1.5px solid #5e25a5;
+  max-width: 400px;
+  max-height: fit-content;
 }
 
 .parking-card h3 {

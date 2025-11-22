@@ -970,7 +970,8 @@ def get_reservation(res_id):
             "code": "0",
             "reservation": {
                 "res_id": res.id,
-                "user_id": res.user_id,
+                "driver_id": res.user_id,
+                "resident_id": slot.parking_spot.user_id if slot else None,
                 "ts": res.reservation_ts.isoformat(),
                 "status": res.reservation_status,
                 "slot_id": res.slot_id,
@@ -990,7 +991,6 @@ def get_reservation(res_id):
 @app.route("/reservations/<int:user_id>/completed", methods=["GET"])
 def get_completed_reservations(user_id):
     try:
-
         as_driver_reservations = (
             db.session.query(Reservation, AvailabilitySlot, ParkingSpot)
             .join(AvailabilitySlot, Reservation.slot_id == AvailabilitySlot.id)
@@ -1010,6 +1010,8 @@ def get_completed_reservations(user_id):
                 "status": res.reservation_status,
                 "car_plate": res.car_plate,
                 "reservation_ts": res.reservation_ts.isoformat(),
+
+                "driver_id": res.user_id,
 
                 "slot": {
                     "slot_id": slot.id,
