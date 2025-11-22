@@ -58,6 +58,7 @@ function updateDashboard()
 {
     fetchMicroservicesStatus();
     fetchActiveUsers();
+    fetchActiveReservations();
 }
 
 // Handling the toggle in the microservices card
@@ -115,6 +116,20 @@ function fetchActiveUsers()
             const activeUsersDiv = document.getElementById('number_users');
             activeUsersDiv.innerHTML = ''; // Clean all
             activeUsersDiv.textContent = data;
+        })
+        .catch(err => console.error('Error fetching microservices status:', err));
+}
+
+// Handling the number of active reservations
+function fetchActiveReservations()
+{
+    fetch('../php/check_active_reservations.php')
+        .then(res => res.json())
+        .then(data => {
+            // Access the correct div
+            const activeReservationsDiv = document.getElementById('number_reservations');
+            activeReservationsDiv.innerHTML = ''; // Clean all
+            activeReservationsDiv.textContent = data;
         })
         .catch(err => console.error('Error fetching microservices status:', err));
 }

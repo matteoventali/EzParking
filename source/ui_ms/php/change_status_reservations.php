@@ -10,7 +10,7 @@
         exit();    
     }
 
-    // Checking if we have the data to perform the delete
+    // Checking if we have the data
     if ( !isset($_POST['reservation_id']) || !isset($_POST["new_status"]) )
     {
         header('Content-Type: application/json');
@@ -25,7 +25,7 @@
     ];
     $api_url = compose_url($protocol, $socket_park_ms, '/reservations/' . $_POST["reservation_id"]. "/status");
     $response = perform_rest_request('PUT', $api_url, $payload, null);
-    
+
     // Sending the response
     header('Content-Type: application/json');
     echo json_encode($response);

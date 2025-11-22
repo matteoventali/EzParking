@@ -1155,7 +1155,7 @@ def update_reservation(res_id):
 def get_active_reservations():
 
     try:
-        confirmed_reservations = Reservation.query.filter_by(reservation_status="Confirmed").all()
+        confirmed_reservations = Reservation.query.filter_by(reservation_status="confirmed").all()
 
         active_reservations = 0
 
