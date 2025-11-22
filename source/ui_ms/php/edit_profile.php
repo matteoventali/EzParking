@@ -14,20 +14,27 @@
     $ok_message = $error_message = null;
     
     // Dispatching if we have to launch the edit profile request
-    if ( isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['phone']) && isset($_POST['password']) )
+    if ( isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['phone']) && isset($_POST['password'])
+            && ( $_SESSION["role"] != "user" || isset($_POST["card"]) ))
     {
         // Reading the fields
         $name = trim($_POST['name'] ?? '');
         $surname = trim($_POST['surname'] ?? '');
         $phone = trim($_POST['phone'] ?? '');
         $password = trim($_POST['password'] ?? '');
+        
+        $card = null;
+
+        if ( $_SESSION["role"] === 'user')
+            $card = trim($_POST['card'] ?? '');
 
         // Preparing the data for the microservice
         $payload = [
             'name' => $name,
             'surname' => $surname,
             'phone' => $phone,
-            'password' => $password
+            'password' => $password,
+            'cc_number' => $card
         ];
 
         try 
@@ -35,8 +42,6 @@
             // Execute the request
             $api_url = compose_url($protocol, $socket_account_ms, '/pdata');
             $response = perform_rest_request('PUT', $api_url, $payload, $_SESSION['session_token']);
-
-            var_dump($response);
 
             // Success in the edit profile
             if ($response["body"]["code"] === "0") 
@@ -97,8 +102,11 @@
         <label for="phone">Phone</label>
         <input type="tel" id="phone" name="phone" value="<?php echo $_SESSION['user']['phone'];?>" required>
 
-        <label for="card">Credit Card Number</label>
-        <input type="text" id="card" name="card" value="" required>    
+        <?php 
+            if ($_SESSION["role"] === "user")
+                echo sprintf('<label for="card">Credit Card Number</label>
+                        <input type="text" id="card" name="card" value="%s" required>', $_SESSION["user"]["cc_number"]);
+        ?>
         
         <label for="password">Insert new Password</label>
         <input type="password" id="new" name="password" value="" required>

@@ -104,7 +104,7 @@
 
                     <div class="card-info">
                         <h3 id="c2-title">Active bookings</h3>
-                        <div class="card-value"><?php echo 'To be implemented'; ?></div>
+                        <div class="card-value" id="number_reservations"></div>
                     </div>
                 </div>
 
@@ -149,11 +149,8 @@
 
 
     <?php
-    $footer = file_get_contents(FOOTER);
-    echo $footer;
+        $footer = file_get_contents(FOOTER);
+        echo $footer;
     ?>
 </body>
-
-<script src="../js/real-time-data-toggle.js"></script>
-
 </html>

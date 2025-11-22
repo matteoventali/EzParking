@@ -30,6 +30,9 @@
         // If the request has been fine send a notification to the driver
         // TODO!!!!
 
+        // Perform the payment if the reservations has been confirmed
+        // TODO!!!!
+    
         // Output the response
         header('Content-Type: application/json');
         echo json_encode($response);

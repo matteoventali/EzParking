@@ -14,6 +14,7 @@ class User(db.Model):
     surname = db.Column(db.String(50), nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
+    cc_number = db.Column(db.String(16), nullable=False, unique=True)
     lastlogin_ts = db.Column(db.TIMESTAMP, default=None)
     session_token = db.Column(db.String(32), default=None)
     phone = db.Column(db.String(15), nullable=False, unique=True)

@@ -18,6 +18,7 @@
         $phone = trim($_POST['phone'] ?? '');
         $email = trim($_POST['email'] ?? '');
         $password = trim($_POST['password'] ?? '');
+        $card = trim($_POST['card'] ?? '');
 
         // Preparing the data for the microservice
         $payload = [
@@ -25,7 +26,8 @@
             'surname' => $surname,
             'phone' => $phone,
             'email' => $email,
-            'password' => $password
+            'password' => $password,
+            'cc_number' => $card
         ];
 
         try
@@ -47,7 +49,7 @@
                 $payload = [
                     'id' => $last_id,
                     'name' => $name,
-                    'surname' => $surname
+                    'surname' => $surname,
                 ];
                 $api_url = compose_url($protocol, $socket_park_ms, '/users');
                 $response = perform_rest_request('POST', $api_url, $payload);
@@ -109,7 +111,7 @@
             </div>
             <div class="input-group">
                 <label for="card">Credit Card Number</label>
-                <input type="text" id="card" class="login-input" name="card" required>
+                <input type="text" id="card" class="login-input" maxlength=16 name="card" required>
             </div>                     
             <button type="submit" class="login-button">Register</button>
             <p class="error-message" id="error-message">

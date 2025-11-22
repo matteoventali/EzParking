@@ -36,7 +36,7 @@ def index():
 def signup():
     data = request.get_json()
 
-    required_fields = ['name', 'surname', 'email', 'password', 'phone']
+    required_fields = ['name', 'surname', 'email', 'password', 'phone', 'cc_number']
     if not all(field in data for field in required_fields):
         return jsonify({'error': 'Missing required fields'}), 400
 
@@ -45,6 +45,7 @@ def signup():
     email = data['email']
     phone = data['phone']
     password = data['password']
+    cc_number = data['cc_number']
 
     hashed_password = generate_password_hash(password)
 
@@ -64,6 +65,7 @@ def signup():
                 email=email,
                 password_hash=hashed_password,
                 phone=phone,
+                cc_number = cc_number,
                 user_role='user'
             )
 
@@ -78,6 +80,7 @@ def signup():
                 'surname': new_user.surname,
                 'email': new_user.email,
                 'phone': new_user.phone,
+                'cc_number': new_user.cc_number,
                 'role': new_user.user_role
             }
         }), 201
@@ -221,6 +224,7 @@ def get_personal_data():
             'surname': user.surname,
             'email': user.email,
             'phone': user.phone,
+            'cc_number': user.cc_number,
             'score': score
         }
     }), 200
@@ -257,8 +261,6 @@ def update_personal_data():
         user.surname = data['surname']
         updated = True
 
-    print(data['password']);
-
     if 'password' in data and (data['password'] != None):
         user.password_hash = generate_password_hash(data['password'])
         updated_pwd = True
@@ -270,10 +272,18 @@ def update_personal_data():
                             'code': '4'}), 409
         user.phone = data['phone']
         updated = True
+    
+    if 'cc_number' in data:
+        existing_user = User.query.filter_by(cc_number=data['cc_number']).first()
+        if existing_user and existing_user.id != user.id:
+            return jsonify({'desc': 'Credit card already registered',
+                            'code': '5'}), 409
+        user.cc_number = data['cc_number']
+        updated = True
 
     if not (updated or updated_pwd):
         return jsonify({'desc': 'No valid fields to update',
-                        'code': '5'}), 400
+                        'code': '6'}), 400
 
     db.session.commit()
 
