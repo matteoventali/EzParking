@@ -66,7 +66,7 @@
                 My Reservations
             </button>
 
-            <button onclick="location.href='../php/plannig_calendar.php';">
+            <button onclick="location.href='../php/planning_calendar.php';">
                 <i class="fas fa-history" ></i>
                 Calendar
             </button>

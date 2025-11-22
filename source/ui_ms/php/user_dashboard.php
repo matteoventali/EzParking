@@ -115,7 +115,7 @@
 
 		<!-- Reservations Section -->
 		<div class="dashboard-card reservations-card">
-			<div class="section-title">Your Parking Reservations</div>
+			<div class="section-title">Reviewable Reservations</div>
 
 			<div class="reservation-list-container">
 				<ul class="reservation-list">
@@ -126,18 +126,6 @@
 					<li onclick="openReviewPopup(1, 'Parking Garage B')">
 						<strong>Parking Garage B</strong><br>
 						<small>Date: 2025-10-22 | Time: 11:00 | Cost: €7 | Status: Pending</small>
-					</li>
-					<li onclick="window.location.href='reservation_details.php?id=3'">
-						<strong>Open Lot C</strong><br>
-						<small>Date: 2025-10-29 | Time: 15:30 | Cost: €4 | Status: Cancelled</small>
-					</li>
-					<li onclick="window.location.href='reservation_details.php?id=4'">
-						<strong>Central Parking</strong><br>
-						<small>Date: 2025-11-03 | Time: 08:30 | Cost: €6 | Status: Confirmed</small>
-					</li>
-					<li onclick="window.location.href='reservation_details.php?id=5'">
-						<strong>Underground Lot D</strong><br>
-						<small>Date: 2025-11-12 | Time: 17:00 | Cost: €5 | Status: Pending</small>
 					</li>
 				</ul>
 			</div>

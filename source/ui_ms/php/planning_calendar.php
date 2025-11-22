@@ -1,13 +1,12 @@
 <?php 
-require_once "./config.php";
-require_once "./functions.php";
+    require_once "./config.php";
+    require_once "./functions.php";
 
     // We must be logged in to access this page
     if (!verify_session())
         header("Location: " . $starting_page);
     else if ($_SESSION['role'] != 'user') // Redirect the user to the correct homepage
         header("Location: " . $homepage);
-
 ?>
 
 <!DOCTYPE html>

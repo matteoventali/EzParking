@@ -1,62 +1,64 @@
 // calendar.js
 
 function classifyEvents(spots, reservations, availabilities, currentUserId) {
-  const bookedByOthers = [];
-  const myBookings = [];
-  const freeSpots = [];
+    const bookedByOthers = [];
+    const myBookings = [];
+    const freeSpots = [];
 
-  spots.forEach(spot => {
-    //Find availabilities slots for spot
-    const spotAvailabilities = availabilities.filter(a => a.spotId === spot.id);
-    //FInd reservations for spot
-    const spotReservations = reservations.filter(r => r.spotId === spot.id);
+    spots.forEach(spot => {
+        //Find availabilities slots for spot
+        const spotAvailabilities = availabilities.filter(a => a.spotId === spot.id);
+        //Find reservations for spot
+        const spotReservations = reservations.filter(r => r.spotId === spot.id);
 
-    if (spot.ownerId === currentUserId) {
-      spotAvailabilities.forEach(av => {
-        //Check to see if the spot is reserve
-        const reservationInSlot = spotReservations.find(r =>
-          r.start >= av.start && r.end <= av.end
-        );
+        if (spot.ownerId === currentUserId) {
+            spotAvailabilities.forEach(av => {
+            //Check to see if the spot is reserve
+            const reservationInSlot = spotReservations.find(r =>
+                r.start >= av.start && r.end <= av.end
+            );
 
-        if (reservationInSlot) {
-          //if the spot is reserved
-          if (reservationInSlot.userId !== currentUserId) {
-            bookedByOthers.push({
-              id: reservationInSlot.id,
-              title: `${reservationInSlot.start.slice(11,16)}-${reservationInSlot.end.slice(11,16)} ${spot.name}`,
-              start: reservationInSlot.start.slice(0,10),
-              color: "#ff4d4d",
-              textColor: "#fff"
-            });
-          }
-        } else {
-          //Free slots for the spot
-          freeSpots.push({
-            id: `free-${spot.id}-${av.id}`,
-            title: `Free – ${spot.name}`,
-            start: av.start.slice(0,10),
-            color: "#c2f7c2",
-            textColor: "#000"
-          });
-        }
-      });
-    } else {
-      //Parking spot is not property of the current user, then check if there is a reservation in the users' name
-      spotReservations.forEach(r => {
+            if (reservationInSlot) {
+                //if the spot is reserved
+                if (reservationInSlot.userId !== currentUserId) {
+                bookedByOthers.push({
+                    id: reservationInSlot.id,
+                    title: `${reservationInSlot.start.slice(11,16)}-${reservationInSlot.end.slice(11,16)} ${spot.name}`,
+                    start: reservationInSlot.start.slice(0,10),
+                    color: "#ff4d4d",
+                    textColor: "#fff"
+                });
+                }
+            } else {
+                //Free slots for the spot
+                freeSpots.push({
+                id: `free-${spot.id}-${av.id}`,
+                title: `Free – ${spot.name}`,
+                start: av.start.slice(0,10),
+                color: "#c2f7c2",
+                textColor: "#000"
+                });
+            }
+        });
+    } 
+    else 
+    {
+        //Parking spot is not property of the current user, then check if there is a reservation in the users' name
+        spotReservations.forEach(r => {
         if (r.userId === currentUserId) {
-          myBookings.push({
+            myBookings.push({
             id: r.id,
             title: `${r.start.slice(11,16)}-${r.end.slice(11,16)} ${spot.name}`,
             start: r.start.slice(0,10),
             color: "#4d94ff",
             textColor: "#fff"
-          });
+            });
         }
-      });
+        });
     }
-  });
+    });
 
-  return { bookedByOthers, myBookings, freeSpots };
+    return { bookedByOthers, myBookings, freeSpots };
 }
 
 document.addEventListener("DOMContentLoaded", function () {
