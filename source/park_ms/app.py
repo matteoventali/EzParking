@@ -945,7 +945,6 @@ def get_reservations(user_id):
         }), 200
 
     except Exception as e:
-        db.session.rollback()
         return jsonify({
             "desc": f"Database error: {str(e)}",
             "code": "99"
@@ -982,10 +981,99 @@ def get_reservation(res_id):
         }), 200
 
     except Exception as e:
-        db.session.rollback()
         return jsonify({
             "desc": f"Database error: {str(e)}",
             "code": "99"
+        }), 500
+
+
+@app.route("/reservations/<int:user_id>/completed", methods=["GET"])
+def get_completed_reservations(user_id):
+    try:
+
+        as_driver_reservations = (
+            db.session.query(Reservation, AvailabilitySlot, ParkingSpot)
+            .join(AvailabilitySlot, Reservation.slot_id == AvailabilitySlot.id)
+            .join(ParkingSpot, AvailabilitySlot.parking_spot_id == ParkingSpot.id)
+            .filter(
+                Reservation.user_id == user_id,
+                Reservation.reservation_status == "completed"
+            )
+            .all()
+        )
+
+        as_driver_json = []
+        for res, slot, spot in as_driver_reservations:
+            as_driver_json.append({
+                "role": "driver",
+                "reservation_id": res.id,
+                "status": res.reservation_status,
+                "car_plate": res.car_plate,
+                "reservation_ts": res.reservation_ts.isoformat(),
+
+                "slot": {
+                    "slot_id": slot.id,
+                    "slot_date": slot.slot_date.isoformat(),
+                    "start_time": slot.start_time.strftime("%H:%M"),
+                    "end_time": slot.end_time.strftime("%H:%M"),
+                },
+
+                "parking_spot": {
+                    "spot_id": spot.id,
+                    "spot_name": spot.name,
+                    "owner_id": spot.user_id
+                }
+            })
+
+        as_resident_reservations = (
+            db.session.query(Reservation, AvailabilitySlot, ParkingSpot)
+            .join(AvailabilitySlot, Reservation.slot_id == AvailabilitySlot.id)
+            .join(ParkingSpot, AvailabilitySlot.parking_spot_id == ParkingSpot.id)
+            .filter(
+                ParkingSpot.user_id == user_id,         
+                Reservation.reservation_status == "completed"
+            )
+            .all()
+        )
+
+        as_resident_json = []
+        for res, slot, spot in as_resident_reservations:
+            as_resident_json.append({
+                "role": "resident",
+                "reservation_id": res.id,
+                "status": res.reservation_status,
+                "car_plate": res.car_plate,
+                "reservation_ts": res.reservation_ts.isoformat(),
+
+                "driver_id": res.user_id,
+
+                "slot": {
+                    "slot_id": slot.id,
+                    "slot_date": slot.slot_date.isoformat(),
+                    "start_time": slot.start_time.strftime("%H:%M"),
+                    "end_time": slot.end_time.strftime("%H:%M"),
+                },
+
+                "parking_spot": {
+                    "spot_id": spot.id,
+                    "spot_name": spot.name,
+                    "owner_id": spot.user_id
+                }
+            })
+
+        return jsonify({
+            "desc": "Completed reservations retrieved successfully",
+            "code": "0",
+            "user_id": user_id,
+            "as_driver": as_driver_json,
+            "as_resident": as_resident_json,
+            "count": len(as_driver_json) + len(as_resident_json)
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            'desc': f'Database error: {str(e)}',
+            'code': '99'
         }), 500
 
 
