@@ -111,26 +111,13 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
-
-	<script>
-		function writeStars(id, n)
-		{
-			// Get the field
-			field = document.getElementById(id);
-
-			// Writing n start
-			let stars = '';
-			for (let i = 0; i < n; i++)
-				stars += '★';
-			field.innerText += " " + stars;
-		}
-	</script>
+	<script src="../js/stars.js"></script>
 </head>
 
 <body>
 	<?php
-	$nav = generate_navbar($_SESSION['role']);
-	echo $nav;
+		$nav = generate_navbar($_SESSION['role']);
+		echo $nav;
 	?>
 
 	<main class="dashboard-grid">
