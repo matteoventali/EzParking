@@ -12,6 +12,88 @@
 	$url = compose_url($protocol, $socket_account_ms, '/pdata');
 	$new_data = perform_rest_request('GET', $url, null, $_SESSION['session_token']);
 	$_SESSION['user'] = array_merge($_SESSION['user'], $new_data['body']['user']);
+
+	// Gets the completed reservations that involves the current user
+	$api_url = compose_url($protocol, $socket_park_ms, '/reservations/' . $_SESSION["user"]["id"] . '/completed');
+	$reservations_completed = perform_rest_request('GET', $api_url, null, null);
+	$reservation_as_driver = $reservation_as_resident = null;
+	if ( $reservations_completed["status"] == 200 && $reservations_completed["body"]["code"] === "0" )
+	{
+		$reservation_as_driver = $reservations_completed["body"]["as_driver"];
+		$reservation_as_resident = $reservations_completed["body"]["as_resident"];
+	}
+
+	// Gets the review that involves the current user
+	$api_url = compose_url($protocol, $socket_account_ms, '/reviews');
+	$response = perform_rest_request('GET', $api_url, null, $_SESSION['session_token']);
+	$written_reviews = $received_reviews = null;
+	if ( $response["status"] == 200 && $response["body"]["code"] === "0" )
+	{
+		$written_reviews = $response["body"]["written_reviews"];
+		$received_reviews = $response["body"]["received_reviews"];
+	}
+
+	// We must allow the adding of a review only if the reservation has not already reviewed by us.
+	// Computing the difference
+	$reviewed_ids = array_column($written_reviews, "reservation_id");
+	$rewiable_reservations = array();
+	foreach( $reservation_as_driver as $res )
+	{
+		if ( in_array($res["reservation_id"], $reviewed_ids) )
+			continue;
+			
+		array_push($rewiable_reservations, $res);	
+	}
+	foreach( $reservation_as_resident as $res )
+	{
+		if ( in_array($res["reservation_id"], $reviewed_ids) )
+			continue;
+
+		array_push($rewiable_reservations, $res);
+	}
+
+	// Populating the rewiable reservations section
+	$rewiable_html = '';
+	if ( count($rewiable_reservations) > 0 )
+	{
+		// Reading the template
+		$li_template = file_get_contents('../html/li_reservation.html');
+
+		foreach ( $rewiable_reservations as $res )
+		{
+			$li = str_replace("%ID%", $res["reservation_id"], $li_template);
+			$li = str_replace("%SPOT_NAME%", $res["parking_spot"]["spot_name"], $li);
+			$li = str_replace("%DATE%", $res["slot"]["slot_date"], $li);
+			$li = str_replace("%START%", $res["slot"]["start_time"], $li);
+			$li = str_replace("%END%", $res["slot"]["end_time"], $li);
+			$li = str_replace("%PLATE%", $res["car_plate"], $li);
+			$li = str_replace("%ROLE%", strtoupper($res["role"]), $li);
+			$rewiable_html .= $li . "\n";
+		}
+	}
+	else
+		$rewiable_html = '<p>No rewiable reservations are present!<p>';
+
+	// Populating the received reviews
+	$received_html = '';
+	if ( count($received_reviews) > 0 )
+	{
+		// Reading the template
+		$card_template = file_get_contents('../html/received_review.html');
+
+		foreach ( $received_reviews as $res )
+		{
+			$card = str_replace("%NAME%", $res["other_side_name"] . " " . $res["other_side_surname"], $card_template);
+			$card = str_replace("%ID%", $res["id"], $card);
+			$card = str_replace("%STAR%", $res["star"], $card);
+			$card = str_replace("%TEXT%", $res["review_description"], $card);
+			$card = str_replace("%DATE%", $res["review_date"], $card);
+			
+			$received_html .= $card . "\n";
+		}
+	}
+	else
+		$received_html = '<p>You haven\'t received any review!<p>';
 ?>
 
 <!DOCTYPE html>
@@ -29,6 +111,20 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
+
+	<script>
+		function writeStars(id, n)
+		{
+			// Get the field
+			field = document.getElementById(id);
+
+			// Writing n start
+			let stars = '';
+			for (let i = 0; i < n; i++)
+				stars += '★';
+			field.innerText += " " + stars;
+		}
+	</script>
 </head>
 
 <body>
@@ -38,7 +134,6 @@
 	?>
 
 	<main class="dashboard-grid">
-
 		<!-- User Data Section -->
 		<div class="dashboard-card user-data-card">
 			<div class="user-header">
@@ -91,27 +186,13 @@
 			</p>
 		</div>
 
+		<!-- Received Reviews -->
 		<div class="dashboard-card review-card">
-			<div class="section-title">Reviews</div>
+			<div class="section-title">Received Reviews</div>
 			<div class="review-box">
-				<div class="review-column">
-					<div class="review-header">
-						<span><strong>User:</strong> Name</span>
-						<span><strong>Rating:</strong> Stars</span>
-					</div>
-					<p class="review-text">Review's text</p>
-				</div>
-
-				<div class="review-column">
-					<div class="review-header">
-						<span><strong>User:</strong> Name</span>
-						<span><strong>Rating:</strong> Stars</span>
-					</div>
-					<p class="review-text">Review's text</p>
-				</div>
+				<?php echo $received_html; ?>
 			</div>
 		</div>
-
 
 		<!-- Reservations Section -->
 		<div class="dashboard-card reservations-card">
@@ -119,14 +200,7 @@
 
 			<div class="reservation-list-container">
 				<ul class="reservation-list">
-					<li onclick="openReviewPopup(1, 'Parking Lot A')">
-						<strong>Parking Lot A</strong><br>
-						<small>Date: 2025-10-18 | Time: 09:00 | Cost: €5 | Status: Confirmed</small>
-					</li>
-					<li onclick="openReviewPopup(1, 'Parking Garage B')">
-						<strong>Parking Garage B</strong><br>
-						<small>Date: 2025-10-22 | Time: 11:00 | Cost: €7 | Status: Pending</small>
-					</li>
+					<?php echo $rewiable_html; ?>
 				</ul>
 			</div>
 		</div>
@@ -163,7 +237,6 @@
 				</div>
 			</div>
 		</div>
-
 	</main>
 	
 	<?php
