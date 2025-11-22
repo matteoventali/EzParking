@@ -16,35 +16,6 @@ function classifyEvents(spots, reservations, availabilities, currentUserId) {
                 r.start >= av.start && r.end <= av.end
             );
 
-<<<<<<< Updated upstream
-            if (reservationInSlot) {
-                //if the spot is reserved
-                if (reservationInSlot.userId !== currentUserId) {
-                bookedByOthers.push({
-                    id: reservationInSlot.id,
-                    title: `${reservationInSlot.start.slice(11,16)}-${reservationInSlot.end.slice(11,16)} ${spot.name}`,
-                    start: reservationInSlot.start.slice(0,10),
-                    color: "#ff4d4d",
-                    textColor: "#fff"
-                });
-                }
-            } else {
-                //Free slots for the spot
-                freeSpots.push({
-                id: `free-${spot.id}-${av.id}`,
-                title: `Free – ${spot.name}`,
-                start: av.start.slice(0,10),
-                color: "#c2f7c2",
-                textColor: "#000"
-                });
-            }
-        });
-    } 
-    else 
-    {
-        //Parking spot is not property of the current user, then check if there is a reservation in the users' name
-        spotReservations.forEach(r => {
-=======
         if (reservationInSlot) {
           //if the spot is reserved
           if (reservationInSlot.userId !== currentUserId) {
@@ -72,7 +43,6 @@ function classifyEvents(spots, reservations, availabilities, currentUserId) {
     } else {
       //Parking spot is not property of the current user, then check if there is a reservation in the users' name
       spotReservations.forEach(r => {
->>>>>>> Stashed changes
         if (r.userId === currentUserId) {
             myBookings.push({
             id: r.id,
