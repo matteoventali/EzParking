@@ -1,0 +1,27 @@
+.fc {
+    padding: 3rem;
+}
+
+.calendar-container {
+    width: 90%;
+    margin: 4rem auto;
+    padding: 0.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.fc-event {
+    padding: 2px 4px;
+    font-size: 11px;
+    border-radius: 4px;
+}
+
+
+
+
+@media (min-width : 390px) and (max-width: 1024px){
+   .calendar-container{ width: 80%;
+                        height: 100%;     
+                    }
+}

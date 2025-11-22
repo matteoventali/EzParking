@@ -66,9 +66,9 @@
                 My Reservations
             </button>
 
-            <button onclick="location.href='../php/history.php';">
+            <button onclick="location.href='../php/plannig_calendar.php';">
                 <i class="fas fa-history" ></i>
-                Chronology
+                Calendar
             </button>
         </div>
     </section>
