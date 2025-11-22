@@ -52,12 +52,6 @@
             </div>
 
             <div class="controls">
-                <!--
-                <label for="filtersSelect">Filters:</label>
-                <select class="dropdown-toggle" id="filtersSelect" name="filters[]" style="min-width:150px" ; multiple>
-                    KEEP THIS COMMENT FOR BACKUP!
-                </select> -->
-                
                 <div class="dropdown" id="filtersDropdown">
                     <div class="dropdown-toggle">Filters<i class="fa-solid fa-angle-down"></i></div>
 

@@ -4,19 +4,16 @@ function setupFilterDropdown() {
     const checkboxes = dropdown.querySelectorAll("input[type=checkbox]");
     const pillsContainer = document.getElementById("activeFilters");
 
-    // Apri/chiudi tendina
     toggle.addEventListener("click", () => {
         dropdown.classList.toggle("open");
     });
 
-    // Chiudi cliccando fuori
     document.addEventListener("click", (e) => {
         if (!dropdown.contains(e.target)) {
             dropdown.classList.remove("open");
         }
     });
 
-    // Gestione pills
     checkboxes.forEach(cb => {
         cb.addEventListener("change", () => {
             updatePills();
@@ -24,7 +21,7 @@ function setupFilterDropdown() {
     });
 
     function updatePills() {
-        pillsContainer.innerHTML = ""; // pulisci
+        pillsContainer.innerHTML = "";
 
         checkboxes.forEach(cb => {
             if (cb.checked) {
@@ -32,7 +29,6 @@ function setupFilterDropdown() {
                 pill.className = "pill";
                 pill.textContent = cb.value;
 
-                // cliccando la pill → rimuovi filtro
                 pill.addEventListener("click", () => {
                     cb.checked = false;
                     updatePills();
@@ -44,12 +40,7 @@ function setupFilterDropdown() {
     }
 }
 
-// Attiva tutto
 document.addEventListener("DOMContentLoaded", setupFilterDropdown);
-
-
-
-
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("searchForm");
@@ -101,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     parkingList.classList.add("visible");
                     applyPostSearchIfCards();
                 } else {
-                    parkingList.innerHTML = `<p class="error">Search error (${xhr.status})</p>`;
+                    parkingList.innerHTML = `<p class="error" style="text-align:center">Search error (${xhr.status})</p>`;
                 }
 
                 form.dataset.animating = "0";
@@ -114,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         xhr.onerror = function () {
             if (loaderSection) loaderSection.style.display = "none";
-            parkingList.innerHTML = `<p class="error">Network error</p>`;
+            parkingList.innerHTML = `<p class="error" style="text-align:center">Network error</p>`;
             form.dataset.animating = "0";
             if (searchBtn) {
                 searchBtn.disabled = false;
