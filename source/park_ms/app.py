@@ -1067,7 +1067,8 @@ def get_completed_reservations(user_id):
             "user_id": user_id,
             "as_driver": as_driver_json,
             "as_resident": as_resident_json,
-            "count": len(as_driver_json) + len(as_resident_json)
+            "count_driver": len(as_driver_json),
+            "count_resident": len(as_resident_json)
         }), 200
 
     except Exception as e:

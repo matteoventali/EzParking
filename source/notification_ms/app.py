@@ -2,6 +2,11 @@ from flask import Flask, jsonify, request
 from config import DB_CONFIG
 from models import db, User
 from datetime import datetime
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+
 
 # -------------------------------
 # Init
@@ -41,7 +46,29 @@ def sync_user(user_id):
 # ------------ NOTIFICATIONS ------------
 @app.route("/notifications/parking_available", methods=["POST"])
 def notify_parking_available():
-    pass
+
+        smtp_server = "smtp.gmail.com"
+        smtp_port = 587
+        gmail_user = ""
+        app_password = ""  
+
+        to_email = ""
+
+        msg = MIMEMultipart()
+        msg["From"] = gmail_user
+        msg["To"] = to_email
+        msg["Subject"] = "Test SMTP Gmail"
+        body = "Funziona!"
+        msg.attach(MIMEText(body, "plain"))
+
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
+            server.login(gmail_user, app_password)
+            server.sendmail(gmail_user, to_email, msg.as_string())
+
+        return jsonify({
+            'ok':"ok"
+        }), 200
 
 
 @app.route("/notifications/reservation_accepted", methods=["POST"])
