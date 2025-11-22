@@ -103,10 +103,10 @@
             </div>
 
             <form id="addForm" onsubmit="return checkPosition();" action="insert_spot.php" class="parking-form" method="POST">
-                <p class="error-message" id="error-message">
+                <p class="error-message" id="error-message" style="text-align: center";>
                     <?php if(isset($error_message)) echo $error_message; else echo '';  ?>
                 </p>
-                <p class="error-message" style="color:green" id="ok-message">
+                <p class="error-message" style="color:green; text-align:center" id="ok-message">
                     <?php if(isset($ok_message)) echo $ok_message; else echo ''; ?>
                 </p>
             
@@ -142,10 +142,6 @@
                     <small class="input-hint">Cost per hour for parking slot</small>
                 </div>
 
-            <!--   <label for="filtersSelect">Filters:</label>
-                <select class = "dropdown-toggle" id="filtersSelect" name="filters[]" style="min-width:150px"; multiple>                    
-                </select>-->
-            
                 <label> Parking Type:</label>
                 <div class="dropdown" id="filtersDropdown" style="width: 100%;">
                     <div class="dropdown-toggle" style="width: 100%; justify-content: space-between"  >Select type of parking<i class="fa-solid fa-angle-down"></i></div>
