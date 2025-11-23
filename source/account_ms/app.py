@@ -117,7 +117,7 @@ def login():
             session_token = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
             user.session_token = session_token
 
-            reviews = list_reviews(user)
+            reviews = list_reviews(user.id)
             received_reviews = reviews["received_reviews"]
             if ( len(received_reviews) == 0 ):
                 score = 0
@@ -209,7 +209,7 @@ def get_personal_data():
         return jsonify({'desc': 'Invalid session token',
                         'code': '2'}), 401
 
-    reviews = list_reviews(user)
+    reviews = list_reviews(user.id)
     received_reviews = reviews["received_reviews"]
     if ( len(received_reviews) == 0 ):
         score = 0
@@ -303,10 +303,17 @@ def update_personal_data():
 
 
 # ------------ REVIEWS ------------
-def list_reviews(user):
-        
-    written = Review.query.filter_by(writer_id=user.id).all()
-    received = Review.query.filter_by(target_id=user.id).all()
+def list_reviews(user_id):
+    
+    user = User.query.filter(User.id == user_id).first()
+    if not user:
+        return {
+            'desc': f"The user with ID: {user_id} doesn't exist", 
+            'code': 1
+        }
+    
+    written = Review.query.filter_by(writer_id=user_id).all()
+    received = Review.query.filter_by(target_id=user_id).all()
 
     written_reviews = [{
         'id': r.id,
@@ -354,7 +361,29 @@ def get_review():
                         'code': '2'}), 401
 
     try:
-        return jsonify(list_reviews(user)), 200
+        return jsonify(list_reviews(user.id)), 200
+    except Exception as e:
+        return jsonify({'desc': f'Database error: {e}',
+                        'code': '99'}), 500
+
+
+@app.route("/reviews/<int:user_id>", methods=["GET"])
+def get_reviews(user_id):
+
+    auth_header = request.headers.get('Authorization')
+    if not auth_header:
+        return jsonify({'desc': 'Missing or invalid Authorization header',
+                        'code': '1'}), 400
+
+    session_token = auth_header
+    user = User.query.filter_by(session_token=session_token).first()
+
+    if not user:
+        return jsonify({'desc': 'Invalid session token',
+                        'code': '2'}), 401
+
+    try:
+        return jsonify(list_reviews(user_id)), 200
     except Exception as e:
         return jsonify({'desc': f'Database error: {e}',
                         'code': '99'}), 500
@@ -505,7 +534,7 @@ def get_user_dashboard(user_id):
         return jsonify({'desc': 'User not found',
                         'code': '4'}), 404
 
-    reviews = list_reviews(target_user)
+    reviews = list_reviews(target_user.id)
     received_reviews = reviews["received_reviews"]
 
     if ( len(received_reviews) == 0 ):

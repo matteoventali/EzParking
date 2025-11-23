@@ -86,7 +86,7 @@ def get_parking_spot(spot_id):
 
     try:
         spot = ParkingSpot.query.get(spot_id)
-
+    
         if not spot:
             return jsonify({
                 "desc": f"Parking spot {spot_id} not found",
