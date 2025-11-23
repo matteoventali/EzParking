@@ -299,7 +299,7 @@
   font-weight: 500;
 }
 
-@media (max-width: 390px) {
+@media (max-width: 375px) {
   .dashboard-grid {
     margin-top: 6rem;
     gap: 1.5rem;

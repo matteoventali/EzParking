@@ -107,7 +107,31 @@
         if ( $user['role'] == 'user' )  
             echo $rep_card;
     ?>
-
+		<!-- Reviews -->
+		<div class="dashboard-card review-card">
+			<div class="section-title">Received Reviews</div>
+			<div class="review-box">
+          <div class="review-column">
+            <div class="review-header">
+              <span><strong>User:</strong> Name</span>
+              <span><strong>Rating:</strong> Stars</span>
+            </div>
+            <p class="review-text">Review's text</p>
+          </div>          
+        </div>          				      
+			</div>
+		<div class="dashboard-card review-card">
+			<div class="section-title">Submitted Reviews</div>
+			<div class="review-box">
+          <div class="review-column">
+            <div class="review-header">
+              <span><strong>User:</strong> Name</span>
+              <span><strong>Rating:</strong> Stars</span>
+            </div>
+            <p class="review-text">Review's text</p>
+          </div>          
+        </div>          				      
+			</div>
     </main>
     <?php
         $footer = file_get_contents(FOOTER);

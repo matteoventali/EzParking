@@ -262,7 +262,6 @@ main {
         max-width: 94%;
         flex-direction: column;
         gap: 0.6rem;
-        margin-left: -33px;
   }
 
   .search-input{
