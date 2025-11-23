@@ -1,3 +1,12 @@
+<?php
+    require_once './config.php';
+    require_once './functions.php';
+    
+    // If we are logged we can directly go to the homepage
+    if ( verify_session() )
+        header("Location: " . $homepage);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +23,6 @@
 </head>
 <body>
     <?php 
-        include './functions.php';
         $nav = generate_navbar('guest');
         echo $nav;
     ?>
@@ -48,7 +56,6 @@
 
 
     <?php
-        require_once './config.php';
         $footer = file_get_contents(FOOTER);
         echo $footer;
     ?>
