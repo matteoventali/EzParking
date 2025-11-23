@@ -47,19 +47,20 @@
         padding: 0.5rem;
    }
 }
-
-@media (max-width : 430px){
+@media (min-width : 375px) and (max-width: 430px){
    .calendar-container{ 
-        width: 100%;    
+        max-width: 95%;    
         height: 100vh;
         overflow-x: scroll;
         padding: 1rem;
    }
    #calendar{
-        min-width: 600px;
         height: 100%;
    }
-    .fc-timegrid-event .fc-event-time {
-        white-space: normal;
-    }      
+   .fc-header-toolbar{
+        font-size: 10px;
+   }
+   .fc{
+        padding: 0.5rem;
+   }
 }

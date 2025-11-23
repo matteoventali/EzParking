@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function ()
             hour12: false
         },
         displayEventEnd: true,
-
+        windowResize: () => updateView(),      
         eventSources: [
         {
             events: reservations,
@@ -103,5 +103,18 @@ document.addEventListener("DOMContentLoaded", function ()
         eventOrder: "start"
     });
 
+    function updateView(){
+        const width = window.innerWidth;
+
+        if (width < 430) {
+            calendar.changeView('listWeek');
+        }
+        else if (width < 600) {
+            calendar.changeView('timeGridWeek');
+        }
+        else {
+            calendar.changeView('dayGridMonth');
+        }      
+    }
     calendar.render();
 });
