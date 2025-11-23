@@ -7,6 +7,9 @@
         header("Location: " . $starting_page);
     else if ($_SESSION['role'] != 'user') // Redirect the user to the correct homepage
         header("Location: " . $homepage);
+
+
+    
 ?>
 
 <!DOCTYPE html>
@@ -23,6 +26,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
     <script src="../js/planning_calendar.js"></script>
+     
+    <script>
+    </script>
   </head>
   <body style="background: white;">
     <?php
