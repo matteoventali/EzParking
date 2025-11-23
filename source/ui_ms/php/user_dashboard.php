@@ -67,7 +67,22 @@
 			$li = str_replace("%START%", $res["slot"]["start_time"], $li);
 			$li = str_replace("%END%", $res["slot"]["end_time"], $li);
 			$li = str_replace("%PLATE%", $res["car_plate"], $li);
-			$li = str_replace("%ROLE%", strtoupper($res["role"]), $li);
+			
+			if ( $res["role"] == 'resident')
+			{
+				$li = str_replace("%ROLE%", strtoupper('driver'), $li);
+
+				// We show the name of the driver
+				$li = str_replace("%NAME%", $res["driver_name"] . " " . $res["driver_surname"], $li);
+			}
+			else if ( $res["role"] == 'driver' )
+			{
+				$li = str_replace("%ROLE%", strtoupper('resident'), $li);
+
+				// We show the name of the resident
+				$li = str_replace("%NAME%", $res["parking_spot"]["owner_name"] . " " . $res["parking_spot"]["owner_surname"], $li);	
+			}
+			
 			$rewiable_html .= $li . "\n";
 		}
 	}
@@ -201,7 +216,7 @@
 
 				<h3 class="modal-title" id="reviewTitle">Leave a Review</h3>
 
-				<p class="modal-message">Tell us about your parking experience.</p>
+				<p class="modal-message">Tell us about your xperience.</p>
 
 				<!-- Rating Stars -->
 				<div class="rating-stars"

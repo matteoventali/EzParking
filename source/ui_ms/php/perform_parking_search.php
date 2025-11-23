@@ -64,7 +64,7 @@
                 $card = str_replace("%PRICE%", $spot["slot_price"], $card);
                 $slot = $spot["next_slot"];
 
-                $card = str_replace("%FIRST_SLOT%", $slot["slot_date"] . ": " . $slot["start_time"] . "-" . $slot["end_time"], $card);
+                $card = str_replace("%FIRST_SLOT%", $slot["slot_date"] . " from " . $slot["start_time"] . " to " . $slot["end_time"], $card);
                 
                 if ( $spot["resident_id"] == $_SESSION["user"]["id"] ) 
                 {

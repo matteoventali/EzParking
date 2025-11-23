@@ -1012,6 +1012,8 @@ def get_completed_reservations(user_id):
                 "reservation_ts": res.reservation_ts.isoformat(),
 
                 "driver_id": res.user_id,
+                "driver_name": res.user.name,
+                "driver_surname": res.user.surname,
 
                 "slot": {
                     "slot_id": slot.id,
@@ -1023,7 +1025,9 @@ def get_completed_reservations(user_id):
                 "parking_spot": {
                     "spot_id": spot.id,
                     "spot_name": spot.name,
-                    "owner_id": spot.user_id
+                    "owner_id": spot.user_id,
+                    "owner_name": spot.owner.name,
+                    "owner_surname": spot.owner.surname
                 }
             })
 
@@ -1048,6 +1052,8 @@ def get_completed_reservations(user_id):
                 "reservation_ts": res.reservation_ts.isoformat(),
 
                 "driver_id": res.user_id,
+                "driver_name": res.user.name,
+                "driver_surname": res.user.surname,
 
                 "slot": {
                     "slot_id": slot.id,
@@ -1059,7 +1065,9 @@ def get_completed_reservations(user_id):
                 "parking_spot": {
                     "spot_id": spot.id,
                     "spot_name": spot.name,
-                    "owner_id": spot.user_id
+                    "owner_id": spot.user_id,
+                    "owner_name": spot.owner.name,
+                    "owner_surname": spot.owner.surname
                 }
             })
 

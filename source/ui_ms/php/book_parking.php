@@ -3,7 +3,7 @@
     require_once "./functions.php";
 
     // We must be logged in to access this page
-    if (!verify_session())
+    if ( !verify_session() )
         header("Location: " . $starting_page);
     else if ($_SESSION['role'] != 'user') // Redirect the user to the correct homepage
         header("Location: " . $homepage);
@@ -54,6 +54,7 @@
         ];
     }
 
+    // Loading the reviews for the resident
     
 
     // Veryfing if we have to add a new reservation
@@ -112,10 +113,13 @@
         <h1><?php echo $spot["name"]; ?></h1>
         <div class="garage-details-single-column">
             <div class="garage-column">
+                <p><strong>👤 Resident: </strong><?php echo $spot["user"]["name"] . " " . $spot["user"]["surname"]; ?></p>
+            </div>
+            <div class="garage-column">
                 <p><strong>📍 Location: </strong><?php echo $address; ?></p>
             </div>
             <div class="garage-column">
-                <p><strong>⭐ Rating Threshold: </strong><?php echo $spot["rep_treshold"]; ?> / 5</p>
+                <p><strong>⭐ Rating Threshold: </strong><?php echo $spot["rep_treshold"]; ?> ★</p>
             </div>
             <div class="garage-column">
                 <p><strong>💰 Price: </strong>€<?php echo $spot["slot_price"]; ?> / hour</p>
@@ -128,7 +132,7 @@
     </section>
 
     <section class="card garage-info reviews-section">
-        <h1>Reviews</h1>
+        <h1>Reviews for <?php echo $spot["user"]["name"] . " " . $spot["user"]["surname"]; ?></h1>
         <div class="review-box">
             <div class="garage-details-single-column">
                 <div class="review-column">
