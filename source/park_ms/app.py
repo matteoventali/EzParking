@@ -533,7 +533,6 @@ def delete_parking_spot_label(spot_id, label_id):
 def get_availability_slots(park_id):
 
     try:
-
         spot = ParkingSpot.query.get(park_id)
         if not spot:
             return jsonify({
@@ -578,22 +577,60 @@ def get_availability_slots(park_id):
             for slot in available_slots
         ]
 
+        taken_slots = (
+            db.session.query(AvailabilitySlot, Reservation, User)
+            .join(Reservation, Reservation.slot_id == AvailabilitySlot.id)
+            .join(User, User.id == Reservation.user_id)
+            .filter(
+                AvailabilitySlot.parking_spot_id == spot.id,
+                Reservation.reservation_status.in_(["pending", "confirmed", "completed"])
+            )
+            .order_by(AvailabilitySlot.slot_date.asc(), AvailabilitySlot.start_time.asc())
+            .all()
+        )
+
+        taken_slots_json = []
+        for slot, res, usr in taken_slots:
+            taken_slots_json.append({
+                "slot": {
+                    "id": slot.id,
+                    "slot_date": slot.slot_date.isoformat(),
+                    "start_time": slot.start_time.strftime("%H:%M"),
+                    "end_time": slot.end_time.strftime("%H:%M"),
+                },
+                "reservation": {
+                    "id": res.id,
+                    "car_plate": res.car_plate,
+                    "status": res.reservation_status,
+                    "reservation_ts": res.reservation_ts.isoformat()
+                },
+                "driver": {
+                    "id": usr.id,
+                    "name": usr.name,
+                    "surname": usr.surname
+                }
+            })
+
         return jsonify({
-            "desc": "Available future time slots retrieved successfully",
+            "desc": "Time slots retrieved successfully",
             "code": "0",
             "parking_spot": {
                 "id": spot.id,
                 "name": spot.name
             },
             "available_slots": available_slots_json,
-            "count": len(available_slots_json)
+            "taken_slots": taken_slots_json,
+            "available_count": len(available_slots_json),
+            "taken_count": len(taken_slots_json)
         }), 200
+
 
     except Exception as e:
         return jsonify({
             "desc": f"Database error: {str(e)}",
             "code": "99"
         }), 500
+
 
 
 @app.route("/time_slots/<int:park_id>", methods=["POST"])
@@ -1426,6 +1463,7 @@ def create_label():
             "code": "99"
         }), 500
 # ------------ LABELS ------------
+
 
 # -------------------------------
 # MAIN
