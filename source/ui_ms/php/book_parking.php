@@ -55,6 +55,32 @@
     }
 
     // Loading the reviews for the resident
+    $api_url = compose_url($protocol, $socket_account_ms, '/reviews/' . $spot["user"]["id"]);
+    $response_review = perform_rest_request('GET', $api_url, null, $_SESSION["session_token"]);
+    
+    // Populating the received reviews
+	$received_html = '';
+	if ( $response_review["status"] == 200 && $response_review["body"]["code"] === "0" && 
+                count($response_review["body"]["received_reviews"]) > 0 )
+	{
+		$received_reviews = $response_review["body"]["received_reviews"];
+        
+        // Reading the template
+		$card_template = file_get_contents('../html/spot_review.html');
+
+		foreach ( $received_reviews as $res )
+		{
+			$card = str_replace("%NAME%", $res["other_side_name"] . " " . $res["other_side_surname"], $card_template);
+			$card = str_replace("%ID%", $res["id"], $card);
+			$card = str_replace("%STAR%", $res["star"], $card);
+			$card = str_replace("%TEXT%", $res["review_description"], $card);
+			$card = str_replace("%DATE%", $res["review_date"], $card);
+			
+			$received_html .= $card . "\n";
+		}
+	}
+	else
+		$received_html = '<p style="text-align: center;">The parking spot hasn\'t any review!<p>';
     
 
     // Veryfing if we have to add a new reservation
@@ -99,8 +125,8 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script> window.slots =  <?php echo json_encode($slots); ?>;</script>
+    <script src="../js/stars.js"></script>
 </head>
-
 
 <body>
     <?php
@@ -134,42 +160,7 @@
     <section class="card garage-info reviews-section">
         <h1>Reviews for <?php echo $spot["user"]["name"] . " " . $spot["user"]["surname"]; ?></h1>
         <div class="review-box">
-            <div class="garage-details-single-column">
-                <div class="review-column">
-                    <div class="review-header">
-                    <span> <strong>User:</strong> email</span>
-                    <span> <strong>Stars:</strong> stars</span>          
-                    </div>   
-                    <p class="review-text">Buono</p>       
-                </div>
-            </div>
-            <div class="garage-details-single-column">
-                <div class="review-column">
-                    <div class="review-header">
-                    <span> <strong>User:</strong> email</span>
-                    <span> <strong>Stars:</strong> stars</span>          
-                    </div>   
-                    <p class="review-text">Utente maleducato!</p>       
-                </div>
-            </div>
-            <div class="garage-details-single-column">
-                <div class="review-column">
-                    <div class="review-header">
-                    <span> <strong>User:</strong> email</span>
-                    <span> <strong>Stars:</strong> stars</span>          
-                    </div>   
-                    <p class="review-text">No</p>       
-                </div>
-            </div>
-            <div class="garage-details-single-column">
-                <div class="review-column">
-                    <div class="review-header">
-                    <span> <strong>User:</strong> email</span>
-                    <span> <strong>Stars:</strong> stars</span>          
-                    </div>   
-                    <p class="review-text">Bello</p>       
-                </div>
-            </div>  
+            <?php echo $received_html; ?>
         </div>                
     </section>
 
