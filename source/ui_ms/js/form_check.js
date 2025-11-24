@@ -16,8 +16,6 @@ function phoneValidation(phone){
 }
 
 function ccnumberValidation(cc_number){
-    alert(cc_number);
-    
     if ( cc_number === null )
         return true;
     
