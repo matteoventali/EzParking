@@ -529,6 +529,110 @@ def delete_parking_spot_label(spot_id, label_id):
 
 
 # ------------ TIME SLOTS ------------
+@app.route("/time_slots/users/<int:user_id>", methods=["GET"])
+def get_users_slots(user_id):
+    try:
+
+        spots = ParkingSpot.query.filter_by(user_id = user_id).all()
+        if not spots: 
+            return jsonify({
+                'desc': "There not exist parking spots inserted by this user.", 
+                'code': 1
+            })
+        
+        now = datetime.now(ZoneInfo("Europe/Rome"))
+        today = now.date()
+        current_time = now.time()
+        
+        json_result = []
+        for spot in spots:
+            active_reservations = (
+                db.session.query(Reservation.slot_id)
+                .filter(Reservation.reservation_status.in_(["pending", "confirmed"]))
+                .subquery()
+            )
+            
+            available_slots = (
+                db.session.query(AvailabilitySlot)
+                .filter(
+                    AvailabilitySlot.parking_spot_id == spot.id,
+                    ~AvailabilitySlot.id.in_(active_reservations),
+                    or_(
+                        AvailabilitySlot.slot_date > today,
+                        and_(
+                            AvailabilitySlot.slot_date == today,
+                            AvailabilitySlot.start_time > current_time
+                        )
+                    )
+                )
+                .order_by(AvailabilitySlot.slot_date.asc(), AvailabilitySlot.start_time.asc())
+                .all()
+            )
+
+            available_slots_json = [
+                {
+                    "id": slot.id,
+                    "slot_date": slot.slot_date.isoformat(),
+                    "start_time": slot.start_time.strftime("%H:%M"),
+                    "end_time": slot.end_time.strftime("%H:%M")
+                }
+                for slot in available_slots
+            ]
+
+            taken_slots = (
+                db.session.query(AvailabilitySlot, Reservation, User)
+                .join(Reservation, Reservation.slot_id == AvailabilitySlot.id)
+                .join(User, User.id == Reservation.user_id)
+                .filter(
+                    AvailabilitySlot.parking_spot_id == spot.id,
+                    Reservation.reservation_status.in_(["pending", "confirmed", "completed"])
+                )
+                .order_by(AvailabilitySlot.slot_date.asc(), AvailabilitySlot.start_time.asc())
+                .all()
+            )
+
+            taken_slots_json = []
+            for slot, res, usr in taken_slots:
+                taken_slots_json.append({
+                    "slot": {
+                        "id": slot.id,
+                        "slot_date": slot.slot_date.isoformat(),
+                        "start_time": slot.start_time.strftime("%H:%M"),
+                        "end_time": slot.end_time.strftime("%H:%M"),
+                    },
+                    "reservation": {
+                        "id": res.id,
+                        "car_plate": res.car_plate,
+                        "status": res.reservation_status,
+                        "reservation_ts": res.reservation_ts.isoformat()
+                    },
+                    "driver": {
+                        "id": usr.id,
+                        "name": usr.name,
+                        "surname": usr.surname
+                    }
+                })
+
+            json_result.append(
+                {
+                    "id": spot.id,
+                    "name": spot.name, 
+                    "available_slots": available_slots_json,
+                    "taken_slots": taken_slots_json,
+                    "available_count": len(available_slots_json),
+                    "taken_count": len(taken_slots_json)
+                }
+            )
+        
+        return jsonify({
+            'desc': "Info retrieved succesfully", 
+            'code': 0,
+            'parking_spots': json_result
+        })
+
+    except Exception as e:
+        pass
+
 @app.route("/time_slots/<int:park_id>", methods=["GET"])
 def get_availability_slots(park_id):
 
