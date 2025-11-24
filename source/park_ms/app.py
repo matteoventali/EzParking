@@ -735,8 +735,6 @@ def get_availability_slots(park_id):
             "code": "99"
         }), 500
 
-
-
 @app.route("/time_slots/<int:park_id>", methods=["POST"])
 def create_time_slot(park_id):
 

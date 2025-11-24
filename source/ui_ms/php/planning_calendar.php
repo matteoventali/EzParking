@@ -8,8 +8,13 @@
     else if ($_SESSION['role'] != 'user') // Redirect the user to the correct homepage
         header("Location: " . $homepage);
 
+    // Retrieving the info about slots related to the parking of the user
+    $api_url = compose_url($protocol, $socket_park_ms, '/time_slots/users/' . $_SESSION["user"]["id"]);
+    $response_slot = perform_rest_request('GET', $api_url, null, null);
 
-    
+    // Retrieving the info about reservations made by the user
+    $api_url = compose_url($protocol, $socket_park_ms, '/reservations/users/' . $_SESSION["user"]["id"]);
+    $response_reservation = perform_rest_request('GET', $api_url, null, null);
 ?>
 
 <!DOCTYPE html>
