@@ -25,56 +25,59 @@
     // Loading the reviews received and written by the user
     $api_url = compose_url($protocol, $socket_account_ms, '/reviews/' . $_GET["id"]);
     $response_review = perform_rest_request('GET', $api_url, null, $_SESSION["session_token"]);
-    
-    // Populating the received reviews
-	$received_html = ''; $written_html = '';
-    $name = $user["name"]; $surname = $user["surname"];
 
-	if ( $response_review["status"] == 200 && $response_review["body"]["code"] === "0" )
-	{
-		$received_reviews = $response_review["body"]["received_reviews"];
-        $written_reviews = $response_review["body"]["written_reviews"];
-        
-        // Reading the template
-		$card_template = file_get_contents('../html/received_review.html');
-
-		
-        if ( count($response_review["body"]["received_reviews"]) > 0 )
-        {
-            foreach ( $received_reviews as $res )
-            {
-                $card = str_replace("%NAME%", $res["other_side_name"] . " " . $res["other_side_surname"], $card_template);
-                $card = str_replace("%ID%", $res["id"], $card);
-                $card = str_replace("%STAR%", $res["star"], $card);
-                $card = str_replace("%TEXT%", $res["review_description"], $card);
-                $card = str_replace("%DATE%", $res["review_date"], $card);
-                
-                $received_html .= $card . "\n";
-            }
-        }
-        else
-            $received_html = "<p style=text-align: center;'> $name $surname has not received any review!<p>";
-
-        if ( count($response_review["body"]["written_reviews"]) > 0 )
-        {
-            foreach ( $written_reviews as $res )
-            {
-                $card = str_replace("%NAME%", $res["other_side_name"] . " " . $res["other_side_surname"], $card_template);
-                $card = str_replace("%ID%", $res["id"], $card);
-                $card = str_replace("%STAR%", $res["star"], $card);
-                $card = str_replace("%TEXT%", $res["review_description"], $card);
-                $card = str_replace("%DATE%", $res["review_date"], $card);
-                
-                $written_html .= $card . "\n";
-            }
-        }
-        else
-            $written_html = "<p style=text-align: center;'> $name $surname has not written any review!<p>";
-    }
-	else
+    // If the user is an admin, we don't need to load the reviews
+    if ( $user["role"] != "admin" )
     {
-        $received_html = "<p style=text-align: center;'> $name $surname has not received any review!<p>";
-        $written_html = "<p style=text-align: center;'> $name $surname has not written any review!<p>";
+        // Populating the received reviews
+        $received_html = ''; $written_html = '';
+        $name = $user["name"]; $surname = $user["surname"];
+
+        if ( $response_review["status"] == 200 && $response_review["body"]["code"] === "0" )
+        {
+            $received_reviews = $response_review["body"]["received_reviews"];
+            $written_reviews = $response_review["body"]["written_reviews"];
+            
+            // Reading the template
+            $card_template = file_get_contents('../html/received_review.html');
+            
+            if ( count($response_review["body"]["received_reviews"]) > 0 )
+            {
+                foreach ( $received_reviews as $res )
+                {
+                    $card = str_replace("%NAME%", $res["other_side_name"] . " " . $res["other_side_surname"], $card_template);
+                    $card = str_replace("%ID%", $res["id"], $card);
+                    $card = str_replace("%STAR%", $res["star"], $card);
+                    $card = str_replace("%TEXT%", $res["review_description"], $card);
+                    $card = str_replace("%DATE%", $res["review_date"], $card);
+                    
+                    $received_html .= $card . "\n";
+                }
+            }
+            else
+                $received_html = "<p style=text-align: center;'> $name $surname has not received any review!<p>";
+
+            if ( count($response_review["body"]["written_reviews"]) > 0 )
+            {
+                foreach ( $written_reviews as $res )
+                {
+                    $card = str_replace("%NAME%", $res["other_side_name"] . " " . $res["other_side_surname"], $card_template);
+                    $card = str_replace("%ID%", $res["id"], $card);
+                    $card = str_replace("%STAR%", $res["star"], $card);
+                    $card = str_replace("%TEXT%", $res["review_description"], $card);
+                    $card = str_replace("%DATE%", $res["review_date"], $card);
+                    
+                    $written_html .= $card . "\n";
+                }
+            }
+            else
+                $written_html = "<p style=text-align: center;'> $name $surname has not written any review!<p>";
+        }
+        else
+        {
+            $received_html = "<p style=text-align: center;'> $name $surname has not received any review!<p>";
+            $written_html = "<p style=text-align: center;'> $name $surname has not written any review!<p>";
+        }
     }
 ?>
 
@@ -162,25 +165,31 @@
                     <div class="section-title">Reputation</div>
                     <div class="reputation-score">⭐ ' . $user['score'] . '/5</div></div>';
 
-        // Show the reputation section only for normal users
-        if ( $user['role'] == 'user' )  
-            echo $rep_card;
-    ?>
-		<!-- Reviews -->
-		<div class="dashboard-card review-card">
-			<div class="section-title">Received Reviews</div>
-                <div class="review-box">
-                    <?php echo $received_html; ?>
-                </div>          				      
-			</div>
-        </div>
-		<div class="dashboard-card review-card">
-			<div class="section-title">Submitted Reviews</div>
-                <div class="review-box">
-                    <?php echo $written_html; ?>
-                </div>          				      
+        $review_section =
+            '<!-- Reviews -->
+            <div class="dashboard-card review-card">
+                <div class="section-title">Received Reviews</div>
+                    <div class="review-box">
+                        %s
+                    </div>          				      
+                </div>
             </div>
-        </div>
+            <div class="dashboard-card review-card">
+                <div class="section-title">Submitted Reviews</div>
+                    <div class="review-box">
+                        %s
+                    </div>          				      
+                </div>
+            </div>';
+
+        // Show the reputation and review section only for normal users
+        if ( $user['role'] == 'user' )
+        {
+            echo $rep_card;
+            echo sprintf($review_section, $received_html, $written_html);
+        }
+    ?>
+		
     </main>
     <?php
         $footer = file_get_contents(FOOTER);
