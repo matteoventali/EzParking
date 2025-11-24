@@ -16,8 +16,66 @@
     $user = $response['status'] == 200 ? $response['body']['user'] : null;
 
     if ( $user == null )
+    {
         // Return to the manage user page
         header("Location: manage_user.php");
+        exit();
+    }
+        
+    // Loading the reviews received and written by the user
+    $api_url = compose_url($protocol, $socket_account_ms, '/reviews/' . $_GET["id"]);
+    $response_review = perform_rest_request('GET', $api_url, null, $_SESSION["session_token"]);
+    
+    // Populating the received reviews
+	$received_html = ''; $written_html = '';
+    $name = $user["name"]; $surname = $user["surname"];
+
+	if ( $response_review["status"] == 200 && $response_review["body"]["code"] === "0" )
+	{
+		$received_reviews = $response_review["body"]["received_reviews"];
+        $written_reviews = $response_review["body"]["written_reviews"];
+        
+        // Reading the template
+		$card_template = file_get_contents('../html/received_review.html');
+
+		
+        if ( count($response_review["body"]["received_reviews"]) > 0 )
+        {
+            foreach ( $received_reviews as $res )
+            {
+                $card = str_replace("%NAME%", $res["other_side_name"] . " " . $res["other_side_surname"], $card_template);
+                $card = str_replace("%ID%", $res["id"], $card);
+                $card = str_replace("%STAR%", $res["star"], $card);
+                $card = str_replace("%TEXT%", $res["review_description"], $card);
+                $card = str_replace("%DATE%", $res["review_date"], $card);
+                
+                $received_html .= $card . "\n";
+            }
+        }
+        else
+            $received_html = "<p style=text-align: center;'> $name $surname has not received any review!<p>";
+
+        if ( count($response_review["body"]["written_reviews"]) > 0 )
+        {
+            foreach ( $written_reviews as $res )
+            {
+                $card = str_replace("%NAME%", $res["other_side_name"] . " " . $res["other_side_surname"], $card_template);
+                $card = str_replace("%ID%", $res["id"], $card);
+                $card = str_replace("%STAR%", $res["star"], $card);
+                $card = str_replace("%TEXT%", $res["review_description"], $card);
+                $card = str_replace("%DATE%", $res["review_date"], $card);
+                
+                $written_html .= $card . "\n";
+            }
+        }
+        else
+            $written_html = "<p style=text-align: center;'> $name $surname has not written any review!<p>";
+    }
+	else
+    {
+        $received_html = "<p style=text-align: center;'> $name $surname has not received any review!<p>";
+        $written_html = "<p style=text-align: center;'> $name $surname has not written any review!<p>";
+    }
 ?>
 
 
@@ -35,6 +93,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <script src="../js/stars.js"></script>
 </head>
 
 <body>
@@ -110,28 +169,18 @@
 		<!-- Reviews -->
 		<div class="dashboard-card review-card">
 			<div class="section-title">Received Reviews</div>
-			<div class="review-box">
-          <div class="review-column">
-            <div class="review-header">
-              <span><strong>User:</strong> Name</span>
-              <span><strong>Rating:</strong> Stars</span>
-            </div>
-            <p class="review-text">Review's text</p>
-          </div>          
-        </div>          				      
+                <div class="review-box">
+                    <?php echo $received_html; ?>
+                </div>          				      
 			</div>
+        </div>
 		<div class="dashboard-card review-card">
 			<div class="section-title">Submitted Reviews</div>
-			<div class="review-box">
-          <div class="review-column">
-            <div class="review-header">
-              <span><strong>User:</strong> Name</span>
-              <span><strong>Rating:</strong> Stars</span>
+                <div class="review-box">
+                    <?php echo $written_html; ?>
+                </div>          				      
             </div>
-            <p class="review-text">Review's text</p>
-          </div>          
-        </div>          				      
-			</div>
+        </div>
     </main>
     <?php
         $footer = file_get_contents(FOOTER);
