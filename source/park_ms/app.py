@@ -537,7 +537,7 @@ def get_users_slots(user_id):
         if not spots: 
             return jsonify({
                 'desc': "There not exist parking spots inserted by this user.", 
-                'code': 1
+                'code': "1"
             })
         
         now = datetime.now(ZoneInfo("Europe/Rome"))
@@ -626,7 +626,7 @@ def get_users_slots(user_id):
         
         return jsonify({
             'desc': "Info retrieved succesfully", 
-            'code': 0,
+            'code': "0",
             'parking_spots': json_result
         })
 
