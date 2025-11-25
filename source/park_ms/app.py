@@ -819,7 +819,6 @@ def create_time_slot(park_id):
             'code': '99'
         }), 500
 
-
 @app.route("/time_slots/<int:slot_id>", methods=["DELETE"])
 def delete_availability_slot(slot_id):
 
@@ -857,6 +856,38 @@ def delete_availability_slot(slot_id):
 
     except Exception as e:
         db.session.rollback()
+        return jsonify({
+            "desc": f"Database error: {str(e)}",
+            "code": "99"
+        }), 500
+
+@app.route("/time_slots/info/<int:slot_id>", methods=["GET"])
+def get_availability_slot(slot_id):
+
+    try:
+        slot = AvailabilitySlot.query.get(slot_id)
+        if not slot:
+            return jsonify({
+                "desc": f"Availability slot {slot_id} not found",
+                "code": "1"
+            }), 404
+
+        slot_data = {
+            "id": slot.id,
+            "slot_date": slot.slot_date.isoformat(),
+            "start_time": slot.start_time.strftime("%H:%M"),
+            "end_time": slot.end_time.strftime("%H:%M"),
+            "parking_spot_id": slot.parking_spot_id,
+            "parking_spot_owner_id": slot.parking_spot.user_id
+        }
+
+        return jsonify({
+            "desc": "Availability slot retrieved successfully",
+            "code": "0",
+            "availability_slot": slot_data
+        }), 200
+
+    except Exception as e:
         return jsonify({
             "desc": f"Database error: {str(e)}",
             "code": "99"

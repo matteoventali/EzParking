@@ -81,7 +81,7 @@
             <div class="details">
                 <p><strong>Address: </strong><?php if (isset($address)) echo $address; ?></p>
                 <p><strong>Slot Price: </strong><?php if (isset($slot_price)) echo $slot_price; ?> €/h</p>
-                <p><strong>Reputation Threshold :</strong><?php if (isset($rep)) echo $rep; ?> / 5</p>
+                <p><strong>Reputation Threshold: </strong><?php if (isset($rep)) echo $rep; ?> / 5</p>
             </div>
         </section>
 

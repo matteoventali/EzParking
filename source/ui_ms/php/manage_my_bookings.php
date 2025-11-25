@@ -94,50 +94,6 @@
 
         <section class="booking-list-container">
             <?php echo $html; ?>
-            <!--
-
-            <div class="booking-card confirmed" data-booking-id="B101">
-                <div class="card-details">
-                    <h2 class="garage-name">Central Park Garage</h2>
-                    <p class="car-license">Vehicle Plate: **RM123AB**</p>
-                    <p class="garage-address"><i class="fas fa-location-dot"></i> Via Colonna, 15, Rome</p>
-                </div>
-                <div class="card-status">
-                    <span class="status-indicator">Confirmed</span>
-                    <button class="delete-booking-btn" title="Cancel Reservation">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="booking-card pending" data-booking-id="B101">
-                <div class="card-details">
-                    <h2 class="garage-name">Central Park Garage</h2>
-                    <p class="car-license">Vehicle Plate: **RM123AB**</p>
-                    <p class="garage-address"><i class="fas fa-location-dot"></i> Via Colonna, 15, Rome</p>
-                </div>
-                <div class="card-status">
-                    <span class="status-indicator">Pending</span>
-                    <button class="delete-booking-btn" title="Cancel Reservation">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </div>
-            </div>
-
-
-            <div class="booking-card cancelled" data-booking-id="B101">
-                <div class="card-details">
-                    <h2 class="garage-name">Central Park Garage</h2>
-                    <p class="car-license">Vehicle Plate: **RM123AB**</p>
-                    <p class="garage-address"><i class="fas fa-location-dot"></i> Via Colonna, 15, Rome</p>
-                </div>
-                <div class="card-status">
-                    <span class="status-indicator">Cancelled</span>
-                    
-                </div>
-            </div>
-
-            !-->
         </section>
     </main>
 

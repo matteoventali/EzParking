@@ -7,7 +7,7 @@
     {
         header('Content-Type: application/json');
         echo json_encode( array( "error" => "Unauthorized access" ) );
-        exit();    
+        exit();
     }
 
     // Checking if we have the data

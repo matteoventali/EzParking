@@ -44,7 +44,9 @@
                     "id" => $slot["slot"]["id"],
                     "title" => "Reserved slot for " . $spot["name"],
                     "start" => $slot["slot"]["slot_date"] . "T" . $slot["slot"]["start_time"],
-                    "end"   => $slot["slot"]["slot_date"] . "T" . $slot["slot"]["end_time"]
+                    "end"   => $slot["slot"]["slot_date"] . "T" . $slot["slot"]["end_time"],
+                    "driver" => $slot["driver"]["name"] . " " . $slot["driver"]["surname"],
+                    "plate" => $slot["reservation"]["car_plate"]
                 ];
 
                 array_push($array_busy_spots, $event);
@@ -59,7 +61,12 @@
                 "id" => $res["id"],
                 "title" => "Reservation for " . $res["spot_name"],
                 "start" => $res["slot_date"] . "T" . $res["start_time"],
-                "end"   => $res["slot_date"] . "T" . $res["end_time"]
+                "end"   => $res["slot_date"] . "T" . $res["end_time"],
+                "resident" => $res["resident_name"] . " " . $res["resident_surname"],
+                "plate" => $res["plate"],
+                "latitude" => $res["spot_latitude"],
+                "longitude" => $res["spot_longitude"],
+                "status" => strtoupper($res["status"])
             ];
 
             array_push($array_reservations, $event);
@@ -75,6 +82,7 @@
         <title>View Calendar</title>
         <link rel="stylesheet" href="../css/navbar.css" />
         <link rel="stylesheet" href="../css/style.css" />
+        <link rel="stylesheet" href="../css/popup.css" />
         <link rel="stylesheet" href="../css/planning_calendar.css" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
@@ -86,9 +94,9 @@
             busySlots = <?php echo json_encode($array_busy_spots); ?>;
             reservations = <?php echo json_encode($array_reservations); ?>;
         </script>
-
         <script src="../js/planning_calendar.js"></script>
     </head>
+
     <body style="background: white;">
         <?php
             $nav = generate_navbar($_SESSION["role"]);
@@ -96,6 +104,54 @@
         ?>
         <div class="calendar-container">
             <div id="calendar" style="height: 100%;"></div>
+        </div>
+
+        <!-- EVENT POPUP -->
+        <div id="eventModal" class="modal-overlay">
+            <div class="modal-backdrop"></div>
+
+            <div class="modal-content">
+                <button class="modal-close-btn" id="eventCloseBtn">&times;</button>
+                <h3 class="modal-title" id="popupTitle"></h3>
+                <div class="modal-body-details">
+                    <p><strong>Date:</strong> <span id="popupDate"></span></p>
+                    <p><strong>Slot:</strong> from <span id="popupStart"></span> to <span id="popupEnd"></span></p>
+                    
+                    <!-- ONLY for Reservation -->
+                    <p id="popupResidentWrapper" style="display:none;">
+                        <strong>Resident:</strong> <span id="popupResident"></span>
+                    </p>
+
+                    <!-- ONLY for reserved slot -->
+                    <p id="popupDriverWrapper" style="display:none;">
+                        <strong>Driver:</strong> <span id="popupDriver"></span>
+                    </p>
+                    
+                    <!-- ONLY for reserved slot and reservations -->
+                    <p id="popupPlateWrapper" style="display:none;">
+                        <strong>Plate:</strong> <span id="popupPlate"></span>
+                    </p>
+
+                    <!-- ONLY for Reservation -->
+                    <p id="popupStatusWrapper" style="display:none;">
+                        <strong>Status:</strong> <span id="popupStatus"></span>
+                    </p>
+
+                    <p id="popupMapWrapper" style="display:none;">
+                        <strong>Indication:</strong>
+                        <a id="popupMapLink" href="#" target="_blank">
+                            Get there!
+                        </a>
+                    </p>
+                </div>
+
+                <!-- ONLY for Free slot -->
+                <div class="modal-buttons">
+                    <button class="btn btn-confirm" id="deleteFreeSlotBtn" style="display:none; margin-top: 10px;">
+                        Delete this free slot
+                    </button>
+                </div>
+            </div>
         </div>
         <?php
             $footer = file_get_contents(FOOTER);
