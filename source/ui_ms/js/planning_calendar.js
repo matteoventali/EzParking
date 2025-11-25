@@ -79,6 +79,8 @@ document.addEventListener("DOMContentLoaded", function ()
     const deleteFreeSlotBtn = document.getElementById("deleteFreeSlotBtn");
     const popupMapWrapper = document.getElementById("popupMapWrapper");
     const popupMapLink = document.getElementById("popupMapLink");
+    const popupManageWrapper = document.getElementById("popupManageWrapper");
+    const popupManageLink = document.getElementById("popupManageLink");
 
     function openEventPopup(event) 
     {
@@ -126,12 +128,16 @@ document.addEventListener("DOMContentLoaded", function ()
             popupPlateWrapper.style.display = "block";
             popupPlate.textContent = event.extendedProps.plate;
 
-            popupMapWrapper.style.display = "block";
+            
+            if ( event.extendedProps.status === "CONFIRMED" || event.extendedProps.status === "COMPLETED" )
+            {
+                popupMapWrapper.style.display = "block";
 
-            const lat = event.extendedProps.latitude;
-            const lon = event.extendedProps.longitude;
+                const lat = event.extendedProps.latitude;
+                const lon = event.extendedProps.longitude;
 
-            popupMapLink.href = `https://www.google.com/maps?q=${lat},${lon}`;
+                popupMapLink.href = `https://www.google.com/maps?q=${lat},${lon}`;
+            }
         }
 
         // Only for reserved slot
@@ -139,8 +145,22 @@ document.addEventListener("DOMContentLoaded", function ()
             popupDriverWrapper.style.display = "block";
             popupDriver.textContent = event.extendedProps.driver;
 
+            popupStatusWrapper.style.display = "block";
+            popupStatus.textContent = event.extendedProps.status;
+
             popupPlateWrapper.style.display = "block";
             popupPlate.textContent = event.extendedProps.plate;
+
+            if ( event.extendedProps.status === "PENDING" )
+            {
+                popupManageWrapper.style.display = "block";
+                popupManageLink.href = "manage_request.php";
+            }
+            else
+            {
+                popupManageWrapper.style.display = "none";
+                popupManageLink.href = "#";
+            }
         }
 
         // Only for free slot

@@ -40,13 +40,17 @@
             // For each busy slot of the parking
             foreach( $spot["taken_slots"] as $slot )
             {
+                if ( $slot["reservation"]["status"] === "cancelled" )
+                    continue;
+                
                 $event = [
                     "id" => $slot["slot"]["id"],
                     "title" => "Reserved slot for " . $spot["name"],
                     "start" => $slot["slot"]["slot_date"] . "T" . $slot["slot"]["start_time"],
                     "end"   => $slot["slot"]["slot_date"] . "T" . $slot["slot"]["end_time"],
                     "driver" => $slot["driver"]["name"] . " " . $slot["driver"]["surname"],
-                    "plate" => $slot["reservation"]["car_plate"]
+                    "plate" => $slot["reservation"]["car_plate"],
+                    "status" => strtoupper($slot["reservation"]["status"])
                 ];
 
                 array_push($array_busy_spots, $event);
@@ -132,7 +136,7 @@
                         <strong>Plate:</strong> <span id="popupPlate"></span>
                     </p>
 
-                    <!-- ONLY for Reservation -->
+                    <!-- ONLY for Reservation and reserved slot -->
                     <p id="popupStatusWrapper" style="display:none;">
                         <strong>Status:</strong> <span id="popupStatus"></span>
                     </p>
@@ -141,6 +145,12 @@
                         <strong>Indication:</strong>
                         <a id="popupMapLink" href="#" target="_blank">
                             Get there!
+                        </a>
+                    </p>
+
+                    <p id="popupManageWrapper" style="display:none;">
+                        <a id="popupManageLink" href="#" target="_blank">
+                            Manage this reservation request!
                         </a>
                     </p>
                 </div>
