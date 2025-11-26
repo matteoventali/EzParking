@@ -21,8 +21,8 @@ def index():
     return jsonify({"message": "Payment Service is active"}), 200
 
 
-# ------------ PAYMENTS ------------
-@app.route("/payments", methods=["POST"])
+# ------------ PAYMENTS ------------- #
+@app.route("/payments/request", methods=["POST"])
 def create_payment():
     """Register a new payment for a reservation made by a user"""
     data = request.get_json()
@@ -243,10 +243,9 @@ def update_payment_status(payment_id):
             'desc': f'Database error: {str(e)}',
             'code': '99'
         }), 500
+# ------------ PAYMENTS ------------- #
 
-
-# -------------------------------
-# MAIN
-# -------------------------------
+# ------------ MAIN ------------ # 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5003, debug=True)
+# ------------ MAIN ------------ # 
