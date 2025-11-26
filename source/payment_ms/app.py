@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from config import DB_CONFIG
-from models import db, User, Reservation, Payment
+from models import db, User, Payment
 
 # -------------------------------
 # Init
@@ -38,9 +38,10 @@ def create_payment():
     method = data['method']
     reservation_id = data['reservation_id']
     user_id = data['user_id']
+    resident_id = data['resident_id']
     
     # Validate payment method
-    valid_methods = ['credit_card', 'paypal', 'bank_transfer']
+    valid_methods = ['applepay', 'paypal', 'googlepay', 'creditcard']
     if method not in valid_methods:
         return jsonify({
             'desc': f'Invalid payment method. Must be one of: {", ".join(valid_methods)}',
@@ -56,11 +57,10 @@ def create_payment():
                 'code': '3'
             }), 404
         
-        # Check if reservation exists
-        reservation = Reservation.query.filter_by(id=reservation_id).first()
-        if not reservation:
+        resident = User.query.filter_by(id=resident_id).first()
+        if not user:
             return jsonify({
-                'desc': 'Reservation not found',
+                'desc': 'Resident not found',
                 'code': '4'
             }), 404
         
@@ -78,6 +78,7 @@ def create_payment():
             method=method,
             reservation_id=reservation_id,
             user_id=user_id,
+            resident_id = resident_id,
             payment_status='pending'
         )
         
@@ -94,7 +95,8 @@ def create_payment():
                 'payment_status': new_payment.payment_status,
                 'payment_ts': new_payment.payment_ts.isoformat(),
                 'reservation_id': new_payment.reservation_id,
-                'user_id': new_payment.user_id
+                'user_id': new_payment.user_id,
+                'resident_id': new_payment.resident_id
             }
         }), 201
         

@@ -3,7 +3,9 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
-
+# ---------------------------------------
+#                 USERS
+# ---------------------------------------
 class User(db.Model):
     __tablename__ = 'Users'
 
@@ -11,45 +13,71 @@ class User(db.Model):
     name = db.Column(db.String(50), nullable=False)
     surname = db.Column(db.String(50), nullable=False)
 
-    payments = db.relationship('Payment', back_populates='user')
+    # Payments effettuati dall’utente
+    payments_made = db.relationship(
+        "Payment",
+        foreign_keys="Payment.user_id",
+        back_populates="payer"
+    )
+
+    # Payments ricevuti dal residente
+    payments_received = db.relationship(
+        "Payment",
+        foreign_keys="Payment.resident_id",
+        back_populates="resident"
+    )
 
     def __repr__(self):
-        return f"<User {self.name} {self.surname}>"
+        return f"<User {self.id}: {self.name} {self.surname}>"
 
 
-
-class Reservation(db.Model):
-    __tablename__ = 'Reservations'
-
-    id = db.Column(db.Integer, primary_key=True)
-    reservation_ts = db.Column(db.DateTime, nullable=False)
-
-    payments = db.relationship('Payment', back_populates='reservation')
-
-    def __repr__(self):
-        return f"<Reservation {self.id} at {self.reservation_ts}>"
-
-
-
+# ---------------------------------------
+#                PAYMENTS
+# ---------------------------------------
 class Payment(db.Model):
     __tablename__ = 'Payments'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     payment_ts = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     amount = db.Column(db.String(50), nullable=False)
+
     payment_status = db.Column(
         db.Enum('pending', 'completed', 'failed', name='payment_status_enum'),
+        nullable=False,
         default='pending'
     )
+
     method = db.Column(
-        db.Enum('credit_card', 'paypal', 'bank_transfer', name='payment_method_enum'),
+        db.Enum('applepay', 'paypal', 'googlepay', 'creditcard', name='payment_method_enum'),
         nullable=False
     )
-    reservation_id = db.Column(db.Integer, db.ForeignKey('Reservations.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
 
-    reservation = db.relationship('Reservation', back_populates='payments')
-    user = db.relationship('User', back_populates='payments')
+    reservation_id = db.Column(db.Integer, nullable=False)
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('Users.id'),
+        nullable=False
+    )
+
+    resident_id = db.Column(
+        db.Integer,
+        db.ForeignKey('Users.id'),
+        nullable=False
+    )
+
+    # Relazioni distinte per evitare conflitti
+    payer = db.relationship(
+        "User",
+        foreign_keys=[user_id],
+        back_populates="payments_made"
+    )
+
+    resident = db.relationship(
+        "User",
+        foreign_keys=[resident_id],
+        back_populates="payments_received"
+    )
 
     def __repr__(self):
-        return f"<Payment {self.id} - {self.amount} {self.payment_status}>"
+        return f"<Payment {self.id}: {self.amount} {self.payment_status}>"

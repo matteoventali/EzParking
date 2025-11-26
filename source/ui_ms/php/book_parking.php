@@ -120,11 +120,9 @@
             // Adding the payment in a pending state until the reservation is not accepted or rejected
             $api_url = compose_url($protocol, $socket_payment_ms, '/payments/request');
             $response_payment = perform_rest_request('POST', $api_url, $payload, null);
-            
-            
-
+        
             // Changing pages
-            //header("Location: ../php/manage_my_bookings.php");
+            header("Location: ../php/manage_my_bookings.php");
         }
         else // Showing the error into the page
             $error_message = $response["body"]["desc"];
