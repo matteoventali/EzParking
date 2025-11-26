@@ -878,7 +878,8 @@ def get_availability_slot(slot_id):
             "start_time": slot.start_time.strftime("%H:%M"),
             "end_time": slot.end_time.strftime("%H:%M"),
             "parking_spot_id": slot.parking_spot_id,
-            "parking_spot_owner_id": slot.parking_spot.user_id
+            "parking_spot_owner_id": slot.parking_spot.user_id,
+            "cost": slot.parking_spot.slot_price
         }
 
         return jsonify({

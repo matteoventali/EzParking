@@ -99,10 +99,32 @@
 
         if ( $response["status"] == 201 )
         {
+            // Calculating the cost for the timeslot selected
+            $api_url = compose_url($protocol, $socket_park_ms, '/time_slots/info/' . $_POST["time_slot"][0]);
+            $response_slot = perform_rest_request('GET', $api_url, null, null);
+            $cost_h = $response_slot["body"]["availability_slot"]["cost"];
+            $start = $response_slot["body"]["availability_slot"]["start_time"];
+            $end = $response_slot["body"]["availability_slot"]["end_time"];
+            $duration = calculate_duration($start, $end);
+            $cost = $duration * $cost_h;
+
+            // Preparing the payload for payment registration
+            $payload = [
+                "amount" => $cost,
+                "method" => $_POST["payment_method"],
+                "user_id" => $_SESSION["user"]["id"],
+                "resident_id" => $response_slot["body"]["availability_slot"]["parking_spot_owner_id"],
+                "reservation_id" => $response["body"]["reservation"]["id"]
+            ];
+            
             // Adding the payment in a pending state until the reservation is not accepted or rejected
+            $api_url = compose_url($protocol, $socket_payment_ms, '/payments/request');
+            $response_payment = perform_rest_request('POST', $api_url, $payload, null);
+            
+            
 
             // Changing pages
-            header("Location: ../php/manage_my_bookings.php");
+            //header("Location: ../php/manage_my_bookings.php");
         }
         else // Showing the error into the page
             $error_message = $response["body"]["desc"];
@@ -206,7 +228,6 @@
             </div>
 
             <div class="price-display" id="totalCost">Total cost: €0.00</div>
-
             <button type="submit" id="bookNowButton" class="book-button">Book Now</button>
         </form>
     </section>
