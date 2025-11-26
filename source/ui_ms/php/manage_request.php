@@ -31,8 +31,19 @@
         // TODO!!!!
 
         // Perform the payment if the reservations has been confirmed
-        // TODO!!!!
-    
+        $payment_status = '';
+        if ( $new_status === 'confirmed' )
+            $payment_status = 'completed';
+        else if ( $new_status === 'cancelled' )
+            $payment_status = 'failed';
+        
+        $payload = [
+            'payment_status' => $payment_status
+        ];
+
+        $api_url = compose_url($protocol, $socket_payment_ms, '/payments/' . $response["body"]["reservation"]["payment_id"]);
+        $response = perform_rest_request('PUT', $api_url, $payload, null);
+
         // Output the response
         header('Content-Type: application/json');
         echo json_encode($response);

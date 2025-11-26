@@ -1445,6 +1445,7 @@ def update_reservation(res_id):
                 'car_plate': reservation.car_plate,
                 'previous_status': current_status,
                 'new_status': reservation.reservation_status,
+                'payment_id': reservation.payment_id,
                 'reservation_ts': reservation.reservation_ts.isoformat()
             }
         }), 200
