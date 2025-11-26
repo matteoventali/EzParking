@@ -128,7 +128,7 @@
                 "payment_id" => $id_payment
             ];
             $response_update = perform_rest_request('PUT', $api_url, $payload, null);
-        
+            
             // Changing pages
             header("Location: ../php/manage_my_bookings.php");
         }

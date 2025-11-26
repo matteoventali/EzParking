@@ -139,6 +139,8 @@ class Reservation(db.Model):
     slot_id = db.Column(db.Integer, db.ForeignKey('Availability_Slots.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
 
+    payment_id = db.Column(db.Integer, nullable=True)
+    
     slot = db.relationship("AvailabilitySlot", back_populates="reservations")
     user = db.relationship("User", back_populates="reservations")
 
