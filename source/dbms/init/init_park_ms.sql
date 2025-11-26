@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS Reservations (
     car_plate                   CHAR(7) NOT NULL,
     slot_id                     INT NOT NULL,
     user_id                     INT NOT NULL,
+    payment_id                  INT DEFAULT NULL, 
     CONSTRAINT fk_slot FOREIGN KEY (slot_id) REFERENCES Availability_Slots(id),
     CONSTRAINT fk2_user FOREIGN KEY (user_id) REFERENCES Users(id)
 );

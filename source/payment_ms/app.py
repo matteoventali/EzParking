@@ -204,7 +204,7 @@ def update_payment_status(payment_id):
     new_status = data['payment_status']
     
     # Validate payment status
-    valid_statuses = ['pending', 'completed', 'failed']
+    valid_statuses = ['completed', 'failed']
     if new_status not in valid_statuses:
         return jsonify({
             'desc': f'Invalid payment status. Must be one of: {", ".join(valid_statuses)}',
