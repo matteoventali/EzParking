@@ -73,6 +73,13 @@ INSERT INTO Labels (id, name, label_description) VALUES
 DELIMITER $$
 CREATE PROCEDURE update_reservation_status()
 BEGIN
+    -- Free slot expired can be deleted
+    DELETE s
+    FROM Availability_Slots s
+    LEFT JOIN Reservations r ON r.slot_id = s.id
+    WHERE r.id IS NULL  -- means free slot
+      AND TIMESTAMP(s.slot_date, s.end_time) < NOW();
+    
     -- Pending to cancelled
     UPDATE Reservations r
     JOIN Availability_Slots s ON r.slot_id = s.id
