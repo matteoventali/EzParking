@@ -29,4 +29,21 @@ CREATE TABLE IF NOT EXISTS Payments (
 INSERT INTO Users (id, name, surname) VALUES
 (3, 'Serena', 'Ragaglia'),
 (4, 'Pierluca', 'Grasso'),
-(5, 'Federico', 'De Lullo')
+(5, 'Federico', 'De Lullo');
+
+DELIMITER $$
+CREATE PROCEDURE update_payment_status()
+BEGIN
+    -- Pending → Failed
+    UPDATE Payments
+    SET payment_status = 'failed'
+    WHERE payment_status = 'pending'
+      AND TIMESTAMP(reservation_date, reservation_end) < NOW();
+END $$
+DELIMITER ;
+
+CREATE EVENT IF NOT EXISTS update_payment_status
+ON SCHEDULE EVERY 10 SECOND
+DO
+    CALL update_payment_status();
+

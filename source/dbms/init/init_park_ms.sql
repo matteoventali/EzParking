@@ -4,8 +4,6 @@ USE db_park_ms;
 -- This script will be executed only when the container is built
 -- automatically by Docker
 
--- Event scheduler on
-
 CREATE TABLE IF NOT EXISTS Users (
     id                          INT PRIMARY KEY,
     name                        VARCHAR(50) NOT NULL,
