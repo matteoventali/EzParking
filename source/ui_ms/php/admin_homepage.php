@@ -31,13 +31,13 @@
     <script src="../js/manage_check_ms.js"></script>
 </head>
 
-<body>
+<body style="background: linear-gradient(135deg, #f3ecff, #e8dcff);">
     <?php
         $nav = generate_navbar($_SESSION['role']);
         echo $nav;
     ?>
 
-    <section class="hero">
+    <section class="hero" style="border-radius:5px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.35));">
         <h1>Welcome <?php echo $name; ?></h1>
         <p>Use the buttons below to access to your dashboard or manage accounts.</p>
 

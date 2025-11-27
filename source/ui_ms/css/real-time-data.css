@@ -15,7 +15,7 @@
 /* === MAIN LAYOUT === */
 .features {
     background: var(--card-bg);
-    max-width: 1400px;
+    width: 90%;
     margin: 1.2rem auto;
     padding: 1.8rem 1.4rem;
     border-radius: 14px;

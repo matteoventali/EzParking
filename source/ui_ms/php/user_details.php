@@ -99,7 +99,7 @@
     <script src="../js/stars.js"></script>
 </head>
 
-<body>
+<body style="background: linear-gradient(135deg, #f3ecff, #e8dcff);;">
     <?php 
         $nav = generate_navbar($_SESSION['role']);
         echo $nav;
@@ -160,10 +160,47 @@
         ?>
     </div>
 
+    <div class="dashboard-card statistics-card">
+        <div class="section-title">User's Statistics</div>
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-value" id="reputation">⭐ 0/5</div>
+                <div class="stat-label">Reputation Level</div>
+            </div>
+
+            <div class="stat-box">
+                <div class="stat-value" id="ownedSpots">12</div>
+                <div class="stat-label">Parking Spots Owned</div>
+            </div>
+
+            <div class="stat-box">
+                <div class="stat-value" id="totalReservations">34</div>
+                <div class="stat-label">Total Reservations</div>
+            </div>
+
+            <div class="stat-box">
+                <div class="stat-value" id="activeReservations">5</div>
+                <div class="stat-label">Active Reservations</div>
+            </div>
+
+            <div class="stat-box">
+                <div class="stat-value" id="occupiedSpots">7</div>
+                <div class="stat-label">Owned Spots Currently Booked</div>
+            </div>
+
+            <button class="stat-box stat-button">
+                <div class="stat-value" id="occupiedSpots">200€</div>
+                <div class="stat-label">Total Earnings</div>
+            </button>
+        </div>
+
+    </div>
+
     <?php
+    /*
         $rep_card = '<div class="dashboard-card reputation-card">
-                    <div class="section-title">Reputation</div>
-                    <div class="reputation-score">⭐ ' . $user['score'] . '/5</div></div>';
+                <div class="section-title">Reputation</div>
+                <div class="reputation-score">⭐ ' . $user['score'] . '/5</div></div>';*/
 
         $review_section =
             '<!-- Reviews -->
@@ -185,7 +222,7 @@
         // Show the reputation and review section only for normal users
         if ( $user['role'] == 'user' )
         {
-            echo $rep_card;
+            //echo $rep_card;
             echo sprintf($review_section, $received_html, $written_html);
         }
     ?>
