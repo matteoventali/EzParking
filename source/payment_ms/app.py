@@ -27,7 +27,7 @@ def create_payment():
     """Register a new payment for a reservation made by a user"""
     data = request.get_json()
     
-    required_fields = ['amount', 'method', 'reservation_id', 'user_id']
+    required_fields = ['amount', 'method', 'reservation_id', 'user_id', 'reservation_date', 'reservation_start', 'reservation_end', 'resident_id']
     if not data or not all(field in data for field in required_fields):
         return jsonify({
             'desc': 'Missing required fields',
@@ -39,6 +39,9 @@ def create_payment():
     reservation_id = data['reservation_id']
     user_id = data['user_id']
     resident_id = data['resident_id']
+    reservation_date = data['reservation_date']
+    reservation_start = data['reservation_start']
+    reservation_end = data['reservation_end']
     
     # Validate payment method
     valid_methods = ['applepay', 'paypal', 'googlepay', 'creditcard']
@@ -79,7 +82,10 @@ def create_payment():
             reservation_id=reservation_id,
             user_id=user_id,
             resident_id = resident_id,
-            payment_status='pending'
+            payment_status='pending',
+            reservation_date=reservation_date,
+            reservation_start=reservation_start,
+            reservation_end=reservation_end
         )
         
         db.session.add(new_payment)

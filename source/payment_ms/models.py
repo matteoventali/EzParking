@@ -79,5 +79,9 @@ class Payment(db.Model):
         back_populates="payments_received"
     )
 
+    reservation_date    = db.Column(db.Date, nullable=False)
+    reservation_start   = db.Column(db.Time, nullable=False)
+    reservation_end     = db.Column(db.Time, nullable=False)
+
     def __repr__(self):
         return f"<Payment {self.id}: {self.amount} {self.payment_status}>"

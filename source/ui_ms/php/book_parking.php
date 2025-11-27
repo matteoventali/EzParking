@@ -114,7 +114,10 @@
                 "method" => $_POST["payment_method"],
                 "user_id" => $_SESSION["user"]["id"],
                 "resident_id" => $response_slot["body"]["availability_slot"]["parking_spot_owner_id"],
-                "reservation_id" => $response["body"]["reservation"]["id"]
+                "reservation_id" => $response["body"]["reservation"]["id"],
+                "reservation_date" => $response["body"]["reservation"]["date"],
+                "reservation_start" => $response["body"]["reservation"]["start_time"],
+                "reservation_end" => $response["body"]["reservation"]["end_time"],
             ];
             
             // Adding the payment in a pending state until the reservation is not accepted or rejected

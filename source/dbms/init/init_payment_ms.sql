@@ -19,6 +19,9 @@ CREATE TABLE IF NOT EXISTS Payments (
     reservation_id              INT NOT NULL,
     user_id                     INT NOT NULL,
     resident_id                 INT NOT NULL,
+    reservation_date            DATE NOT NULL,
+    reservation_start           TIME NOT NULL,
+    reservation_end             TIME NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES Users(id),
     CONSTRAINT fk_resident FOREIGN KEY (resident_id) REFERENCES Users(id)
 );

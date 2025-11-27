@@ -1361,7 +1361,10 @@ def create_reservation():
                     'user_id': new_reservation.user_id,
                     'car_plate': new_reservation.car_plate,
                     'reservation_status': new_reservation.reservation_status,
-                    'reservation_ts': new_reservation.reservation_ts.isoformat()
+                    'reservation_ts': new_reservation.reservation_ts.isoformat(),
+                    'date': slot.slot_date.isoformat(),
+                    'start_time': slot.start_time.strftime("%H:%M"),
+                    'end_time': slot.end_time.strftime("%H:%M"),
                 }
             }), 201
 
