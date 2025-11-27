@@ -78,6 +78,7 @@
     <title>My Garages Dashboard</title>
     <link rel="stylesheet" href="../css/navbar.css" />
     <link rel="stylesheet" href="../css/manage_request.css" />
+    <link rel="stylesheet" href="../css/style.css" />
     <link rel="stylesheet" href="../css/popup.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -95,7 +96,7 @@
 </head>
 
 
-<body>
+<body style="background: linear-gradient(180deg, var(--bg), #ffffff);">
     <?php
         $nav = generate_navbar($_SESSION["role"]);
         echo $nav;
@@ -105,8 +106,8 @@
         <section class="panel" aria-labelledby="queue-title">
             <header class="top">
                 <div>
-                    <h1 id="queue-title">Reservation Requests Queue</h1>
-                    <div class="subtitle">Manage incoming  req requests</div>
+                    <h1 class="top" id="queue-title">Reservation Requests Queue</h1>
+                    <div class="subtitle">Manage incoming booking requests</div>
                 </div>
                 <div class="controls">
                     <div class="search" role="search">
