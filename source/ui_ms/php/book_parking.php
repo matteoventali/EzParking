@@ -216,7 +216,7 @@
             <div class="vehicle-section">
                 <br>
                 <label for="plate">Vehicle License Plate</label>
-                <input type="text" id="plate" name="plate" placeholder="e.g. AB123CD" maxlength="8" required>
+                <input type="text" id="plate" name="plate" placeholder="e.g. AB123CD" maxlength="7" required>
             </div>
 
             <div class="payment-method-selection">
