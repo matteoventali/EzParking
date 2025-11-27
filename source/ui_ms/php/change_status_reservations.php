@@ -19,13 +19,8 @@
     }
 
     // Perform the status change
-    $payload = [
-        "user_id" => $_SESSION["user"]["id"],
-        "new_status" => $_POST["new_status"]
-    ];
-    $api_url = compose_url($protocol, $socket_park_ms, '/reservations/' . $_POST["reservation_id"]. "/status");
-    $response = perform_rest_request('PUT', $api_url, $payload, null);
-
+    $response = change_status_reservation($_POST["reservation_id"], $_POST["new_status"]);
+    
     // Sending the response
     header('Content-Type: application/json');
     echo json_encode($response);

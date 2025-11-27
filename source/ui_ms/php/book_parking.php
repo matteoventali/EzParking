@@ -120,7 +120,15 @@
             // Adding the payment in a pending state until the reservation is not accepted or rejected
             $api_url = compose_url($protocol, $socket_payment_ms, '/payments/request');
             $response_payment = perform_rest_request('POST', $api_url, $payload, null);
-        
+
+            // Extracting the payment id and updating the reservation
+            $id_payment = $response_payment["body"]["payment"]["id"];
+            $api_url = compose_url($protocol, $socket_park_ms, '/reservations/' . $response["body"]["reservation"]["id"] . '/payment');
+            $payload = [
+                "payment_id" => $id_payment
+            ];
+            $response_update = perform_rest_request('PUT', $api_url, $payload, null);
+            
             // Changing pages
             header("Location: ../php/manage_my_bookings.php");
         }

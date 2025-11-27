@@ -20,19 +20,11 @@
             $new_status = 'cancelled';
 
         // Request to the microservice
-        $api_url = compose_url($protocol, $socket_park_ms, '/reservations/' . $_POST["request_id"] . '/status');    
-        $payload = [
-            "user_id" => $_SESSION["user"]["id"],
-            "new_status" => $new_status
-        ];
-        $response = perform_rest_request('PUT', $api_url, $payload, null);
+        $response = change_status_reservation($_POST["request_id"], $new_status);
 
         // If the request has been fine send a notification to the driver
         // TODO!!!!
 
-        // Perform the payment if the reservations has been confirmed
-        // TODO!!!!
-    
         // Output the response
         header('Content-Type: application/json');
         echo json_encode($response);

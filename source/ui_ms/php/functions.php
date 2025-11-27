@@ -224,30 +224,6 @@
     }
 
     // Function to generate labels select content
-    /*function get_labels_content()
-    {
-        global $protocol, $socket_park_ms;
-        
-        $api_url = compose_url($protocol, $socket_park_ms, '/labels');
-        $response = perform_rest_request('GET', $api_url, null, null);
-        $options_html = '';
-
-        if ( $response["body"]["code"] != "0" )
-            return $options_html;
-
-        foreach ($response["body"]["labels"] as $label) 
-        {
-            $id = htmlspecialchars($label['id'] ?? '');
-            $name = htmlspecialchars($label['name'] ?? '');
-            $description = htmlspecialchars($label['description'] ?? '');
-
-            $text = "$name -- $description";
-            $options_html .= "<option value=\"$id\">$text</option>\n";
-        }
-
-        return $options_html;
-    }*/
-
     function get_labels_content()
     {
         global $protocol, $socket_park_ms;
@@ -286,5 +262,34 @@
 
         $diff = $startTime->diff($endTime);
         return $diff->h + ($diff->i / 60);
+    }
+
+    // Function to change the status of a reservation
+    function change_status_reservation($id_reservation, $new_status)
+    {
+        global $protocol, $socket_park_ms, $socket_payment_ms;
+
+        // Perform the status change
+        $payload = [
+            "user_id" => $_SESSION["user"]["id"],
+            "new_status" => $new_status
+        ];
+        $api_url = compose_url($protocol, $socket_park_ms, '/reservations/' . $id_reservation. "/status");
+        $response = perform_rest_request('PUT', $api_url, $payload, null);
+
+        $payment_status = '';
+        if ( $new_status === 'confirmed' )
+            $payment_status = 'completed';
+        else if ( $new_status === 'cancelled' )
+            $payment_status = 'failed';
+        
+        $payload = [
+            'payment_status' => $payment_status
+        ];
+
+        $api_url = compose_url($protocol, $socket_payment_ms, '/payments/' . $response["body"]["reservation"]["payment_id"]);
+        $response = perform_rest_request('PUT', $api_url, $payload, null);
+
+        return $response;
     }
 ?>

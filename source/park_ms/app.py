@@ -1072,6 +1072,42 @@ def search_parking_spot():
 
 
 # ------------ RESERVATIONS ------------
+@app.route("/reservations/<int:res_id>/payment", methods=["PUT"])
+def add_payment_id(res_id):
+    try:
+        data = request.get_json()
+        if not data or 'payment_id' not in data:
+            return jsonify({
+                'desc': "Missing payment id",
+                'code': 1
+            }), 400
+
+        payment_id = data["payment_id"]
+
+        reservation = Reservation.query.filter_by(id=res_id).first()
+        if not reservation:
+            return jsonify({
+                'desc': f"Reservation {res_id} not found",
+                'code': 2
+            }), 404
+
+        reservation.payment_id = payment_id
+        db.session.commit()
+
+        return jsonify({
+            'desc': "updated successfully",
+            'code': 0,
+            'payment_id': payment_id
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            "desc": f"Database error: {str(e)}",
+            "code": 99
+        }), 500
+
+
 @app.route("/reservations/users/<int:user_id>", methods=["GET"])
 def get_reservations(user_id):
 
@@ -1409,6 +1445,7 @@ def update_reservation(res_id):
                 'car_plate': reservation.car_plate,
                 'previous_status': current_status,
                 'new_status': reservation.reservation_status,
+                'payment_id': reservation.payment_id,
                 'reservation_ts': reservation.reservation_ts.isoformat()
             }
         }), 200
