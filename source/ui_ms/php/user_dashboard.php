@@ -179,13 +179,41 @@
 			</button>
 		</div>
 
-		<!-- Reputation Section -->
-		<div class="dashboard-card reputation-card">
-			<div class="section-title">Reputation</div>
-			<div class="reputation-score">⭐ <?php echo $_SESSION['user']['score']; ?>/5</div>
-			<p style="margin-top: 0.5rem; color:#666; font-size:0.95rem;">
-				Keep contributing to improve your score!
-			</p>
+		<!-- Statistics Section -->
+		<div class="dashboard-card statistics-card">
+			<div class="section-title">User's Statistics</div>
+			<div class="stats-grid">
+				<div class="stat-box">
+					<div class="stat-value" id="reputation">⭐ <?php echo $_SESSION['user']['score']; ?>/5</div>
+					<div class="stat-label">Reputation Level</div>
+				</div>
+
+				<div class="stat-box">
+					<div class="stat-value" id="ownedSpots">12</div>
+					<div class="stat-label">Parking Spots Owned</div>
+				</div>
+
+				<div class="stat-box">
+					<div class="stat-value" id="totalReservations">34</div>
+					<div class="stat-label">Total Reservations</div>
+				</div>
+
+				<div class="stat-box">
+					<div class="stat-value" id="activeReservations">5</div>
+					<div class="stat-label">Active Reservations</div>
+				</div>
+
+				<div class="stat-box">
+					<div class="stat-value" id="occupiedSpots">7</div>
+					<div class="stat-label">Owned Spots Currently Booked</div>
+				</div>
+
+				<button class="stat-box stat-button">
+					<div class="stat-value" id="occupiedSpots">200€</div>
+					<div class="stat-label">Total Earnings</div>
+				</button>
+			</div>
+
 		</div>
 
 		<!-- Received Reviews -->
