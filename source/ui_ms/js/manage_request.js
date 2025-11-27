@@ -64,6 +64,7 @@ function removeCard(requestId, action)
     setTimeout(() => {
         card.remove();
         updateStats();
+        location.href = '../php/manage_requests.php';
         location.reload();
     }, 650);
 }

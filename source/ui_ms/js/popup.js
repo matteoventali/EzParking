@@ -100,7 +100,7 @@ let currentReservationId = null;
         closeUserInfoBtn = document.getElementById('closeUserInfoBtn');
     }
 
-    function openUserInfoModal(userId) {
+    function openUserInfoModal(userId, reservationId) {
         if (!userInfoModal) return;
 
         userInfoModal.classList.add('active');
@@ -121,12 +121,12 @@ let currentReservationId = null;
                     document.getElementById("infoPhone").textContent = data.phone;
                     document.getElementById("infoScore").textContent = data.score;
 
-                    const reviewLink = `/reviews.php?user_id=${data.id}`;
+                    const reviewLink = `../php/user_preview.php?user_id=${data.id}&reservation_id=${reservationId}`;
                     document.getElementById("infoReviews").href = reviewLink;
                 } 
                 else
                     alert("Error fetching user info: " + response.body.desc);
-            } 
+            }
             else
                 alert("Error fetching user info: Server returned status " + this.status);
         };
@@ -143,7 +143,8 @@ let currentReservationId = null;
     userInfoBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const userId = btn.dataset.userid;
-            openUserInfoModal(userId);
+            const reservationId = btn.dataset.reservationid;
+            openUserInfoModal(userId, reservationId);
         });
     });
 

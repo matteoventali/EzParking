@@ -175,13 +175,11 @@
 
                 <div class="user-info-row link-row">
                     <span class="label">Reviews:</span>
-                    <a id="infoReviews" href="#" target="_blank" class="reviews-link">View reviews</a>
+                    <a id="infoReviews" href="#" class="reviews-link">View reviews</a>
                 </div>
             </div>
         </div>
     </div>
-
-    
 
     <script src="../js/manage_request.js"></script>
     <script src="../js/popup.js"></script>

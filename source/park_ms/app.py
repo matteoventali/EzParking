@@ -1184,7 +1184,11 @@ def get_reservation(res_id):
                 "slot_id": res.slot_id,
                 "start_time": slot.start_time.strftime("%H:%M") if slot else None,
                 "end_time": slot.end_time.strftime("%H:%M") if slot else None,
-                "slot_date": slot.slot_date.isoformat() if slot else None
+                "slot_date": slot.slot_date.isoformat() if slot else None,
+                "parking_spot_name": slot.parking_spot.name if slot else None,
+                "parking_spot_latitude": to_shape(slot.parking_spot.spot_location).y if slot else None,
+                "parking_spot_longitude": to_shape(slot.parking_spot.spot_location).x if slot else None,
+                "cost": slot.parking_spot.slot_price if slot else None,    
             }
         }), 200
 
