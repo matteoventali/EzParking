@@ -40,6 +40,15 @@
   transform: translateY(-2px);
 }
 
+.logo-image {
+  width:160px; 
+  max-width:70%; 
+  height:auto; 
+  margin-bottom:1.5rem; 
+  border-radius:50%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.274);
+}
+
 /* ===== FEATURES ===== */
 .features {
   padding: 4rem 2rem;

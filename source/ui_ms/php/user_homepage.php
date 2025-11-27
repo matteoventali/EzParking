@@ -46,6 +46,7 @@
     ?>
 
     <section class="hero">
+        <img src="../images/logo.jpeg" alt="Logo" class="logo-image">        
         <h1>Welcome <?php echo $name; ?></h1>
         <p>Use the buttons below to search, book, or manage your reservations. Find and reserve your parking space in seconds.</p>
 

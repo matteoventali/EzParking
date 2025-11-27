@@ -37,9 +37,10 @@
 }
 
 #logo{
-    width: 40%;
-    height: 40%;
-    margin-right: 0.5rem;
+    width: 60%;
+    height: 60%;
+    margin-right: 1rem;
+    border-radius: 50px;
 }
 
 .fa-gem{
@@ -121,6 +122,10 @@
     
     #navbar__logo{
         padding-left: 25px;
+    }
+
+    #logo{
+        margin-right: 0.5rem;
     }
 
     .navbar__toggle .bar{

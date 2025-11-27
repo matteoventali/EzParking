@@ -28,12 +28,13 @@
     ?>
 
     <section class="hero">
+    <img src="../images/logo.jpeg" alt="Logo" class="logo-image">        
     <h1>Find and book your parking spot in just seconds</h1>
         <p>With EzParking, saying goodbye to parking stress is easy. Discover, book, and park the smart way.</p>
         <button onclick="location.href = '../php/register.php';">Register and Book Now!</button>
     </section>
 
-    <section class="features">
+    <section class="features">        
     <h2>How It Works</h2>
     <div class="cards">
         <div class="card">
