@@ -19,27 +19,8 @@
     }
 
     // Perform the status change
-    $payload = [
-        "user_id" => $_SESSION["user"]["id"],
-        "new_status" => $_POST["new_status"]
-    ];
-    $api_url = compose_url($protocol, $socket_park_ms, '/reservations/' . $_POST["reservation_id"]. "/status");
-    $response = perform_rest_request('PUT', $api_url, $payload, null);
-
-    $new_status = $_POST["new_status"];
-    $payment_status = '';
-    if ( $new_status === 'confirmed' )
-        $payment_status = 'completed';
-    else if ( $new_status === 'cancelled' )
-        $payment_status = 'failed';
+    $response = change_status_reservation($_POST["reservation_id"], $_POST["new_status"]);
     
-    $payload = [
-        'payment_status' => $payment_status
-    ];
-
-    $api_url = compose_url($protocol, $socket_payment_ms, '/payments/' . $response["body"]["reservation"]["payment_id"]);
-    $response = perform_rest_request('PUT', $api_url, $payload, null);
-
     // Sending the response
     header('Content-Type: application/json');
     echo json_encode($response);
