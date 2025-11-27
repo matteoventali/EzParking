@@ -1188,7 +1188,7 @@ def get_reservation(res_id):
                 "parking_spot_name": slot.parking_spot.name if slot else None,
                 "parking_spot_latitude": to_shape(slot.parking_spot.spot_location).y if slot else None,
                 "parking_spot_longitude": to_shape(slot.parking_spot.spot_location).x if slot else None,
-                "cost": slot.parking_spot.slot_price if slot else None,    
+                "cost": slot.parking_spot.slot_price if slot else None 
             }
         }), 200
 

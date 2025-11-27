@@ -18,7 +18,7 @@
     $response_user = perform_rest_request('GET', $api_url, null, $_SESSION['session_token']);
 
 	// Gets the reservation info from the park_ms
-	$api_url = compose_url($protocol, $socket_park_ms, '/reservations/' . intval($_GET['user_id']));
+	$api_url = compose_url($protocol, $socket_park_ms, '/reservations/' . intval($_GET['reservation_id']));
     $response_reservation = perform_rest_request('GET', $api_url, null, null);
 
 	// Checking the consistence between the user requested and the owner of the reservation
