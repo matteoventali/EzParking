@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function ()
     const calendar = new FullCalendar.Calendar(calendarEl, 
     {
         //initialView: "dayGridMonth",
-        initialView: "listMonth",
+        initialView: "listWeek",
         headerToolbar: {
             left: "prev,next today",
             center: "title",
