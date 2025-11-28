@@ -150,7 +150,7 @@
 
             // We show the enable/disable button only if we're seeing a user profile.
             // An admin cannot be disabled/enabled by another admin
-            $button = '<button id="button_enable" class="edit-btn" style="background-color: %s"
+            $button = '<button id="button_enable" class="edit-btn" style="background: %s"
                             onclick="location.href=\'enable_disable_user.php?id=%d&status=%s\'">
                             <i class="fas fa-user-edit"></i> ' . $label . ' Profile
                         </button>';
