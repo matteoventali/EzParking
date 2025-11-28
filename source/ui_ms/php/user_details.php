@@ -100,108 +100,68 @@
 </head>
 
 <body style="background: linear-gradient(135deg, #f3ecff, #e8dcff);;">
-    <?php 
-        $nav = generate_navbar($_SESSION['role']);
-        echo $nav;
-    ?>
+        <?php 
+            $nav = generate_navbar($_SESSION['role']);
+            echo $nav;
+        ?>
 
-  <main class="dashboard-grid">
+        <main class="dashboard-grid">
 
-    <div class="dashboard-card user-data-card">
-      <div class="user-header">
-        <div class="avatar-wrapper">
-            <img src="../images/account.svg" alt="User Avatar" class="user-avatar">
-            
-        </div>
-        <div>
-            <div class="user-name-wrapper">
-                <h2 class="user-name"><?php echo strtoupper($user["name"] . " " . $user["surname"]); ?></h2>
+        <div class="dashboard-card user-data-card">
+            <div class="user-header">
+            <div class="avatar-wrapper">
+                <img src="../images/account.svg" alt="User Avatar" class="user-avatar">
+                
             </div>
-          
+            <div>
+                <div class="user-name-wrapper">
+                    <h2 class="user-name"><?php echo strtoupper($user["name"] . " " . $user["surname"]); ?></h2>
+                </div>
+                
+            </div>
         </div>
-      </div>
 
-      <div class="user-info">
-        <div class="info-item">
-          <i class="fas fa-phone"></i>
-          <span><strong>Name: </strong><?php echo $user["name"];?></span>
+        <div class="user-info">
+            <div class="info-item">
+                <i class="fas fa-phone"></i>
+                <span><strong>Name: </strong><?php echo $user["name"];?></span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-phone"></i>
+                <span><strong>Surname: </strong><?php echo $user["surname"];?></span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-phone"></i>
+                <span><strong>Email: </strong><?php echo $user["email"];?></span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-phone"></i>
+                <span><strong>Phone: </strong><?php echo $user["phone"];?></span>
+            </div>
+            <div class="info-item">
+                <i class="fas"></i>
+                <span><strong>Role: </strong><?php echo strtoupper($user['role']); ?></span>
+            </div>
         </div>
-        <div class="info-item">
-          <i class="fas fa-phone"></i>
-          <span><strong>Surname: </strong><?php echo $user["surname"];?></span>
-        </div>
-        <div class="info-item">
-          <i class="fas fa-phone"></i>
-          <span><strong>Email: </strong><?php echo $user["email"];?></span>
-        </div>
-        <div class="info-item">
-          <i class="fas fa-phone"></i>
-          <span><strong>Phone: </strong><?php echo $user["phone"];?></span>
-        </div>
-        <div class="info-item">
-          <i class="fas"></i>
-          <span><strong>Role: </strong><?php echo strtoupper($user['role']); ?></span>
-        </div>
-      </div>
 
         <?php
             $label = $user['status'] ? 'Disable' : 'Enable';
+            $color = $user['status'] ? 'red' : 'green';
 
             // We show the enable/disable button only if we're seeing a user profile.
             // An admin cannot be disabled/enabled by another admin
-            $button = '<button id="button_enable" class="edit-btn" 
+            $button = '<button id="button_enable" class="edit-btn" style="background-color: %s"
                             onclick="location.href=\'enable_disable_user.php?id=%d&status=%s\'">
                             <i class="fas fa-user-edit"></i> ' . $label . ' Profile
                         </button>';
-            $button = sprintf($button, $user['id'], $user['status'] ? 'true' : 'false');
+            $button = sprintf($button, $color, $user['id'], $user['status'] ? 'true' : 'false');
             
             if ( $user['role'] == 'user' )
                 echo $button;
         ?>
     </div>
 
-    <div class="dashboard-card statistics-card">
-        <div class="section-title">User's Statistics</div>
-        <div class="stats-grid">
-            <div class="stat-box">
-                <div class="stat-value" id="reputation">⭐ 0/5</div>
-                <div class="stat-label">Reputation Level</div>
-            </div>
-
-            <div class="stat-box">
-                <div class="stat-value" id="ownedSpots">12</div>
-                <div class="stat-label">Parking Spots Owned</div>
-            </div>
-
-            <div class="stat-box">
-                <div class="stat-value" id="totalReservations">34</div>
-                <div class="stat-label">Total Reservations</div>
-            </div>
-
-            <div class="stat-box">
-                <div class="stat-value" id="activeReservations">5</div>
-                <div class="stat-label">Active Reservations</div>
-            </div>
-
-            <div class="stat-box">
-                <div class="stat-value" id="occupiedSpots">7</div>
-                <div class="stat-label">Owned Spots Currently Booked</div>
-            </div>
-
-            <button class="stat-box stat-button">
-                <div class="stat-value" id="occupiedSpots">200€</div>
-                <div class="stat-label">Total Earnings</div>
-            </button>
-        </div>
-
-    </div>
-
     <?php
-    /*
-        $rep_card = '<div class="dashboard-card reputation-card">
-                <div class="section-title">Reputation</div>
-                <div class="reputation-score">⭐ ' . $user['score'] . '/5</div></div>';*/
-
         $review_section =
             '<!-- Reviews -->
             <div class="dashboard-card review-card">
@@ -219,10 +179,46 @@
                 </div>
             </div>';
 
+        $stats_section =
+            '<div class="dashboard-card statistics-card">
+            <div class="section-title">User\'s Statistics</div>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="reputation">⭐ %s/5</div>
+                    <div class="stat-label">Reputation Level</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-value" id="ownedSpots">%s</div>
+                    <div class="stat-label">Parking Spots Owned</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-value" id="totalReservations">%s</div>
+                    <div class="stat-label">Total Reservations</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-value" id="activeReservations">%s</div>
+                    <div class="stat-label">Active Reservations</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-value" id="occupiedSpots">%s</div>
+                    <div class="stat-label">Owned Spots Currently Booked</div>
+                </div>
+
+                <button class="stat-box stat-button">
+                    <div class="stat-value" id="occupiedSpots">%s€</div>
+                    <div class="stat-label">Total Earnings</div>
+                </button>
+            </div>
+            </div>';
+
         // Show the reputation and review section only for normal users
         if ( $user['role'] == 'user' )
         {
-            //echo $rep_card;
+            echo $stats_section;
             echo sprintf($review_section, $received_html, $written_html);
         }
     ?>

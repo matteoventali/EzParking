@@ -98,8 +98,6 @@ function fetchMicroservicesStatus()
                 container.insertAdjacentHTML('beforeend', card);
             });
 
-            console.log(data);
-
             // Updating the counter of microservices active
             document.querySelector('.microservices-card .service-count').textContent = activeCount;
         })
