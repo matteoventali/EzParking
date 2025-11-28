@@ -79,7 +79,7 @@
     ?>
     
     <div class="login-container">
-        <h2>Login into your account</h2>
+        <h2 style="margin-bottom: 1rem;">Login into your account</h2>
         <form id="login-form" method="post" action="login.php">
             <div class="input-group">
                 <label for="email">Email</label>

@@ -1,12 +1,3 @@
-/* ===== RESET & FONT CHANGE (Consistent with your example) ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    /* Changed from Inter to Poppins */
-}
-
 :root {
     --primary-color: #5e25a5;
     /* Primary Violet */
@@ -24,14 +15,6 @@
     --full-bg: #f8d7da;
     --noTimeSlot-color: #ffc107;
     --noTimeSlot-bg: #fffbe6;
-}
-
-body {
-    background-color: var(--bg-light);
-    color: var(--text-dark);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
 }
 
 main {
@@ -58,9 +41,8 @@ main {
 .dashboard-header p {
     color: var(--text-light);
     font-size: 1.1rem;
+    font-family: Poppins;
 }
-
-
 
 .add-new-button {
     display: inline-flex;

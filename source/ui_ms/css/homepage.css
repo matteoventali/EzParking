@@ -52,7 +52,7 @@
 /* ===== FEATURES ===== */
 .features {
   padding: 4rem 2rem;
-  background: white;
+  background: linear-gradient(135deg, #f3ecff, #f6f4faff);
   text-align: center;
 }
 

@@ -89,7 +89,7 @@
     
 </head>
 
-<body style="background: linear-gradient(180deg, var(--bg), #ffffff); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;">
+<body style="background: linear-gradient(135deg, #f3ecff, #f6f4faff); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;">
     <?php
         $nav = generate_navbar($_SESSION['role']);
         echo $nav;

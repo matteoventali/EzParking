@@ -70,7 +70,6 @@
     <title>Edit Profile</title>
     <link rel="stylesheet" href="../css/edit_profile.css">
     <link rel="stylesheet" href="../css/style.css">
-
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

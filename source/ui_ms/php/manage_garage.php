@@ -50,7 +50,7 @@
     else
     {
         // The user has no parking spots yet
-        $parking_spots_html = '<p class="no-garages-message">You have no parking spots yet. Click the "Add New Parking" button to create one.</p>';
+        $parking_spots_html = '<p class="no-garages-message" style="font-family: Poppins;">You have no parking spots yet. Click the "Add New Parking" button to create one.</p>';
     }  
 ?>
 
@@ -62,10 +62,17 @@
     <title>My Garages Dashboard</title>
     <link rel="stylesheet" href="../css/navbar.css" />
     <link rel="stylesheet" href="../css/manage_garage.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap" rel="stylesheet">    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">    
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body>
+<body style="background: linear-gradient(135deg, #f3ecff, #f6f4faff);">
     <?php
         $nav = generate_navbar($_SESSION['role']);
         echo $nav;

@@ -1,33 +1,16 @@
-/* ===== RESET ===== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-
-/* ===== BASE ===== */
-body {
-  background: linear-gradient(135deg, #5e25a5, #8c4de8);
-  color: #333;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
 /* ===== MAIN CONTENT ===== */
 .dashboard-grid {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  margin-top: 7rem;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
   padding: 1rem;
+  width: 100%;
 }
 
 .edit-profile-card {
-  width: 100%;
-  max-width: 650px;
   background: white;
   border-radius: 12px;
   padding: 2.5rem;
@@ -88,50 +71,17 @@ body {
   background: linear-gradient(90deg, #4a1b8c, #5e25a5);
 }
 
-/* ===== FOOTER ===== */
-footer {
-  background: linear-gradient(135deg, #5e25a5, #7b3fd3);
-  color: white;
-  text-align: center;
-  padding: 2rem;
-  margin-top: 4rem;
-}
-
-footer p {
-  font-size: 0.9rem;
-}
-
 /* ===== RESPONSIVE ===== */
-@media (max-width: 390px) {
-  /* Header */
-  header {
-    flex-direction: column;
-    padding: 0.8rem 1rem;
-    text-align: center;
-  }
-
-  header .logo a {
-    font-size: 1.2rem;
-  }
-
-  .icons-container {
-    margin-top: 0.5rem;
-    gap: 1rem;
-  }
-
-  .user-icon img {
-    width: 22px;
-    height: 22px;
-  }
+@media (min-width: 375px) and (max-width: 1024px){
 
   /* Main card */
   .dashboard-grid {
-    margin-top: 6rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     padding: 0.8rem;
   }
 
   .edit-profile-card {
-    width: 95vw;
     padding: 1.8rem;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -155,15 +105,4 @@ footer p {
     padding: 0.9rem;
   }
 
-  /* Dropdown menu */
-  .dropdown-menu {
-    right: 50%;
-    transform: translateX(50%);
-    min-width: 140px;
-  }
-
-  .dropdown-menu a {
-    font-size: 0.9rem;
-    padding: 0.5rem 0.8rem;
-  }
 }

@@ -91,7 +91,7 @@
 	<script src="../js/stars.js"></script>
 </head>
 
-<body style="background: linear-gradient(135deg, #f3ecff, #e8dcff);;">
+<body style="background: linear-gradient(135deg, #f3ecff, #f6f4faff);">
 	<?php
 		$nav = generate_navbar($_SESSION['role']);
 		echo $nav;
@@ -163,7 +163,7 @@
                         <p><strong>Total cost: </strong><?php echo $cost; ?> €</p>
                     </div>
 					<button class="edit-btn" onclick="window.location.href='../php/manage_request.php'">
-						<i class="fas fa-user-edit"></i> Manage it!
+						<i class="fas fa-user-edit"></i> Manage it
 					</button>
 				</div>                
             </div>

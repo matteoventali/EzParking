@@ -149,7 +149,14 @@
 
     <link rel="stylesheet" href="../css/navbar.css" />
     <link rel="stylesheet" href="../css/book_parking.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap" rel="stylesheet">    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">    
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -159,7 +166,7 @@
     <script src="../js/stars.js"></script>
 </head>
 
-<body>
+<body style="background: linear-gradient(135deg, #f3ecff, #f6f4faff);">
     <?php
         $nav = generate_navbar($_SESSION["role"]);
         echo $nav;

@@ -52,6 +52,7 @@ h1.top {
   color: var(--muted);
   font-size: 0.95rem;
   margin: 0.25rem;
+  font-family: Poppins;
 }
 
 .controls {

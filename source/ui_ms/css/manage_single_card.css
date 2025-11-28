@@ -20,7 +20,7 @@
 }
 
 
-h1, h2, h3 {
+h1, h2, .h3-title {
   color: var(--brand);
   margin-bottom: 1rem;
 }

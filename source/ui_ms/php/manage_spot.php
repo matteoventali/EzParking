@@ -69,7 +69,7 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body style="background: linear-gradient(180deg, var(--bg), #ffffff);">
+<body style="background: linear-gradient(135deg, #f3ecff, #f6f4faff);">
    <?php
         $nav = generate_navbar($_SESSION['role']);
         echo $nav;
@@ -88,7 +88,7 @@
         <section class="timeslot-section">
             <form id="add-timeslot-form" class="add-form" action="manage_spot.php" method="post">
                 <input name="id" type="hidden" id="id" value="<?php echo $id;?>" required />
-                <h3>Add New Time Slot</h3>
+                <h3 class="h3-title">Add New Time Slot</h3>
                 <div class="form-group">
                     <label for="slot_date">Date</label>
                     <input class="slot-date" name="slot_date" type="date" id="slot_date" required />

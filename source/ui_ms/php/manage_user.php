@@ -44,7 +44,7 @@
         echo $nav;
     ?>
 
-    <main class="dashboard-grid">
+    <main class="dashboard-grid" style="margin-bottom: 3rem;">
     <!-- Registered Users Section -->
     <div class="container">
         <h1>Manage Users</h1>
