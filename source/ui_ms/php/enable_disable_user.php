@@ -19,5 +19,6 @@
     $response = perform_rest_request('GET', $api_url, null, $_SESSION['session_token']);
 
     // Redirecting to the user details page
-    header("Location: user_details.php?id=" . $_GET['id']);
+    //header("Location: user_details.php?id=" . $_GET['id']);
+    header("Location: manage_user.php");
 ?>
