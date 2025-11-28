@@ -13,14 +13,12 @@ class User(db.Model):
     name = db.Column(db.String(50), nullable=False)
     surname = db.Column(db.String(50), nullable=False)
 
-    # Payments effettuati dall’utente
     payments_made = db.relationship(
         "Payment",
         foreign_keys="Payment.user_id",
         back_populates="payer"
     )
 
-    # Payments ricevuti dal residente
     payments_received = db.relationship(
         "Payment",
         foreign_keys="Payment.resident_id",
@@ -39,7 +37,7 @@ class Payment(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     payment_ts = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    amount = db.Column(db.String(50), nullable=False)
+    amount = db.Column(db.Numeric(5,2), nullable=False)
 
     payment_status = db.Column(
         db.Enum('pending', 'completed', 'failed', name='payment_status_enum'),

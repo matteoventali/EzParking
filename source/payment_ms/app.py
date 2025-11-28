@@ -1,6 +1,10 @@
 from flask import Flask, jsonify, request
 from config import DB_CONFIG
 from models import db, User, Payment
+from sqlalchemy import func
+from decimal import Decimal
+
+
 
 # -------------------------------
 # Init
@@ -52,7 +56,6 @@ def create_payment():
         }), 400
     
     try:
-        # Check if user exists
         user = User.query.filter_by(id=user_id).first()
         if not user:
             return jsonify({
@@ -67,7 +70,6 @@ def create_payment():
                 'code': '4'
             }), 404
         
-        # Check if payment already exists for this reservation
         existing_payment = Payment.query.filter_by(reservation_id=reservation_id).first()
         if existing_payment:
             return jsonify({
@@ -75,7 +77,6 @@ def create_payment():
                 'code': '5'
             }), 409
         
-        # Create new payment
         new_payment = Payment(
             amount=str(amount),
             method=method,
@@ -114,85 +115,58 @@ def create_payment():
         }), 500
 
 
-@app.route("/payments/user/<int:user_id>", methods=["GET"])
-def get_payments_by_user(user_id):
-    """Retrieve all payments made by a specific user"""
+@app.route("/payments/user/<int:user_id>/earnings", methods=["GET"])
+def get_tot_earnings(user_id):
     try:
-        # Check if user exists
-        user = User.query.filter_by(id=user_id).first()
-        if not user:
+
+        user = User.query.filter_by(id = user_id).first()
+        if not user: 
             return jsonify({
-                'desc': 'User not found',
-                'code': '1'
+                'desc': "Invalid user", 
+                'code': 1
             }), 404
-        
-        # Get all payments for the user
-        payments = Payment.query.filter_by(user_id=user_id).all()
-        
-        payments_list = [
-            {
+
+        incomes = sum(
+            (p.amount for p in user.payments_received if p.payment_status == "completed"),
+            Decimal("0")
+        )
+
+        outcomes = sum(
+            (p.amount for p in user.payments_made if p.payment_status == "completed"),
+            Decimal("0")
+        )
+
+        earnings = incomes - outcomes
+
+        payments_made = user.payments_made
+        payments_received = user.payments_received
+
+        total_payments = payments_received + payments_made
+        total_payments.sort(key=lambda p: p.payment_ts, reverse=True)
+
+        payments_json = []
+        for payment in total_payments:
+            payments_json.append({
                 'id': payment.id,
                 'amount': payment.amount,
                 'method': payment.method,
                 'payment_status': payment.payment_status,
                 'payment_ts': payment.payment_ts.isoformat(),
                 'reservation_id': payment.reservation_id
-            }
-            for payment in payments
-        ]
-        
-        return jsonify({
-            'desc': 'Payments retrieved successfully',
-            'code': '0',
-            'payments': payments_list
-        }), 200
-        
-    except Exception as e:
-        return jsonify({
-            'desc': f'Database error: {str(e)}',
-            'code': '99'
-        }), 500
+            })
 
 
-@app.route("/payments/reservation/<int:reservation_id>", methods=["GET"])
-def get_payment_by_reservation(reservation_id):
-    """Retrieve the payment associated with a specific reservation"""
-    try:
-        # Check if reservation exists
-        reservation = Reservation.query.filter_by(id=reservation_id).first()
-        if not reservation:
-            return jsonify({
-                'desc': 'Reservation not found',
-                'code': '1'
-            }), 404
-        
-        # Get payment for the reservation
-        payment = Payment.query.filter_by(reservation_id=reservation_id).first()
-        
-        if not payment:
-            return jsonify({
-                'desc': 'Payment not found for this reservation',
-                'code': '2'
-            }), 404
-        
         return jsonify({
-            'desc': 'Payment retrieved successfully',
-            'code': '0',
-            'payment': {
-                'id': payment.id,
-                'amount': payment.amount,
-                'method': payment.method,
-                'payment_status': payment.payment_status,
-                'payment_ts': payment.payment_ts.isoformat(),
-                'reservation_id': payment.reservation_id,
-                'user_id': payment.user_id
-            }
+            'desc': "Total earnigns retrieved successfully", 
+            'code': 0, 
+            'earnings': earnings, 
+            'payments_list': payments_json
         }), 200
-        
+    
     except Exception as e:
         return jsonify({
-            'desc': f'Database error: {str(e)}',
-            'code': '99'
+            'desc': f"Database error: {e}", 
+            'code': 99
         }), 500
 
 
@@ -209,7 +183,6 @@ def update_payment_status(payment_id):
     
     new_status = data['payment_status']
     
-    # Validate payment status
     valid_statuses = ['completed', 'failed']
     if new_status not in valid_statuses:
         return jsonify({
@@ -218,7 +191,6 @@ def update_payment_status(payment_id):
         }), 400
     
     try:
-        # Get payment
         payment = Payment.query.filter_by(id=payment_id).first()
         
         if not payment:
@@ -227,7 +199,6 @@ def update_payment_status(payment_id):
                 'code': '3'
             }), 404
         
-        # Update payment status
         payment.payment_status = new_status
         db.session.commit()
         

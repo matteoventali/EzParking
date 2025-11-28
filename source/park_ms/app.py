@@ -76,6 +76,90 @@ def add_user():
             'desc': f'Database error: {str(e)}',
             'code': '99'
         }), 500
+
+
+@app.route("/users/statistics", methods=["POST"])
+def get_statistics():
+
+    try:
+        data = request.get_json()
+        if not data or "user_id" not in data:
+            return jsonify({
+                'desc': "Missing data or user_id", 
+                'code': 1
+            }), 400
+        
+        user_id = data["user_id"]
+
+        user = User.query.filter_by(id = user_id).first()
+
+        if not user: 
+            return jsonify({
+                'desc': "Invalid user id", 
+                'code': 1
+            }), 404
+        
+        owned_parking_spots = ParkingSpot.query.filter_by(user_id=user_id).all()
+        
+        spot_counter = len(owned_parking_spots)
+ 
+        total_reservations = Reservation.query.filter_by(user_id=user_id).all()
+        
+        res_counter = len(total_reservations)
+
+        now = datetime.now(ZoneInfo("Europe/Rome"))
+        today = date.today()
+        current_time = now.time()
+
+        active_reservations = (
+            db.session.query(Reservation)
+            .join(AvailabilitySlot, Reservation.slot_id == AvailabilitySlot.id)
+            .filter(
+                Reservation.user_id == user_id,
+                AvailabilitySlot.slot_date == today,
+                AvailabilitySlot.start_time <= current_time,
+                AvailabilitySlot.end_time >= current_time
+            )
+            .all()
+        )
+
+        active_counter = len(active_reservations)
+
+        booked_counter = 0
+        for p in owned_parking_spots:
+            spot_id = p.id
+
+            active_res_on_my_spot = (
+                db.session.query(AvailabilitySlot)
+                .join(ParkingSpot, ParkingSpot.id == AvailabilitySlot.parking_spot_id)
+                .join(Reservation, AvailabilitySlot.id == Reservation.slot_id)
+                .filter(
+                    Reservation.reservation_status == "confirmed", 
+                    ParkingSpot.id == spot_id,
+                    AvailabilitySlot.slot_date == today,
+                    AvailabilitySlot.start_time <= current_time, 
+                    AvailabilitySlot.end_time >= current_time
+                ).all()
+            )
+
+            booked_counter += len(active_res_on_my_spot)
+        
+        return jsonify({
+            'desc': "Statistics retrieved succesfully", 
+            'code': 0, 
+            'statistics':{
+                'spot_counter': spot_counter, 
+                'res_counter': res_counter, 
+                'booked_counter': booked_counter, 
+                'active_counter': active_counter
+            }
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            'desc': f'Database error: {str(e)}',
+            'code': '99'
+        }), 500
 # ------------ USERS ------------
 
 
