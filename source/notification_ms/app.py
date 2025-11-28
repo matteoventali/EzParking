@@ -6,7 +6,14 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+def load_app_password(file):
+    with open(file, "r", encoding="utf-8") as f:
+        return f.read().strip()
 
+key_file = "password.key" 
+template_path = "templates/mail_template.html"
+SENDER = "ezparking.notifications@gmail.com"
+APP_PASSWORD = load_app_password(key_file)
 
 # -------------------------------
 # Init
@@ -36,39 +43,46 @@ def create_user():
 @app.route("/user/<int:user_id>/", methods=["PUT"])
 def update_user(user_id):
     pass
-
-
-@app.route("/user/<int:user_id>/sync", methods=["PUT"])
-def sync_user(user_id):
-    pass
+# ------------ USERS ------------
 
 
 # ------------ NOTIFICATIONS ------------
 @app.route("/notifications/parking_available", methods=["POST"])
 def notify_parking_available():
+    
+    data = request.get_json()
 
-        smtp_server = "smtp.gmail.com"
-        smtp_port = 587
-        gmail_user = ""
-        app_password = ""  
-
-        to_email = ""
-
-        msg = MIMEMultipart()
-        msg["From"] = gmail_user
-        msg["To"] = to_email
-        msg["Subject"] = "Test SMTP Gmail"
-        body = "Funziona!"
-        msg.attach(MIMEText(body, "plain"))
-
-        with smtplib.SMTP(smtp_server, smtp_port) as server:
-            server.starttls()
-            server.login(gmail_user, app_password)
-            server.sendmail(gmail_user, to_email, msg.as_string())
-
+    if not data or "email" not in data:
         return jsonify({
-            'ok':"ok"
-        }), 200
+            'desc': "Missing email",
+            'code': 0
+        }), 400
+    
+    to_email = data["email"]
+    with open(template_path, "r", encoding="utf-8") as f:
+        html_content = f.read()
+
+    smtp_server = "smtp.gmail.com"
+    smtp_port = 587
+
+    msg = MIMEMultipart("alternative")
+    msg["From"] = SENDER
+    msg["To"] = to_email
+    msg["Subject"] = "Parking Spot available close to you!!"
+    msg.attach(MIMEText(html_content, "html"))
+
+    with smtplib.SMTP(smtp_server, smtp_port) as server:
+        server.starttls()
+        server.login(SENDER, APP_PASSWORD)
+        result = server.sendmail(SENDER, to_email, msg.as_string())
+        if result == {}:
+            result = None
+
+    return jsonify({
+        'desc': "Mail sent successfully", 
+        'code': 0, 
+        'null_check': result 
+    }), 250
 
 
 @app.route("/notifications/reservation_accepted", methods=["POST"])
@@ -98,13 +112,79 @@ def notify_payment_failure():
 
 @app.route("/notifications/<int:user_id>/account_disabled", methods=["GET"])
 def notify_account_disabled(user_id):
-    pass
+    
+    user = User.query.filter_by(id = user_id).first()
+    if not user: 
+        return jsonify({
+            'desc': "Invalid user", 
+            'code': 1
+        }), 404
+
+    to_email = user.email
+    
+    with open(template_path, "r", encoding="utf-8") as f:
+        html_content = f.read()
+
+    smtp_server = "smtp.gmail.com"
+    smtp_port = 587
+
+    msg = MIMEMultipart("alternative")
+    msg["From"] = SENDER
+    msg["To"] = to_email
+    msg["Subject"] = "Your account has been disabled!"
+    msg.attach(MIMEText(html_content, "html"))
+
+    with smtplib.SMTP(smtp_server, smtp_port) as server:
+        server.starttls()
+        server.login(SENDER, APP_PASSWORD)
+        result = server.sendmail(SENDER, to_email, msg.as_string())
+        if result == {}:
+            result = None
+
+    return jsonify({
+        'desc': "Mail sent successfully", 
+        'code': 0, 
+        'null_check': result 
+    }), 250
 
 
 @app.route("/notifications/<int:user_id>/account_enabled", methods=["GET"])
 def notify_account_enabled(user_id):
-    pass
+    
+    user = User.query.filter_by(id = user_id).first()
+    if not user: 
+        return jsonify({
+            'desc': "Invalid user", 
+            'code': 1
+        }), 404
 
+    to_email = user.email
+    
+    with open(template_path, "r", encoding="utf-8") as f:
+        html_content = f.read()
+
+    smtp_server = "smtp.gmail.com"
+    smtp_port = 587
+
+    msg = MIMEMultipart("alternative")
+    msg["From"] = SENDER
+    msg["To"] = to_email
+    msg["Subject"] = "Your account has been enabled!"
+    msg.attach(MIMEText(html_content, "html"))
+
+    with smtplib.SMTP(smtp_server, smtp_port) as server:
+        server.starttls()
+        server.login(SENDER, APP_PASSWORD)
+        result = server.sendmail(SENDER, to_email, msg.as_string())
+        if result == {}:
+            result = None
+
+    return jsonify({
+        'desc': "Mail sent successfully", 
+        'code': 0, 
+        'null_check': result 
+    }), 250
+# ------------ NOTIFICATIONS ------------
 
 # -------------------------------
 # MAIN
