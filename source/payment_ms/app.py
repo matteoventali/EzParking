@@ -123,7 +123,7 @@ def get_tot_earnings(user_id):
         if not user: 
             return jsonify({
                 'desc': "Invalid user", 
-                'code': 1
+                'code': "1"
             }), 404
 
         incomes = sum(
@@ -158,7 +158,7 @@ def get_tot_earnings(user_id):
 
         return jsonify({
             'desc': "Total earnigns retrieved successfully", 
-            'code': 0, 
+            'code': "0", 
             'earnings': earnings, 
             'payments_list': payments_json
         }), 200
@@ -166,7 +166,7 @@ def get_tot_earnings(user_id):
     except Exception as e:
         return jsonify({
             'desc': f"Database error: {e}", 
-            'code': 99
+            'code': "99"
         }), 500
 
 

@@ -78,25 +78,16 @@ def add_user():
         }), 500
 
 
-@app.route("/users/statistics", methods=["POST"])
-def get_statistics():
+@app.route("/users/<int:user_id>/statistics", methods=["GET"])
+def get_statistics(user_id):
 
     try:
-        data = request.get_json()
-        if not data or "user_id" not in data:
-            return jsonify({
-                'desc': "Missing data or user_id", 
-                'code': 1
-            }), 400
-        
-        user_id = data["user_id"]
-
         user = User.query.filter_by(id = user_id).first()
 
         if not user: 
             return jsonify({
                 'desc': "Invalid user id", 
-                'code': 1
+                'code': "1"
             }), 404
         
         owned_parking_spots = ParkingSpot.query.filter_by(user_id=user_id).all()
@@ -146,8 +137,11 @@ def get_statistics():
         
         return jsonify({
             'desc': "Statistics retrieved succesfully", 
-            'code': 0, 
+            'code': "0", 
             'statistics':{
+                'id': user.id,
+                'name': user.name,
+                'surname': user.surname,
                 'spot_counter': spot_counter, 
                 'res_counter': res_counter, 
                 'booked_counter': booked_counter, 

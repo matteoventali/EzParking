@@ -26,7 +26,7 @@
     $api_url = compose_url($protocol, $socket_account_ms, '/reviews/' . $_GET["id"]);
     $response_review = perform_rest_request('GET', $api_url, null, $_SESSION["session_token"]);
 
-    // If the user is an admin, we don't need to load the reviews
+    // If the user is an admin, we don't need to load the reviews and the stats
     if ( $user["role"] != "admin" )
     {
         // Populating the received reviews
@@ -77,6 +77,43 @@
         {
             $received_html = "<p style=text-align: center;'> $name $surname has not received any review!<p>";
             $written_html = "<p style=text-align: center;'> $name $surname has not written any review!<p>";
+        }
+
+        // Get the stats of the current user
+        $api_url = compose_url($protocol, $socket_park_ms, '/users/' . $_GET["id"] . '/statistics');
+        $response_stats = perform_rest_request('GET', $api_url, null, null);
+        $api_url = compose_url($protocol, $socket_payment_ms, '/payments/user/'. $_GET["id"] . '/earnings');
+        $response_payments = perform_rest_request('GET', $api_url, null, null);
+
+        $spot_counter 		= 'N.A.';
+        $res_counter 		= 'N.A.';
+        $booked_counter 	= 'N.A.';
+        $active_counter 	= 'N.A.';
+        $total_earnings		= 'N.A.';
+        $list_transactions  = null;
+        $earnings_color = '';
+        $prefix = '';
+
+        if ( $response_stats["status"] == 200 && $response_stats["body"]["code"] === "0" )
+        {
+            $spot_counter 		= $response_stats["body"]["statistics"]["spot_counter"];
+            $res_counter 		= $response_stats["body"]["statistics"]["res_counter"];
+            $booked_counter 	= $response_stats["body"]["statistics"]["booked_counter"];
+            $active_counter 	= $response_stats["body"]["statistics"]["active_counter"];
+        }
+
+        if ( $response_payments["status"] == 200 && $response_payments["body"]["code"] === "0" )
+        {
+            $total_earnings = floatval($response_payments["body"]["earnings"]);
+            $list_transactions = $response_payments["body"]["payments_list"];
+
+            if ( $total_earnings > 0 )
+            {
+                $earnings_color = "style='color: green'";
+                $prefix = '+';
+            }
+            else if ( $total_earnings < 0 )
+                $earnings_color = "style='color: red'";
         }
     }
 ?>
@@ -209,7 +246,7 @@
                 </div>
 
                 <button class="stat-box stat-button">
-                    <div class="stat-value" id="occupiedSpots">%s€</div>
+                    <div class="stat-value" id="occupiedSpots" %s>%s€</div>
                     <div class="stat-label">Total Earnings</div>
                 </button>
             </div>
@@ -218,7 +255,8 @@
         // Show the reputation and review section only for normal users
         if ( $user['role'] == 'user' )
         {
-            echo $stats_section;
+            echo sprintf($stats_section, $response["body"]["user"]["score"], $spot_counter, $res_counter, $active_counter, $booked_counter, 
+                                $earnings_color, $prefix . $total_earnings);
             echo sprintf($review_section, $received_html, $written_html);
         }
     ?>

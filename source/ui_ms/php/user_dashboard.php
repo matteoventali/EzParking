@@ -109,6 +109,43 @@
 	}
 	else
 		$received_html = '<p>You haven\'t received any review!<p>';
+
+	// Get the stats of the current user
+	$api_url = compose_url($protocol, $socket_park_ms, '/users/' . $_SESSION["user"]["id"] . '/statistics');
+	$response_stats = perform_rest_request('GET', $api_url, null, null);
+	$api_url = compose_url($protocol, $socket_payment_ms, '/payments/user/'. $_SESSION["user"]["id"] . '/earnings');
+	$response_payments = perform_rest_request('GET', $api_url, null, null);
+
+	$spot_counter 		= 'N.A.';
+	$res_counter 		= 'N.A.';
+	$booked_counter 	= 'N.A.';
+	$active_counter 	= 'N.A.';
+	$total_earnings		= 'N.A.';
+	$list_transactions  = null;
+	$color = null;
+	$prefix = '';
+
+	if ( $response_stats["status"] == 200 && $response_stats["body"]["code"] === "0" )
+	{
+		$spot_counter 		= $response_stats["body"]["statistics"]["spot_counter"];
+		$res_counter 		= $response_stats["body"]["statistics"]["res_counter"];
+		$booked_counter 	= $response_stats["body"]["statistics"]["booked_counter"];
+		$active_counter 	= $response_stats["body"]["statistics"]["active_counter"];
+	}
+
+	if ( $response_payments["status"] == 200 && $response_payments["body"]["code"] === "0" )
+	{
+		$total_earnings = floatval($response_payments["body"]["earnings"]);
+		$list_transactions = $response_payments["body"]["payments_list"];
+
+		if ( $total_earnings > 0 )
+		{
+			$color = 'green';
+			$prefix = '+';
+		}
+		else if ( $total_earnings < 0 )
+			$color = 'red';
+	}
 ?>
 
 <!DOCTYPE html>
@@ -189,27 +226,29 @@
 				</div>
 
 				<div class="stat-box">
-					<div class="stat-value" id="ownedSpots">12</div>
+					<div class="stat-value" id="ownedSpots"><?php echo $spot_counter; ?></div>
 					<div class="stat-label">Parking Spots Owned</div>
 				</div>
 
 				<div class="stat-box">
-					<div class="stat-value" id="totalReservations">34</div>
+					<div class="stat-value" id="totalReservations"><?php echo $res_counter; ?></div>
 					<div class="stat-label">Total Reservations</div>
 				</div>
 
 				<div class="stat-box">
-					<div class="stat-value" id="activeReservations">5</div>
+					<div class="stat-value" id="activeReservations"><?php echo $active_counter; ?></div>
 					<div class="stat-label">Active Reservations</div>
 				</div>
 
 				<div class="stat-box">
-					<div class="stat-value" id="occupiedSpots">7</div>
+					<div class="stat-value" id="occupiedSpots"><?php echo $booked_counter; ?></div>
 					<div class="stat-label">Owned Spots Currently Booked</div>
 				</div>
 
 				<button class="stat-box stat-button">
-					<div class="stat-value" id="occupiedSpots">200€</div>
+					<div class="stat-value" id="occupiedSpots" <?php if (isset($color)) echo "style=\"color:$color\"" ?>>
+						<?php echo $prefix . $total_earnings; ?>
+					</div>
 					<div class="stat-label">Total Earnings</div>
 				</button>
 			</div>

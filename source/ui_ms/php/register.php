@@ -57,8 +57,9 @@
                 // 2. Notification_ms
 
                 // 3. Payment_ms
+
             }
-            else 
+            else
                 $error_message = $response["body"]["desc"];
         } catch (Exception $e) 
         {
