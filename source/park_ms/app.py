@@ -832,7 +832,7 @@ def create_time_slot(park_id):
         return jsonify({'desc': 'Invalid date/time format', 'code': '3'}), 400
 
     if end_time <= start_time:
-        return jsonify({'desc': 'Invalid time range (end_time must be after start_time)', 'code': '4'}), 400
+        return jsonify({'desc': 'Invalid time range (end time must be after start time)', 'code': '4'}), 400
 
     try:
 
@@ -842,7 +842,7 @@ def create_time_slot(park_id):
 
         if slot_date == today and current_time >= start_time:
             return jsonify({
-                'desc': f"{current_time}, {start_time}",
+                'desc': f"Invalid time range (start time must be after current time)",
                 'code': 1
             }), 400
         
