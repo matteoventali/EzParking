@@ -12,13 +12,22 @@
     
     // Performing the enable/disable operation trough a REST request
     if ( $_GET['status'] == 'true' )
+    {
         $api_url = compose_url($protocol, $socket_account_ms, '/users/' . $_GET['id'] . '/disable');
+        $api_url_notification = compose_url($protocol, $socket_notification_ms, '/notifications/' . $_GET['id'] . '/account_disabled');
+    }
     else
+    {
         $api_url = compose_url($protocol, $socket_account_ms, '/users/' . $_GET['id'] . '/enable');
-
+        $api_url_notification = compose_url($protocol, $socket_notification_ms, '/notifications/' . $_GET['id'] . '/account_enabled');
+    }
+    
     $response = perform_rest_request('GET', $api_url, null, $_SESSION['session_token']);
 
+    // Send a notification to the user
+    if ( $response["status"] == 200 && $response["body"]["code"] === "0")
+        $response_not = perform_rest_request('GET', $api_url_notification, null, null);
+
     // Redirecting to the user details page
-    //header("Location: user_details.php?id=" . $_GET['id']);
     header("Location: manage_user.php");
 ?>
