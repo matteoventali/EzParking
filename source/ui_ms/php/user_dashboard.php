@@ -253,7 +253,7 @@
 
 				<button class="stat-box stat-button" onclick='openTransactionsPopup(<?php echo json_encode($list_transactions); ?>)'>
 					<div class="stat-value" id="occupiedSpots" <?php if (isset($color)) echo "style=\"color:$color\"" ?>>
-						<?php echo $prefix . $total_earnings; ?>
+						<?php echo $prefix . $total_earnings; ?>€
 					</div>
 					<div class="stat-label">Total Earnings</div>
 				</button>
