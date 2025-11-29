@@ -243,7 +243,7 @@
 
 				<div class="stat-box">
 					<div class="stat-value" id="activeReservations"><?php echo $active_counter; ?></div>
-					<div class="stat-label">Active Reservations</div>
+					<div class="stat-label">My Active Bookings</div>
 				</div>
 
 				<div class="stat-box">

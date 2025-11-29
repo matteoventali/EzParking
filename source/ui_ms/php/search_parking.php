@@ -45,7 +45,7 @@
     </script>
 </head>
 
-<body style="background: linear-gradient(135deg, #f3ecff, #f6f4faff);" onload="set_hidden_fields();">
+<body onload="set_hidden_fields();">
     <?php
         $nav = generate_navbar($_SESSION['role']);
         echo $nav;

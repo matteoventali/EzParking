@@ -145,7 +145,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Book Central Park Garage</title>
+    <title>Book <?php echo $spot["name"]; ?></title>
 
     <link rel="stylesheet" href="../css/navbar.css" />
     <link rel="stylesheet" href="../css/book_parking.css" />
@@ -166,7 +166,7 @@
     <script src="../js/stars.js"></script>
 </head>
 
-<body style="background: linear-gradient(135deg, #f3ecff, #f6f4faff);">
+<body>
     <?php
         $nav = generate_navbar($_SESSION["role"]);
         echo $nav;

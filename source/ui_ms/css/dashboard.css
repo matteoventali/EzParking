@@ -132,12 +132,12 @@
   background: linear-gradient(90deg, #4a1b8c, #5e25a5);
 }
 
-/* ==== STATISTICS GRID ==== */
+/* Statistic*/
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1.2rem;
-    margin-top: 1rem;
+    gap: 2rem;
+    margin-top: 2rem;
 }
 
 .stat-box {
@@ -194,13 +194,14 @@ h1.request-info {
     margin: 0;
 }
 
-/* === REPUTATION === */
+/* Reputation*/
 .reputation-score {
   font-size: 1.6rem;
   color: rgba(113,89,182);
   font-weight: bold;
 }
 
+/*Reviews*/
 .review-column {
     background: #faf8ff;
     border-radius: 10px;
@@ -214,6 +215,13 @@ h1.request-info {
 .review-box{
     overflow-y: auto;
     max-height: 200px;
+}
+
+.review-box p{
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background: #f6f4fa;  
+  padding: 0.1rem;
 }
 
 .review-header {
@@ -235,17 +243,11 @@ h1.request-info {
 
 
 /* === RESERVATIONS === */
-.reservations-card {
-  width: 90%;  
-}
 
 .reservation-list-container {
   max-height: 250px;
   overflow-y: auto;
   margin-bottom: 1rem;
-  border: 1px solid #eee;
-  border-radius: 10px;
-  background: #f6f4fa;
   scrollbar-width: thin;
   scrollbar-color: #c4b6e0 transparent;
 }
@@ -261,9 +263,16 @@ h1.request-info {
 }
 
 .reservation-list {
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background: #f6f4fa;  
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+.reservation-list p {
+  padding: 0.1rem;
 }
 
 .reservation-list li {
@@ -364,7 +373,7 @@ h1.request-info {
   font-weight: 500;
 }
 
-@media (max-width: 375px) {
+@media (min-width:344px) and (max-width: 600px) {
   .dashboard-grid {
     gap: 1.5rem;
     padding: 0.8rem;
@@ -379,6 +388,10 @@ h1.request-info {
   .section-title {
     font-size: 1.1rem;
     text-align: center;
+  }
+
+  .user-data-card{
+    height: auto;
   }
 
   .user-header {
@@ -413,6 +426,9 @@ h1.request-info {
     font-size: 0.9rem;
   }
 
+.statistics-card{
+  height: auto;
+}
   .reputation-score {
     font-size: 1.3rem;
   }

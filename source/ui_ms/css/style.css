@@ -8,7 +8,7 @@
 
 body {
   /*font-family: 'Poppins', sans-serif;*/
-  background: linear-gradient(to right, #5e25a5, rgba(113,89,182));
+  background: linear-gradient(135deg, #f3ecff, #f6f4faff);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -59,7 +59,7 @@ body {
   margin-top: 0.5rem;
 }
 
-@media (max-width: 390px) {
+@media (min-width:344px) and (max-width:500px) {
   .login-container {
     width: 90%;
     padding: 1.5rem;

@@ -72,7 +72,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
     <script src="../js/form_check.js" defer></script>
 </head>
-<body>
+<body style="background: linear-gradient(to right, #5e25a5, rgba(113,89,182));">
     <?php 
         $nav = generate_navbar('guest');
         echo $nav;

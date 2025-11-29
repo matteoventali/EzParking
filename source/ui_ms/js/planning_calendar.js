@@ -9,8 +9,13 @@ document.addEventListener("DOMContentLoaded", function ()
         headerToolbar: {
             left: "prev,next today",
             center: "title",
-            right: "dayGridMonth,timeGridWeek,listWeek"
+            right: "listDay,listMonth,listWeek"
         },
+        buttonText: {
+            listDay: "Day",
+            listWeek: "Week",
+            listMonth: "Month"
+        },        
         eventTimeFormat: {
             hour: '2-digit',
             minute: '2-digit',

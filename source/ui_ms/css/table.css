@@ -95,7 +95,7 @@ tbody tr:hover {
 }
 
 
-@media (max-width: 390px) {
+@media (min-width:344px) and (max-width: 600px) {
   .container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;

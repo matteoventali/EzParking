@@ -101,7 +101,7 @@
         <script src="../js/planning_calendar.js"></script>
     </head>
 
-    <body style="background: white;">
+    <body>
         <?php
             $nav = generate_navbar($_SESSION["role"]);
             echo $nav;
