@@ -15,6 +15,6 @@ CREATE TABLE IF NOT EXISTS Users (
 
 -- Creating some users for testing purposes
 INSERT INTO Users (id, name, surname, email, lastlogin_ts, last_position) VALUES
-(3, 'Serena', 'Ragaglia', 'serena.ragaglia@gmailcom', NULL, NULL),
-(4, 'Pierluca', 'Grasso', 'pierluca.grasso@gmailcom', NULL, NULL),
-(5, 'Federico', 'De Lullo', 'federico.delullo@gmailcom', NULL, NULL)
+(3, 'Serena', 'Ragaglia', 'serena.ragaglia@gmail.com', NULL, NULL),
+(4, 'Pierluca', 'Grasso', 'pierluca.grasso@gmail.com', NULL, NULL),
+(5, 'Federico', 'De Lullo', 'federico.delullo@gmail.com', NULL, NULL)
