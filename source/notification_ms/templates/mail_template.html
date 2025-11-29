@@ -6,25 +6,58 @@
     <style>
         /* Universal Styles */
         body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+
         /* Main Container */
         .container { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow: hidden; }
+
         /* Header (Purple Background) */
-        .header { background-color: #5D3FD3; color: #ffffff; padding: 20px; text-align: center; }
+        .header { 
+            background-color: #5D3FD3; 
+            color: #ffffff; 
+            padding: 20px; 
+            text-align: center; 
+        }
+
+        .header-title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo {
+            width: 32px;
+            height: 32px;
+        }
+
         .header h1 { margin: 0; font-size: 24px; }
+        .header h2 { margin: 5px 0 0; font-weight: normal; }
+
         /* Content Area */
         .content { padding: 30px; line-height: 1.6; color: #333333; }
         .content p { margin-bottom: 20px; }
+
         /* Button Styles */
         .button-container { text-align: center; margin: 30px 0; }
         .button { background-color: #8F7CEF; color: #ffffff; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; }
+
         /* Footer */
         .footer { background-color: #eeeeee; color: #777777; padding: 20px; text-align: center; font-size: 12px; border-top: 1px solid #dddddd; }
         .footer a { color: #5D3FD3; text-decoration: none; }
+
         /* Highlight Color */
         .highlight { color: #5D3FD3; font-weight: bold; }
+
         /* Mobile Adjustments */
         @media only screen and (max-width: 600px) {
             .container { width: 100% !important; }
+        }
+
+        #logo{
+            height: 100%;
+            width: 30%;
+            margin-right: 1rem;
+            border-radius: 50px;
         }
     </style>
 </head>
@@ -32,7 +65,9 @@
     <div style="padding: 20px;">
         <div class="container">
             <div class="header">
-                <h1>EZPARKING</h1>
+                <div class="header-title">
+                    <img src="logo.jpeg" class="logo" id="logo" alt="Logo">
+                </div>
 		        <h2>%NOTIFICATION_TYPE%</h2>
             </div>
 
@@ -40,9 +75,9 @@
                 %NOTIFICATION_CONTENT%
             </div>
 
-	    <footer class="footer">
-            <p>© 2025 EzParking — All rights reserved</p>
-	    </footer>
+	        <footer class="footer">
+                <p>© 2025 EzParking — All rights reserved</p>
+	        </footer>
         </div>
     </div>
 </body>
