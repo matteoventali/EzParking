@@ -145,7 +145,13 @@ def get_tot_earnings(user_id):
         total_payments.sort(key=lambda p: p.payment_ts, reverse=True)
 
         payments_json = []
+        modality = "received"
         for payment in total_payments:
+            if payment.user_id == user_id:
+                modality = "made"
+            else:
+                modality = "received"
+
             payments_json.append({
                 'id': payment.id,
                 'amount': payment.amount,
@@ -153,10 +159,10 @@ def get_tot_earnings(user_id):
                 'payment_status': payment.payment_status,
                 'payment_ts': payment.payment_ts.isoformat(),
                 'reservation_id': payment.reservation_id,
+                'modality': modality,
                 'resident': payment.resident.name + " " + payment.resident.surname,
             })
-
-
+    
         return jsonify({
             'desc': "Total earnigns retrieved successfully", 
             'code': "0", 

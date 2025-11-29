@@ -48,7 +48,7 @@
         }
     }
     else
-        $html = '<p>No reservation has been found</p>';
+        $html = '<p style="text-align: center">No reservation has been found</p>';
 ?>
 
 <!DOCTYPE html>

@@ -49,7 +49,7 @@
 	$address = get_address_from_coordinates(floatval($latitude), floatval($longitude));
 
 	// Calculating the total cost
-	$cost = $cost_h * calculate_duration($start, $end);
+	$cost = round($cost_h * calculate_duration($start, $end), 2);
 
 	// Populating the received reviews
 	$received_html = '';
@@ -71,6 +71,23 @@
 	}
 	else
 		$received_html = "<p>$name $surname has not received any review!<p>";
+
+	// User's stats
+	$api_url = compose_url($protocol, $socket_park_ms, '/users/' . $response_user["body"]["user"]["id"] . '/statistics');
+	$response_stats = perform_rest_request('GET', $api_url, null, null);
+
+	$spot_counter 		= 'N.A.';
+	$res_counter 		= 'N.A.';
+	$booked_counter 	= 'N.A.';
+	$active_counter 	= 'N.A.';
+	$total_earnings		= 'N.A.';
+	if ( $response_stats["status"] == 200 && $response_stats["body"]["code"] === "0" )
+	{
+		$spot_counter 		= $response_stats["body"]["statistics"]["spot_counter"];
+		$res_counter 		= $response_stats["body"]["statistics"]["res_counter"];
+		$booked_counter 	= $response_stats["body"]["statistics"]["booked_counter"];
+		$active_counter 	= $response_stats["body"]["statistics"]["active_counter"];
+	}
 ?>
 
 <!DOCTYPE html>
@@ -131,7 +148,7 @@
 				</div>
 
 				<div class="stat-box">
-					<div class="stat-value" id="totalReservations">TO BE FILLED</div>
+					<div class="stat-value" id="totalReservations"><?php echo $res_counter; ?></div>
 					<div class="stat-label">Total Reservations</div>
 				</div>
 			</div>

@@ -106,7 +106,7 @@
             $start = $response_slot["body"]["availability_slot"]["start_time"];
             $end = $response_slot["body"]["availability_slot"]["end_time"];
             $duration = calculate_duration($start, $end);
-            $cost = $duration * $cost_h;
+            $cost = round($duration * $cost_h, 2);
 
             // Preparing the payload for payment registration
             $payload = [

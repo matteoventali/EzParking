@@ -145,6 +145,12 @@
 		}
 		else if ( $total_earnings < 0 )
 			$color = 'red';
+
+		foreach ($list_transactions as $i => $l)
+		{
+			if ( $l["modality"] === "made" )
+				$list_transactions[$i]["amount"] = "-" . $l["amount"];
+		}
 	}
 ?>
 

@@ -37,8 +37,12 @@
             $api_url = compose_url($protocol, $socket_park_ms, '/parking_spots');
             $response = perform_rest_request('POST', $api_url, $payload, null);    
             
-            if ($response['status'] === 201) 
+            if ($response['status'] === 201)
+            {
                 $ok_message = $response["body"]["desc"];
+                header("Location: manage_garage.php");
+                exit();
+            }
             else 
                 $error_message = $response["body"]["desc"];
         } 

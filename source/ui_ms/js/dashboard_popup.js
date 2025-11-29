@@ -90,13 +90,15 @@ function openTransactionsPopup(transactions) {
         const color = amount >= 0 ? "green" : "red";
         const prefix = amount >= 0 ? "+" : "";
 
+        console.log(t);
+
         // Extract resident name
         const residentName = t.resident;
 
         // Date + time
         const dt = new Date(t.payment_ts);
-        const dateString = dt.toLocaleDateString("en-GB");
-        const timeString = dt.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+        const dateString = dt.toLocaleDateString("it-IT");
+        const timeString = dt.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
 
         div.innerHTML = `
             <p style="margin: 4px 0; font-weight:bold; font-size:16px;">
@@ -111,7 +113,11 @@ function openTransactionsPopup(transactions) {
             </p>
 
             <p style="margin:4px 0 0 0; font-size:15px;">
-                On:</strong> ${dateString} at ${timeString}
+                On:${dateString} at ${timeString} UTC
+            </p>
+
+            <p style="margin:4px 0 0 0; font-size:15px;">
+                Method: ${t.method}
             </p>
         `;
 
