@@ -64,3 +64,63 @@ function submitReview() {
     const params = `reservation_id=${encodeURIComponent(currentReservationId)}&rating=${encodeURIComponent(selectedRating)}&review=${encodeURIComponent(review)}`;
     xhr.send(params);
 }
+
+function openTransactionsPopup(transactions) {
+    const container = document.getElementById("transactionsContainer");
+    container.innerHTML = ""; // reset
+
+    if (!transactions || transactions.length === 0) {
+        container.innerHTML = "<p>No transactions available.</p>";
+        document.getElementById("transactionsModal").style.display = "flex";
+        return;
+    }
+
+    transactions.forEach(t => {
+        const div = document.createElement("div");
+        div.classList.add("transaction-item");
+
+        div.style.padding = "14px 12px";
+        div.style.borderBottom = "1px solid #ddd";
+        div.style.background = "#fafafa";
+        div.style.borderRadius = "8px";
+        div.style.marginBottom = "10px";
+
+        // Parse amount
+        const amount = parseFloat(t.amount);
+        const color = amount >= 0 ? "green" : "red";
+        const prefix = amount >= 0 ? "+" : "";
+
+        // Extract resident name
+        const residentName = t.resident;
+
+        // Date + time
+        const dt = new Date(t.payment_ts);
+        const dateString = dt.toLocaleDateString("en-GB");
+        const timeString = dt.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+
+        div.innerHTML = `
+            <p style="margin: 4px 0; font-weight:bold; font-size:16px;">
+                Payment for ${residentName}
+            </p>
+
+            <p style="margin:4px 0; font-size:15px;">
+                Amount:
+                <span style="color:${color}; font-weight:bold;">
+                    ${prefix}${amount}€
+                </span>
+            </p>
+
+            <p style="margin:4px 0 0 0; font-size:15px;">
+                On:</strong> ${dateString} at ${timeString}
+            </p>
+        `;
+
+        container.appendChild(div);
+    });
+
+    document.getElementById("transactionsModal").style.display = "flex";
+}
+
+function closeTransactionsPopup() {
+    document.getElementById("transactionsModal").style.display = "none";
+}

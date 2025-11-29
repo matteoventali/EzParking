@@ -152,7 +152,8 @@ def get_tot_earnings(user_id):
                 'method': payment.method,
                 'payment_status': payment.payment_status,
                 'payment_ts': payment.payment_ts.isoformat(),
-                'reservation_id': payment.reservation_id
+                'reservation_id': payment.reservation_id,
+                'resident': payment.resident.name + " " + payment.resident.surname,
             })
 
 

@@ -245,14 +245,13 @@
 					<div class="stat-label">Owned Spots Currently Booked</div>
 				</div>
 
-				<button class="stat-box stat-button">
+				<button class="stat-box stat-button" onclick='openTransactionsPopup(<?php echo json_encode($list_transactions); ?>)'>
 					<div class="stat-value" id="occupiedSpots" <?php if (isset($color)) echo "style=\"color:$color\"" ?>>
 						<?php echo $prefix . $total_earnings; ?>
 					</div>
 					<div class="stat-label">Total Earnings</div>
 				</button>
 			</div>
-
 		</div>
 
 		<!-- Received Reviews -->
@@ -306,6 +305,23 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- Transactions Popup -->
+<div id="transactionsModal" class="modal-overlay">
+    <div class="modal-backdrop" onclick="closeTransactionsPopup()"></div>
+
+    <div class="modal-content">
+        <button class="modal-close-btn" onclick="closeTransactionsPopup()">×</button>
+
+        <h3 class="modal-title">Transactions</h3>
+
+        <div id="transactionsContainer" 
+             style="max-height:350px; overflow-y:auto; margin-top:15px; padding-right:8px;">
+            <!-- Filled by JS -->
+        </div>
+	</div>
+</div>
+
 	</main>
 	
 	<?php
@@ -313,6 +329,6 @@
 		echo $footer;
 	?>
 
-	<script src="../js/review_popup.js"></script>
+	<script src="../js/dashboard_popup.js"></script>
 </body>
 </html>
