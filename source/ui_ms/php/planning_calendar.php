@@ -19,7 +19,9 @@
     // Composing the arrays
     $array_free_spots = array();
     $array_busy_spots = array();
+    $array_busy_spots_pending = array();
     $array_reservations = array();
+    $array_reservations_pending = array();
     if ( $response_slot["status"] == 200 && $response_slot["body"]["code"] === "0" )
     {
         foreach( $response_slot["body"]["parking_spots"] as $spot )
@@ -45,7 +47,6 @@
                 
                 $event = [
                     "id" => $slot["slot"]["id"],
-                    "title" => "Reserved slot for " . $spot["name"],
                     "start" => $slot["slot"]["slot_date"] . "T" . $slot["slot"]["start_time"],
                     "end"   => $slot["slot"]["slot_date"] . "T" . $slot["slot"]["end_time"],
                     "driver" => $slot["driver"]["name"] . " " . $slot["driver"]["surname"],
@@ -53,7 +54,16 @@
                     "status" => strtoupper($slot["reservation"]["status"])
                 ];
 
-                array_push($array_busy_spots, $event);
+                if ( $slot["reservation"]["status"] === "pending")
+                {
+                    $event["title"] = "Reservation request for " . $spot["name"];
+                    array_push($array_busy_spots_pending, $event);
+                }
+                else
+                {
+                    $event["title"] = "Reserved slot for " . $spot["name"];
+                    array_push($array_busy_spots, $event);
+                }
             }
         }
     }
@@ -61,9 +71,11 @@
     {
         foreach($response_reservation["body"]["reservations"] as $res)
         {
+            if ( $res["status"] === "cancelled")
+                continue;
+            
             $event = [
                 "id" => $res["id"],
-                "title" => "Reservation for " . $res["spot_name"],
                 "start" => $res["slot_date"] . "T" . $res["start_time"],
                 "end"   => $res["slot_date"] . "T" . $res["end_time"],
                 "resident" => $res["resident_name"] . " " . $res["resident_surname"],
@@ -73,7 +85,18 @@
                 "status" => strtoupper($res["status"])
             ];
 
-            array_push($array_reservations, $event);
+            if ( $res["status"] === "pending")
+            {
+                $event["title"] = "Reservation in pending for " . $res["spot_name"];
+                array_push($array_reservations_pending, $event);
+                
+            }
+            else
+            {
+                $event["title"] = "Reservation for " . $res["spot_name"];
+                array_push($array_reservations, $event);
+                
+            }
         }
     }
 ?>
@@ -97,6 +120,8 @@
             freeSlots = <?php echo json_encode($array_free_spots); ?>;
             busySlots = <?php echo json_encode($array_busy_spots); ?>;
             reservations = <?php echo json_encode($array_reservations); ?>;
+            reservations_pending = <?php echo json_encode($array_reservations_pending); ?>;
+            busySlots_pending = <?php echo json_encode($array_busy_spots_pending); ?>;
         </script>
         <script src="../js/planning_calendar.js"></script>
     </head>

@@ -23,23 +23,32 @@ document.addEventListener("DOMContentLoaded", function ()
             hour12: false
         },
         displayEventEnd: true,
-        //windowResize: () => updateView(),      
         eventSources: [
-        {
-            events: reservations,
-            color: "#4d94ff",
-            textColor: "#fff"
-        },
-        {
-            events: freeSlots,
-            color: "#c2f7c2",
-            textColor: "#000"
-        },
-        {
-            events: busySlots,
-            color: "#ff4d4d",
-            textColor: "#fff"
-        }
+            {
+                events: reservations,
+                color: "#4d94ff",
+                textColor: "#fff"
+            },
+            {
+                events: reservations_pending,
+                color: "#fc702fff",
+                textColor: "#fff"
+            },
+            {
+                events: freeSlots,
+                color: "#c2f7c2",
+                textColor: "#000"
+            },
+            {
+                events: busySlots,
+                color: "#ff4d4d",
+                textColor: "#fff"
+            },
+            {
+                events: busySlots_pending,
+                color: "#fc702fff",
+                textColor: "#fff"
+            }
         ],
 
         eventDisplay: "block",
@@ -50,19 +59,6 @@ document.addEventListener("DOMContentLoaded", function ()
         }
     });
 
-    /*function updateView(){
-        const width = window.innerWidth;
-
-        if (width < 430) {
-            calendar.changeView('listWeek');
-        }
-        else if (width < 600) {
-            calendar.changeView('timeGridWeek');
-        }
-        else {
-            calendar.changeView('dayGridMonth');
-        }      
-    }*/
     calendar.render();
 
     // Event popup
@@ -112,7 +108,12 @@ document.addEventListener("DOMContentLoaded", function ()
             type = "Reserved slot";
             parkingName = title.replace("Reserved slot for ", "");
         }
-        else if (title.startsWith("Reservation")) 
+        else if (title.startsWith("Reservation request for")) 
+        {
+            type = "Reserved slot";
+            parkingName = title.replace("Reservation request for ", "");
+        }
+        else if (title.startsWith("Reservation"))
         {
             type = "Reservation";
             parkingName = title.replace("Reservation for ", "");

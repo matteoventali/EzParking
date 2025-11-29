@@ -912,8 +912,7 @@ def delete_availability_slot(slot_id):
             active_reservation = (
                 db.session.query(Reservation)
                 .filter(
-                    Reservation.slot_id == slot.id,
-                    Reservation.reservation_status.in_(["pending", "confirmed"])
+                    Reservation.slot_id == slot.id
                 )
                 .first()
             )
