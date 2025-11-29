@@ -36,7 +36,7 @@
             else if ( $spot["available"] == null )
             {
                 $spot_html = str_replace("%PARK_STATUS%", 'no-time-slot', $spot_html);
-                $spot_html = str_replace("%PARK_STATUS_DESC%", strtoupper('no-time-slot'), $spot_html);
+                $spot_html = str_replace("%PARK_STATUS_DESC%", strtoupper('no time-slot'), $spot_html);
             }
             else
             {
