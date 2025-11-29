@@ -117,7 +117,7 @@ def notify_account_disabled(user_id):
     if not user: 
         return jsonify({
             'desc': "Invalid user", 
-            'code': 1
+            'code': "1"
         }), 404
 
     to_email = user.email
@@ -143,7 +143,7 @@ def notify_account_disabled(user_id):
 
     return jsonify({
         'desc': "Mail sent successfully", 
-        'code': 0, 
+        'code': "0", 
         'null_check': result 
     }), 250
 
@@ -155,7 +155,7 @@ def notify_account_enabled(user_id):
     if not user: 
         return jsonify({
             'desc': "Invalid user", 
-            'code': 1
+            'code': "1"
         }), 404
 
     to_email = user.email
@@ -181,7 +181,7 @@ def notify_account_enabled(user_id):
 
     return jsonify({
         'desc': "Mail sent successfully", 
-        'code': 0, 
+        'code': "0", 
         'null_check': result 
     }), 250
 # ------------ NOTIFICATIONS ------------
