@@ -38,6 +38,7 @@
     ?>
 
     <section class="hero" style="border-radius:5px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.35));">
+        <img src="../images/logo.jpeg" alt="Logo" class="logo-image">        
         <h1>Welcome <?php echo $name; ?></h1>
         <p>Use the buttons below to access to your dashboard or manage accounts.</p>
 

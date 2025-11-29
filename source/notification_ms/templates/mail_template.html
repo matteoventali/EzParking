@@ -3,16 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap" rel="stylesheet">    
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>        
     <style>
         /* Universal Styles */
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        body {background-color: #f4f4f4; margin: 0; padding: 0; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
 
         /* Main Container */
         .container { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow: hidden; }
 
         /* Header (Purple Background) */
         .header { 
-            background-color: #5D3FD3; 
+            background: linear-gradient(to right, #5e25a5, rgba(113,89,182)); 
             color: #ffffff; 
             padding: 20px; 
             text-align: center; 
@@ -30,23 +35,26 @@
             height: 32px;
         }
 
-        .header h1 { margin: 0; font-size: 24px; }
-        .header h2 { margin: 5px 0 0; font-weight: normal; }
+        .header h1 { margin: 0; font-family: Kumbh Sans;  font-size: 24px; }
+        .header h2 { margin: 5px 0 0; font-family: Poppins; font-weight: normal; }
 
         /* Content Area */
-        .content { padding: 30px; line-height: 1.6; color: #333333; }
-        .content p { margin-bottom: 20px; }
+        .content { padding: 30px; line-height: 1.6; color: #333333; font-size: small; }
+        .content p { margin-bottom: 20px; font-family: Kumbh Sans;}
+
+        .details { font-family: Kumbh Sans; font-weight: bold; }
+        .details span{ font-weight: lighter;}
 
         /* Button Styles */
         .button-container { text-align: center; margin: 30px 0; }
         .button { background-color: #8F7CEF; color: #ffffff; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; }
 
         /* Footer */
-        .footer { background-color: #eeeeee; color: #777777; padding: 20px; text-align: center; font-size: 12px; border-top: 1px solid #dddddd; }
-        .footer a { color: #5D3FD3; text-decoration: none; }
+        .footer { background-color: #eeeeee; font-family: Kumbh Sans; color: #777777; padding: 20px; text-align: center; font-size: 12px; border-top: 1px solid #dddddd; }
+        .footer a { color: #7b3fd3; text-decoration: none; }
 
         /* Highlight Color */
-        .highlight { color: #5D3FD3; font-weight: bold; }
+        .highlight { color: #7b3fd3; font-weight: bold; }
 
         /* Mobile Adjustments */
         @media only screen and (max-width: 600px) {
