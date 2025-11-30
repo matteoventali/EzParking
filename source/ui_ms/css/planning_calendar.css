@@ -17,7 +17,7 @@
 
 .fc-event {
     padding: 2px 4px;
-    font-size: 11px;
+    font-size: 18px;
     border-radius: 4px;
 }
 
@@ -29,38 +29,60 @@
     line-height: 1.2;              
 }   
 
-@media (min-width : 430px) and (max-width: 1024px){
-   .calendar-container{ 
-        width: 100%;    
-        height: 100vh;
-        overflow-x: scroll;
-        padding: 1rem;
-   }
-   #calendar{
-        /*min-width: 600px;*/
-        height: 100%;
-   }
-   .fc-header-toolbar{
-        font-size: 10px;
-   }
-   .fc{
-        padding: 0.5rem;
-   }
+.fc-list-day-cushion{
+     font-size: 16px;
 }
-@media (min-width : 375px) and (max-width: 430px){
-   .calendar-container{ 
-        max-width: 95%;    
-        height: 100vh;
-        overflow-x: scroll;
-        padding: 1rem;
-   }
-   #calendar{
-        height: 100%;
-   }
-   .fc-header-toolbar{
-        font-size: 10px;
-   }
-   .fc{
-        padding: 0.5rem;
-   }
+
+.fc-button-group{
+     font-size: larger;
+}
+@media (min-width : 430px) and (max-width: 1024px){
+     .calendar-container{ 
+          width: 100%;    
+          height: 100vh;
+          overflow-x: scroll;
+          padding: 1rem;
+     }
+     #calendar{
+          /*min-width: 600px;*/
+          height: 100%;
+     }
+     .fc-header-toolbar{
+          font-size: 10px;
+     }
+     .fc{
+          padding: 0.5rem;
+     }
+     .fc-direction-ltr .fc-toolbar > * > :not(:first-child) {
+          margin-top: 0.1rem;
+     }   
+     .fc-event{font-size: 16px;}  
+}
+@media (min-width : 344px) and (max-width: 430px){
+     .calendar-container{ 
+          max-width: 95%;    
+          height: 100vh;
+          overflow-x: scroll;
+          padding: 1rem;
+     }
+     #calendar{
+          height: 100%;
+     }
+     .fc-header-toolbar{
+          font-size: 10px;
+     }
+     .fc{
+          padding: 0.5rem;
+     }
+     .fc-direction-ltr .fc-toolbar > * > :not(:first-child) {
+          margin-top: 0.1rem;
+     } 
+     .fc-toolbar-title{
+          margin: 0.5rem;
+          text-align: center;
+     }  
+     .fc-event{font-size: 14px;}  
+     .fc-list-day-cushion{
+     font-size: 14px;
+}
 }
