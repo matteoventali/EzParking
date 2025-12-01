@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from config import DB_CONFIG
 from models import db, User, Label, ParkingSpot, ParkingSpotLabel, AvailabilitySlot, Reservation
-from sqlalchemy import func, and_, or_, text
+from sqlalchemy import func, and_, or_
 from geoalchemy2.shape import to_shape
 from datetime import datetime, date
 from geoalchemy2.elements import WKTElement

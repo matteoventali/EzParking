@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from config import DB_CONFIG
 from models import db, User
-from datetime import datetime
+from sqlalchemy import func
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -87,12 +87,23 @@ def update_user(user_id):
         data = request.get_json()
         user = User.query.filter_by(id = user_id)
 
-        if data["login"]:
-            user.lastlogin_ts = db.func.current_timestamp()
+        user.lastlogin_ts = db.func.current_timestamp()
 
+        if data["lat"]: 
+            lat = data["lat"]
 
-        if data["position"]: 
-            pass
+        if data["lon"]:
+            lon = data["lon"]
+
+        if not data["lon"] or not data["lat"]: 
+            return jsonify({
+                'desc': "missing position coordinates", 
+                'code': 1
+            }), 400
+        
+        position = func.ST_GeomFromText(f'POINT({lon} {lat})', 4326)
+
+        user.lastposition = position
 
         db.session.commit()
 
@@ -101,7 +112,7 @@ def update_user(user_id):
             'code': 0, 
             'info': {
                 'lastlogin_ts': user.lastlogin_ts, 
-                'lastposition': None #TODO
+                'lastposition': user.lastposition
             }
         }), 200
 
