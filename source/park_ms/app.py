@@ -104,14 +104,10 @@ def get_statistics(user_id):
 
         active_reservations = (
             db.session.query(Reservation)
-            .join(AvailabilitySlot, Reservation.slot_id == AvailabilitySlot.id)
             .filter(
-                Reservation.user_id == user_id,
-                AvailabilitySlot.slot_date == today,
-                AvailabilitySlot.start_time <= current_time,
-                AvailabilitySlot.end_time >= current_time
+                Reservation.user_id == user_id, 
+                Reservation.reservation_status == "confirmed"
             )
-            .all()
         )
 
         active_counter = len(active_reservations)
@@ -126,10 +122,7 @@ def get_statistics(user_id):
                 .join(Reservation, AvailabilitySlot.id == Reservation.slot_id)
                 .filter(
                     Reservation.reservation_status == "confirmed", 
-                    ParkingSpot.id == spot_id,
-                    AvailabilitySlot.slot_date == today,
-                    AvailabilitySlot.start_time <= current_time, 
-                    AvailabilitySlot.end_time >= current_time
+                    ParkingSpot.id == spot_id
                 ).all()
             )
 
