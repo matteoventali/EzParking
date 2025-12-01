@@ -24,6 +24,50 @@ db.init_app(app)
 def index():
     return jsonify({"message": "Payment Service is active"}), 200
 
+# ------------ USERS ------------- #
+@app.route("payments/users", methods=["POST"])
+def add_user(): 
+    try:
+        data = request.get_json()
+
+        required_fileds = ["id", "name", "surname"]
+        if not data or required_fileds not in data:
+            return jsonify({
+                'desc': "Missing required fields", 
+                'code': 1
+            }), 404
+
+        id = data["id"]
+        name = data["name"], 
+        surname = data["surname"]
+
+        new_user = User(
+            id = id,
+            name = name, 
+            surname = surname
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        return jsonify({
+            'desc': "New user successfully inserted", 
+            'code': 0, 
+            'user': {
+                'name': new_user.name,
+                'surname': new_user.surname,
+                'id': new_user.id 
+            }
+        }), 201
+
+    except Exception as e: 
+        db.session.rollback()
+        return jsonify({
+            'desc': f'Database error: {str(e)}',
+            'code': '99'
+        }), 500
+# ------------ USERS ------------- #
+
 
 # ------------ PAYMENTS ------------- #
 @app.route("/payments/request", methods=["POST"])

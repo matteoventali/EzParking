@@ -35,14 +35,82 @@ def index():
 
 
 # ------------ USERS ------------
-@app.route("/user", methods=["POST"])
-def create_user():
-    pass
+@app.route("notifications/users", methods=["POST"])
+def add_user(): 
+    try:
+        data = request.get_json()
+
+        required_fileds = ["id", "name", "surname", "email"]
+        if not data or required_fileds not in data:
+            return jsonify({
+                'desc': "Missing required fields", 
+                'code': 1
+            }), 404
+
+        id = data["id"]
+        name = data["name"], 
+        surname = data["surname"]
+        email = data["email"]
+
+        new_user = User(
+            email = email, 
+            id = id,
+            name = name, 
+            surname = surname
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        return jsonify({
+            'desc': "New user successfully inserted", 
+            'code': 0, 
+            'user': {
+                'name': new_user.name,
+                'surname': new_user.surname,
+                'id': new_user.id,
+                'email': new_user.email 
+            }
+        }), 201
+
+    except Exception as e: 
+        db.session.rollback()
+        return jsonify({
+            'desc': f'Database error: {str(e)}',
+            'code': '99'
+        }), 500
 
 
 @app.route("/user/<int:user_id>/", methods=["PUT"])
 def update_user(user_id):
-    pass
+    try:
+        data = request.get_json()
+        user = User.query.filter_by(id = user_id)
+
+        if data["login"]:
+            user.lastlogin_ts = db.func.current_timestamp()
+
+
+        if data["position"]: 
+            pass
+
+        db.session.commit()
+
+        return jsonify({
+            'desc': "User login info updated", 
+            'code': 0, 
+            'info': {
+                'lastlogin_ts': user.lastlogin_ts, 
+                'lastposition': None #TODO
+            }
+        }), 200
+
+    except Exception as e: 
+        db.session.rollback()
+        return jsonify({
+            'desc': f'Database error: {str(e)}',
+            'code': '99'
+        }), 500
 # ------------ USERS ------------
 
 
