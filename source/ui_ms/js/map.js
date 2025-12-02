@@ -21,9 +21,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if ( navigator.geolocation ) 
     {
         // Set in the map the last position known during the waiting for the new position
-        const saved_lat = sessionStorage.getItem("user_latitude");
-        const saved_lon = sessionStorage.getItem("user_longitude");
-        if ( saved_lat && saved_lon )
+        /*const saved_lat = sessionStorage.getItem("user_latitude");
+        const saved_lon = sessionStorage.getItem("user_longitude");*/
+        const saved_lat = parseFloat(sessionStorage.getItem("user_latitude"));
+        const saved_lon = parseFloat(sessionStorage.getItem("user_longitude"));
+
+        
+        if ( !isNaN(saved_lat) && !isNaN(saved_lon) )
         {
             map.setView([saved_lat, saved_lon], 15);
             const userCircle = L.circleMarker([saved_lat, saved_lon], {

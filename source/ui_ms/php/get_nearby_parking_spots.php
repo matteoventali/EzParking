@@ -39,6 +39,13 @@
     
     $api_url = compose_url($protocol, $socket_park_ms, '/search');
     $response = perform_rest_request('POST', $api_url, $data, null);
+
+    $payload = [
+        'lat' => $_GET['lat'],
+        'lon' => $_GET['lon']
+    ];
+    $api_url = compose_url($protocol, $socket_notification_ms, '/user/' . $_SESSION["user"]["id"]);
+    $reponse = perform_rest_request('PUT', $api_url, $payload, null);
     
     // Script responsible to check the status of the microservices
     header('Content-Type: application/json');

@@ -38,22 +38,7 @@
                 $_SESSION['session_token'] = $response["body"]["user"]["session_token"];
                 $_SESSION['role'] = $response["body"]["user"]["role"];
                 $_SESSION['user'] = $response["body"]["user"];
-                $latitude   = $_POST["latitude"];
-                $longitude  = $_POST["longitude"];
-
-                // Updating last login e timestamp in the notification microservices
-                // only if it is logged an user
-                if ( $_SESSION['role'] == 'user' && strlen($latitude) > 0 && strlen($longitude) > 0 )
-                {
-                    // Updating the position
-                    $payload = [
-                        'lat' => $latitude,
-                        'lon' => $longitude
-                    ];
-                    $api_url = compose_url($protocol, $socket_notification_ms, '/user/' . $_SESSION["user"]["id"]);
-                    $response = perform_rest_request('PUT', $api_url, $payload, null);
-                }
-
+                
                 // Redirecting the user into the homepage
                 header("Location: " . $homepage);
             }
@@ -116,25 +101,5 @@
         $footer = file_get_contents(FOOTER);
         echo $footer;
     ?>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    function (position) {
-                        // Filling the hidden fields with lat and long
-                        document.getElementById("latitude").value = position.coords.latitude;
-                        document.getElementById("longitude").value = position.coords.longitude;
-                    },
-                    function (error) {
-                        // Show an alert to the user
-                        alert("Unable to retrieve your location. Proceeding without location data. You won't receive location-based notifications.");
-                    }
-                );
-            } else {
-                alert("Unable to retrieve your location. Proceeding without location data. You won't receive location-based notifications.");
-            }
-        });
-    </script>
 </body>
 </html>
