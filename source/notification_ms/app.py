@@ -172,18 +172,13 @@ def notify_reservation_rejected():
     pass
 
 
-@app.route("/notifications/reservation_cancelled", methods=["POST"])
-def notify_reservation_cancelled():
+@app.route("/notifications/registration_successfull", methods=["POST"])
+def notify_registration_successfull():
     pass
 
 
-@app.route("/notifications/payment_success", methods=["POST"])
-def notify_payment_success():
-    pass
-
-
-@app.route("/notifications/payment_failure", methods=["POST"])
-def notify_payment_failure():
+@app.route("/notifications/received_review", methods=["POST"])
+def notify_received_review():
     pass
 
 
