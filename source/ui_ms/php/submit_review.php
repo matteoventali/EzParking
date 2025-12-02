@@ -55,6 +55,9 @@
             // Perform the submit
             $api_url = compose_url($protocol, $socket_account_ms, '/reviews');
             $response = perform_rest_request('POST', $api_url, $payload, $_SESSION["session_token"]);
+
+            // Call the notification_ms to notify the received review to the target!
+            // TODO!!
         }
     }
     else

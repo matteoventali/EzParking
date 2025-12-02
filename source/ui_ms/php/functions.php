@@ -290,6 +290,9 @@
         $api_url = compose_url($protocol, $socket_payment_ms, '/payments/' . $response["body"]["reservation"]["payment_id"]);
         $response = perform_rest_request('PUT', $api_url, $payload, null);
 
+        // Call notification_ms to notify the driver!
+        // TODO!!s
+
         return $response;
     }
 ?>
