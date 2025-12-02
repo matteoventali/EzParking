@@ -9,6 +9,13 @@
     // Informative variables
     $ok_message = $error_message = null;
 
+    $name = '';
+    $surname = '';
+    $phone = '';
+    $email = '';
+    $password = '';
+    $card = '';
+
     // Triggering the registration only after a request for it
     if ($_SERVER['REQUEST_METHOD'] === 'POST')
     {
@@ -64,8 +71,6 @@
                 $api_url = compose_url($protocol, $socket_notification_ms, '/notifications/users');
                 $response = perform_rest_request('POST', $api_url, $payload);
 
-                var_dump($response);
-
                 // 3. Payment_ms
                 $payload = [
                     'id' => $last_id,
@@ -74,9 +79,7 @@
                 ];
                 $api_url = compose_url($protocol, $socket_payment_ms, '/payments/users');
                 $response = perform_rest_request('POST', $api_url, $payload);
-
-                var_dump($response);
-            }
+            }   
             else
                 $error_message = $response["body"]["desc"];
         } catch (Exception $e) 
@@ -104,21 +107,21 @@
     <?php 
         $nav = generate_navbar('guest');
         echo $nav;
-     ?>
+    ?>
     <div class="login-container" style="margin-bottom: 2rem; margin-top:2rem">
         <h2>Sign Up</h2>
         <form id="register-form" action="register.php" method="post">
             <div class="input-group">
                 <label for="name">Name</label>
-                <input type="text" id="name" class="login-input" name="name" required>
+                <input type="text" id="name" class="login-input" name="name" value="<?php if (isset($error_message) > 0) echo $name;?>" required>
             </div>
             <div class="input-group">
                 <label for="lastname">Last Name</label>
-                <input type="text" id="lastname" class="login-input" name="lastname" required>
+                <input type="text" id="lastname" class="login-input" name="lastname" value="<?php if (isset($error_message) > 0) echo $surname;?>" required>
             </div>
             <div class="input-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" class="login-input" name="email" placeholder="example@youremail.it" required>
+                <input type="email" id="email" class="login-input" name="email" placeholder="example@youremail.it" value="<?php if (isset($error_message) > 0) echo $email;?>" required>
             </div>
             <div class="input-group">
                 <label for="password">Password</label>
@@ -126,11 +129,11 @@
             </div>
             <div class="input-group">
                 <label for="phone">Phone</label>
-                <input type="text" id="phone" class="login-input" name="phone" required>
+                <input type="text" id="phone" class="login-input" name="phone" value="<?php if (isset($error_message) > 0) echo $phone;?>" required>
             </div>
             <div class="input-group">
                 <label for="card">Credit Card Number</label>
-                <input type="text" id="card" class="login-input" maxlength=16 name="card" required>
+                <input type="text" id="card" class="login-input" maxlength=16 name="card" value="<?php if (isset($error_message) > 0) echo $card;?>" required>
             </div>                     
             <button type="submit" class="login-button">Register</button>
             <p class="error-message" id="error-message">
