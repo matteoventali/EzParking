@@ -29,7 +29,6 @@ function loginValidation(){
 
     form.addEventListener("submit", function (e){
         const email = document.getElementById("email").value ;
-        //const psw = document.getElementById("password").value;
         
         if(!emailValidation(email)){
             alert("Email not valid");

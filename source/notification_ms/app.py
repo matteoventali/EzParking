@@ -43,7 +43,7 @@ def add_user():
         if not data or not all(f in data for f in ["id", "name", "surname", "email"]):
             return jsonify({
                 'desc': "Missing required fields", 
-                'code': 1
+                'code': "1"
             }), 404
 
         id = data["id"]
@@ -63,7 +63,7 @@ def add_user():
 
         return jsonify({
             'desc': "New user successfully inserted", 
-            'code': 0, 
+            'code': "0", 
             'user': {
                 'name': new_user.name,
                 'surname': new_user.surname,
@@ -80,38 +80,37 @@ def add_user():
         }), 500
 
 
-@app.route("/user/<int:user_id>/", methods=["PUT"])
+@app.route("/user/<int:user_id>", methods=["PUT"])
 def update_user(user_id):
     try:
         data = request.get_json()
-        user = User.query.filter_by(id = user_id)
+        user = User.query.filter_by(id = user_id).first()
 
         user.lastlogin_ts = db.func.current_timestamp()
 
-        if data["lat"]: 
+        if data["lon"]: 
             lat = data["lat"]
 
-        if data["lon"]:
+        if data["lat"]:
             lon = data["lon"]
 
         if not data["lon"] or not data["lat"]: 
             return jsonify({
                 'desc': "missing position coordinates", 
-                'code': 1
+                'code': "1"
             }), 400
         
         position = func.ST_GeomFromText(f'POINT({lon} {lat})', 4326)
 
-        user.lastposition = position
+        user.last_position = position
 
         db.session.commit()
 
         return jsonify({
             'desc': "User login info updated", 
-            'code': 0, 
+            'code': "0", 
             'info': {
-                'lastlogin_ts': user.lastlogin_ts, 
-                'lastposition': user.lastposition
+                'lastposition': (lat, lon)
             }
         }), 200
 
