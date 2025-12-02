@@ -55,9 +55,27 @@
                 $response = perform_rest_request('POST', $api_url, $payload);
 
                 // 2. Notification_ms
+                $payload = [
+                    'id' => $last_id,
+                    'name' => $name,
+                    'surname' => $surname,
+                    'email' => $email
+                ];
+                $api_url = compose_url($protocol, $socket_notification_ms, '/notifications/users');
+                $response = perform_rest_request('POST', $api_url, $payload);
+
+                var_dump($response);
 
                 // 3. Payment_ms
+                $payload = [
+                    'id' => $last_id,
+                    'name' => $name,
+                    'surname' => $surname
+                ];
+                $api_url = compose_url($protocol, $socket_payment_ms, '/payments/users');
+                $response = perform_rest_request('POST', $api_url, $payload);
 
+                var_dump($response);
             }
             else
                 $error_message = $response["body"]["desc"];
