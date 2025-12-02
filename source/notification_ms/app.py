@@ -40,15 +40,14 @@ def add_user():
     try:
         data = request.get_json()
 
-        required_fileds = ["id", "name", "surname", "email"]
-        if not data or required_fileds not in data:
+        if not data or not all(f in data for f in ["id", "name", "surname", "email"]):
             return jsonify({
                 'desc': "Missing required fields", 
                 'code': 1
             }), 404
 
         id = data["id"]
-        name = data["name"], 
+        name = data["name"] 
         surname = data["surname"]
         email = data["email"]
 
