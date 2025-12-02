@@ -21,12 +21,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if ( navigator.geolocation ) 
     {
         // Set in the map the last position known during the waiting for the new position
-        /*const saved_lat = sessionStorage.getItem("user_latitude");
-        const saved_lon = sessionStorage.getItem("user_longitude");*/
         const saved_lat = parseFloat(sessionStorage.getItem("user_latitude"));
         const saved_lon = parseFloat(sessionStorage.getItem("user_longitude"));
 
-        
         if ( !isNaN(saved_lat) && !isNaN(saved_lon) )
         {
             map.setView([saved_lat, saved_lon], 15);
@@ -48,6 +45,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 const lat = pos.coords.latitude;
                 const lon = pos.coords.longitude;
 
+                console.log("Lat:", lat, typeof lat);
+                console.log("Lon:", lon, typeof lon);
+
                 map.setView([lat, lon], 15);
 
                 // Add a circular marker for the user position
@@ -67,10 +67,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Search the parking spots near the user position
                 search_parking_spots_nearby(lat, lon);
             }, 
-            () => { // Fail
+            () => { 
+                // Fail
                 // Search the parking spots in all Italy
                 search_parking_spots_nearby(41.8719, 12.5674);
-            });
+            }
+            );
         }  
     }
 });
@@ -78,7 +80,10 @@ document.addEventListener('DOMContentLoaded', function () {
 function addParkingMarker(map, park)
 {
     // Creation of the marker
-    const marker = L.marker([park.latitude, park.longitude]).addTo(map);
+    latitude = parseFloat(park.latitude);
+    longitude = parseFloat(park.longitude);
+
+    const marker = L.marker([latitude, longitude]).addTo(map);
 
     // Attach id for future search
     marker.parkingId = park.parking_spot_id;
@@ -94,6 +99,8 @@ function addParkingMarker(map, park)
     `;
     marker.bindPopup(popup_content);
     markers.push(marker); // Keep track of the marker
+
+    console.log(marker);
 
     return marker;
 }
