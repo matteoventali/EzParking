@@ -85,6 +85,7 @@
         $api_url = compose_url($protocol, $socket_payment_ms, '/payments/user/'. $_GET["id"] . '/earnings');
         $response_payments = perform_rest_request('GET', $api_url, null, null);
 
+
         $spot_counter 		= 'N.A.';
         $res_counter 		= 'N.A.';
         $booked_counter 	= 'N.A.';

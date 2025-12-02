@@ -135,4 +135,4 @@ function fetchActiveReservations()
 updateDashboard();
 
 // Update the dashboard every 5 seconds
-setInterval(updateDashboard, 5000);
+setInterval(updateDashboard, 500);

@@ -25,7 +25,7 @@ def index():
     return jsonify({"message": "Payment Service is active"}), 200
 
 # ------------ USERS ------------- #
-@app.route("payments/users", methods=["POST"])
+@app.route("/payments/users", methods=["POST"])
 def add_user(): 
     try:
         data = request.get_json()

@@ -35,7 +35,7 @@ def index():
 
 
 # ------------ USERS ------------
-@app.route("notifications/users", methods=["POST"])
+@app.route("/notifications/users", methods=["POST"])
 def add_user(): 
     try:
         data = request.get_json()

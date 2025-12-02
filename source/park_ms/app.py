@@ -107,7 +107,7 @@ def get_statistics(user_id):
             .filter(
                 Reservation.user_id == user_id, 
                 Reservation.reservation_status == "confirmed"
-            )
+            ).all()
         )
 
         active_counter = len(active_reservations)
