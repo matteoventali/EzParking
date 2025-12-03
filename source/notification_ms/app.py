@@ -138,7 +138,7 @@ def notify_nearby_users():
 
     required = ["lat", "lon", "owner_id", "spot_name"]
     if not all(k in data for k in required):
-        return jsonify({"desc": "Missing parameters", "code": 1}), 400
+        return jsonify({"desc": "Missing parameters", "code": "1"}), 400
 
     spot_name = data["spot_name"]
     lat = float(data["lat"])
@@ -207,7 +207,7 @@ def notify_nearby_users():
 
     return jsonify({
         "desc": "Notifications sent",
-        "code": 0,
+        "code": "0",
         "notified_users": notified_count
     }), 200
 
@@ -251,7 +251,7 @@ def notify_account_disabled():
     if not data or "user_id" not in data:
         return jsonify({
             'desc':"Missing user id", 
-            'code': 1
+            'code': "1"
         })
     
     user_id = data["user_id"]
@@ -261,7 +261,7 @@ def notify_account_disabled():
     if not user: 
         return jsonify({
             'desc': "Invalid user", 
-            'code': "1"
+            'code': "2"
         }), 404
     
     with open(template_path, "r", encoding="utf-8") as f:
@@ -313,7 +313,7 @@ def notify_account_enabled():
     if not data or "user_id" not in data:
         return jsonify({
             'desc':"Missing user id", 
-            'code': 1
+            'code': "1"
         })
     
     user_id = data["user_id"]
@@ -323,7 +323,7 @@ def notify_account_enabled():
     if not user: 
         return jsonify({
             'desc': "Invalid user", 
-            'code': "1"
+            'code': "2"
         }), 404
     
     with open(template_path, "r", encoding="utf-8") as f:
