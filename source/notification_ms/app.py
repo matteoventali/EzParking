@@ -136,11 +136,11 @@ def update_user(user_id):
 def notify_nearby_users():
     data = request.get_json()
 
-    required = ["lat", "lon", "owner_id", "spot_name"]
+    required = ["lat", "lon", "owner_id", "address"]
     if not all(k in data for k in required):
         return jsonify({"desc": "Missing parameters", "code": "1"}), 400
 
-    spot_name = data["spot_name"]
+    address = data["address"]
     lat = float(data["lat"])
     lon = float(data["lon"])
     owner_id = data["owner_id"]
@@ -178,7 +178,7 @@ def notify_nearby_users():
 
         content_vars = {
             "USER_NAME": user.name,
-            "SPOT_NAME": spot_name 
+            "ADDRESS": address 
         }
 
         filled_content = fill_template(content, content_vars)
