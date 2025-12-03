@@ -41,9 +41,6 @@
             {
                 $ok_message = $response["body"]["desc"];
 
-                // Call notification_ms to send notification to all near users
-                // TODO!!
-
                 header("Location: manage_garage.php");
                 exit();
             }
