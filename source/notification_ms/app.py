@@ -133,7 +133,7 @@ def update_user(user_id):
 
 
 # ------------ NOTIFICATIONS ------------
-def send_nearby_notifications(users, template, content, address, spot_lat, spot_lon):
+def send_nearby_notifications(users, template, content, address):
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
 
@@ -202,7 +202,7 @@ def notify_nearby_users():
 
     worker = Thread(
         target=send_nearby_notifications,
-        args=(nearby_users, template, content, address, lat, lon)
+        args=(nearby_users, template, content, address)
     )
     worker.daemon = True  
     worker.start()
