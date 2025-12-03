@@ -5,6 +5,7 @@ from sqlalchemy import func, text
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from threading import Thread
 
 def load_app_password(file: str):
     with open(file, "r", encoding="utf-8") as f:
@@ -132,6 +133,39 @@ def update_user(user_id):
 
 
 # ------------ NOTIFICATIONS ------------
+def send_nearby_notifications(users, template, content, address, spot_lat, spot_lon):
+    smtp_server = "smtp.gmail.com"
+    smtp_port = 587
+
+    for user in users:
+        try:
+            content_vars = {
+                "USER_NAME": user.name,
+                "ADDRESS": address
+            }
+            filled_content = fill_template(content, content_vars)
+
+            template_vars = {
+                "NOTIFICATION_TYPE": "NEW PARKING AVAILABLE",
+                "NOTIFICATION_CONTENT": filled_content
+            }
+            filled_template = fill_template(template, template_vars)
+
+            msg = MIMEMultipart("alternative")
+            msg["From"] = SENDER
+            msg["To"] = user.email
+            msg["Subject"] = "New parking spot available near you!"
+            msg.attach(MIMEText(filled_template, "html"))
+
+            with smtplib.SMTP(smtp_server, smtp_port) as server:
+                server.starttls()
+                server.login(SENDER, APP_PASSWORD)
+                server.sendmail(SENDER, user.email, msg.as_string())
+
+        except Exception as e:
+            print(f"[ERROR] Cannot send mail to {user.email}: {e}")
+            continue
+
 @app.route("/notifications/nearby_alert", methods=["POST"])
 def notify_nearby_users():
     data = request.get_json()
@@ -143,7 +177,7 @@ def notify_nearby_users():
     address = data["address"]
     lat = float(data["lat"])
     lon = float(data["lon"])
-    owner_id = data["owner_id"]
+    owner_id = int(data["owner_id"])
 
     content_path = "templates/parking_available_mail.html"
 
@@ -153,8 +187,6 @@ def notify_nearby_users():
     with open(content_path, "r", encoding="utf-8") as f:
         content = f.read()
 
-    radius_meters = 1000
-
     nearby_users = (
         db.session.query(User)
         .filter(User.id != owner_id)
@@ -163,54 +195,23 @@ def notify_nearby_users():
             func.ST_Distance_Sphere(
                 User.last_position,
                 func.Point(lon, lat)
-            ) <= radius_meters
+            ) <= 1000
         )
         .all()
     )
 
-
-    notified_count = 0
-
-    smtp_server = "smtp.gmail.com"
-    smtp_port = 587
-
-    for user in nearby_users:
-
-        content_vars = {
-            "USER_NAME": user.name,
-            "ADDRESS": address 
-        }
-
-        filled_content = fill_template(content, content_vars)
-
-        template_vars = {
-            "NOTIFICATION_TYPE": "NEW PARKING AVAILABLE",
-            "NOTIFICATION_CONTENT": filled_content
-        }
-
-        filled_template = fill_template(template, template_vars)
-
-        msg = MIMEMultipart("alternative")
-        msg["From"] = SENDER
-        msg["To"] = user.email
-        msg["Subject"] = "Alert: Something happened near you!"
-        msg.attach(MIMEText(filled_template, "html"))
-
-        try:
-            with smtplib.SMTP(smtp_server, smtp_port) as server:
-                server.starttls()
-                server.login(SENDER, APP_PASSWORD)
-                server.sendmail(SENDER, user.email, msg.as_string())
-                notified_count += 1
-        except:
-            continue 
+    worker = Thread(
+        target=send_nearby_notifications,
+        args=(nearby_users, template, content, address, lat, lon)
+    )
+    worker.daemon = True  
+    worker.start()
 
     return jsonify({
-        "desc": "Notifications sent",
+        "desc": "Notifications scheduled",
         "code": "0",
-        "notified_users": notified_count
+        "users_found": len(nearby_users)
     }), 200
-
 
 
 @app.route("/notifications/reservation_accepted", methods=["POST"])
