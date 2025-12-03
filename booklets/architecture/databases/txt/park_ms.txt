@@ -1,0 +1,74 @@
+@startuml
+title Parking Microservice - Class Diagram
+
+' =======================
+'        CLASSES
+' =======================
+
+class Users {
+    + id : INT <<PK>>
+    + name : VARCHAR(50)
+    + surname : VARCHAR(50)
+}
+
+class Labels {
+    + id : INT <<PK>>
+    + name : VARCHAR(50)
+    + label_description : TEXT
+}
+
+class Parking_Spots {
+    + id : INT <<PK>>
+    + name : VARCHAR(50)
+    + spot_location : POINT
+    + rep_treshold : INT
+    + slot_price : DOUBLE
+    + user_id : INT <<FK>>
+    --
+    + UNIQUE (user_id, spot_location)
+}
+
+class Availability_Slots {
+    + id : INT <<PK>>
+    + slot_date : DATE
+    + start_time : TIME
+    + end_time : TIME
+    + parking_spot_id : INT <<FK>>
+    --
+    + UNIQUE (slot_date, start_time, parking_spot_id)
+}
+
+class Parking_Spot_Labels {
+    + parking_spot_id : INT <<FK>>
+    + label_id : INT <<FK>>
+    --
+    + PK(parking_spot_id, label_id)
+}
+
+class Reservations {
+    + id : INT <<PK>>
+    + reservation_ts : TIMESTAMP
+    + reservation_status : ENUM
+    + car_plate : CHAR(7)
+    + slot_id : INT <<FK>>
+    + user_id : INT <<FK>>
+    + payment_id : INT   ' FK esterno al microservizio
+}
+
+' =======================
+'      RELATIONSHIPS
+' =======================
+
+Users "1" --> "0..*" Parking_Spots : owns >
+
+Parking_Spots "1" --> "0..*" Availability_Slots : has >
+
+Parking_Spots "0..*" -- "0..*" Labels : labeled >
+Parking_Spot_Labels .. Parking_Spots
+Parking_Spot_Labels .. Labels
+
+Availability_Slots "1" --> "0..*" Reservations : reserved in >
+
+Users "1" --> "0..*" Reservations : makes >
+
+@enduml

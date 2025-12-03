@@ -1,0 +1,36 @@
+@startuml
+title Payment Microservice - Class Diagram
+
+' =======================
+'        CLASSES
+' =======================
+
+class Users {
+    + id : INT <<PK>>
+    + name : VARCHAR(50)
+    + surname : VARCHAR(50)
+}
+
+class Payments {
+    + id : INT <<PK>>
+    + payment_ts : TIMESTAMP
+    + amount : DECIMAL(5,2)
+    + payment_status : ENUM
+    + method : ENUM
+    + reservation_id : INT
+    + user_id : INT <<FK>>
+    + resident_id : INT <<FK>>
+    + reservation_date : DATE
+    + reservation_start : TIME
+    + reservation_end : TIME
+}
+
+' =======================
+'      RELATIONSHIPS
+' =======================
+
+Users "1" --> "0..*" Payments : pays >
+Users "1" <-- "0..*" Payments : receives <
+
+@enduml
+
