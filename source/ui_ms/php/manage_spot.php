@@ -18,7 +18,7 @@
     $response = perform_rest_request('GET', $api_url, null, null);
 
     // Variables of the page
-    $name = $address = $slot_price = $rep = null;
+    $name = $address = $slot_price = $rep = $owner_id = $lat = $lon = null;
 
     // Informative variables
     $ok_message = $error_message = null;
@@ -31,6 +31,9 @@
         $name = $response["body"]["parking_spot"]["name"];
         $slot_price = $response["body"]["parking_spot"]["slot_price"];
         $rep = $response["body"]["parking_spot"]["rep_treshold"];
+        $owner_id = $response["body"]["parking_spot"]["user"]["id"];
+        $lat = floatval($response["body"]["parking_spot"]["latitude"]);
+        $lon = floatval($response["body"]["parking_spot"]["longitude"]);
 
          // Convert the location in address
         $address = get_address_from_coordinates(floatval($response["body"]["parking_spot"]["latitude"]), 
@@ -50,7 +53,34 @@
         $response = perform_rest_request('POST', $api_url, $payload, null);
 
         if ( $response["status"] === 201 )
+        {
             $ok_message = $response["body"]["desc"];
+
+            // Checking if the slot is added for the next 24h
+            $current_date = new DateTime("now", new DateTimeZone('UTC'));
+            $slot_date = DateTime::createFromFormat('Y-m-d H:i', 
+                        $_POST["slot_date"] . ' ' . $_POST["start_time"], new DateTimeZone('UTC'));
+
+            $interval = $current_date->diff($slot_date);
+            if ( $interval->days == 0 && $interval->h < 24 && $interval->invert == 0 )
+            {
+                // Send the notification
+                $payload = [
+                    "parking_spot_id" => $id,
+                    "owner_id" => $owner_id,
+                    "spot_name" => $name,
+                    "lat" => $lat,
+                    "lon" => $lon,
+                    "address" => $address,
+                    "slot_date" => $_POST["slot_date"],
+                    "start_time" => $_POST["start_time"],
+                    "end_time" => $_POST["end_time"]
+                ];
+
+                $api_url = compose_url($protocol, $socket_notification_ms, '/notifications/nearby_alert');
+                $response = perform_rest_request('POST', $api_url, $payload, null);
+            }
+        }
         else 
             $error_message = $response["body"]["desc"];
     }
