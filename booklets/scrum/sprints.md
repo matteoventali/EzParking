@@ -19,6 +19,8 @@ The following section describes the sprint-based organization of the EzParking p
 
 **Involved user stories:**
 
+- DB setup
+
 - Registration (#4)
 
 - Login and logout (#6, #7)
@@ -26,8 +28,6 @@ The following section describes the sprint-based organization of the EzParking p
 - Account data modification (#8)
 
 - Basic dashboard visualization (#9)
-
-- Creating an admin dashboard for microservices (#1)
 
 **Dependecies**: none
 
@@ -151,9 +151,11 @@ Parking spots must be searchable, bookable and residents must be able to accept 
 ## 8th Sprint - Admin functionalities
 
 > #### Sprint goal
-> Enable admins to enable and disable users' accounts.
+> Enable admins to enable and disable users' accounts and monitoring system
 
 **Involved user stories:**
+
+- Creating an admin dashboard for microservices (#1)
 
 - Creating an admin dashboard to view and search registered users (#2)
 
