@@ -98,10 +98,6 @@ def get_statistics(user_id):
         
         res_counter = len(total_reservations)
 
-        now = datetime.now(ZoneInfo("Europe/Rome"))
-        today = date.today()
-        current_time = now.time()
-
         active_reservations = (
             db.session.query(Reservation)
             .filter(
@@ -283,8 +279,8 @@ def get_user_spots(user_id):
         
         return jsonify({
             'desc':'Parking spots retrieved successfully', 
-            'code': 0,
-            'parking_spots': results 
+            'code': "0",
+            'parking_spots': results
         })
 
     except Exception as e:

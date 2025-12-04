@@ -6,6 +6,8 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from threading import Thread
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 def load_app_password(file: str):
     with open(file, "r", encoding="utf-8") as f:
@@ -106,7 +108,7 @@ def update_user(user_id):
         lat = float(data["lat"])
         lon = float(data["lon"])
 
-        user.lastlogin_ts = db.func.current_timestamp()
+        user.lastlogin_ts = datetime.now(ZoneInfo("Europe/Rome"))
 
         position = func.ST_GeomFromText(f'POINT({lon} {lat})')
 
@@ -118,7 +120,8 @@ def update_user(user_id):
             'desc': "User login info updated",
             'code': 0,
             'info': {
-                'lastposition': (lat, lon)
+                'lastposition': (lat, lon), 
+                'last_login': user.lastlogin_ts
             }
         }), 200
 
@@ -128,11 +131,58 @@ def update_user(user_id):
             'desc': f'Database error: {str(e)}',
             'code': 99
         }), 500
-
 # ------------ USERS ------------
 
 
 # ------------ NOTIFICATIONS ------------
+
+def send_email(to_email, subject, mail_content_path, content_vars, main_template_path):
+
+    try:
+        # Load main template
+        with open(main_template_path, "r", encoding="utf-8") as f:
+            main_template = f.read()
+
+        # Load content template
+        with open(mail_content_path, "r", encoding="utf-8") as f:
+            content_template = f.read()
+
+        # Fill content template
+        filled_content = fill_template(content_template, content_vars)
+
+        # Fill main template
+        final_html = fill_template(
+            main_template,
+            {
+                "NOTIFICATION_TYPE": subject.upper(),
+                "NOTIFICATION_CONTENT": filled_content
+            }
+        )
+
+        # Build email
+        msg = MIMEMultipart("alternative")
+        msg["From"] = SENDER
+        msg["To"] = to_email
+        msg["Subject"] = subject
+        msg.attach(MIMEText(final_html, "html"))
+
+        # Send email
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.starttls()
+            server.login(SENDER, APP_PASSWORD)
+            server.sendmail(SENDER, to_email, msg.as_string())
+
+    except Exception as e:
+        print(f"[EMAIL ERROR] Cannot send mail to {to_email}: {e}")
+
+def send_email_async(to_email, subject, mail_content_path, content_vars, main_template_path):
+    worker = Thread(
+        target=send_email,
+        args=(to_email, subject, mail_content_path, content_vars, main_template_path)
+    )
+    worker.daemon = True
+    worker.start()
+
 def send_nearby_notifications(users, template, content, address):
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
@@ -168,50 +218,62 @@ def send_nearby_notifications(users, template, content, address):
 
 @app.route("/notifications/nearby_alert", methods=["POST"])
 def notify_nearby_users():
-    data = request.get_json()
 
-    required = ["lat", "lon", "owner_id", "address"]
-    if not all(k in data for k in required):
-        return jsonify({"desc": "Missing parameters", "code": "1"}), 400
+    try:
+        data = request.get_json()
+        
+        now = datetime.now(ZoneInfo("Europe/Rome"))
+        thirty_minutes_ago = now - timedelta(minutes=1)
 
-    address = data["address"]
-    lat = float(data["lat"])
-    lon = float(data["lon"])
-    owner_id = int(data["owner_id"])
+        required = ["lat", "lon", "owner_id", "address"]
+        if not all(k in data for k in required):
+            return jsonify({"desc": "Missing parameters", "code": "1"}), 400
 
-    content_path = "templates/parking_available_mail.html"
+        address = data["address"]
+        lat = float(data["lat"])
+        lon = float(data["lon"])
+        owner_id = int(data["owner_id"])
 
-    with open(template_path, "r", encoding="utf-8") as f:
-        template = f.read()
+        content_path = "templates/parking_available_mail.html"
 
-    with open(content_path, "r", encoding="utf-8") as f:
-        content = f.read()
+        with open(template_path, "r", encoding="utf-8") as f:
+            template = f.read()
 
-    nearby_users = (
-        db.session.query(User)
-        .filter(User.id != owner_id)
-        .filter(User.last_position.isnot(None))
-        .filter(
-            func.ST_Distance_Sphere(
-                User.last_position,
-                func.Point(lon, lat)
-            ) <= 1000
+        with open(content_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        nearby_users = (
+            db.session.query(User)
+            .filter(User.id != owner_id)
+            .filter(User.last_position.isnot(None))
+            .filter(
+                func.ST_Distance_Sphere(
+                    User.last_position,
+                    func.Point(lon, lat)
+                ) <= 10000000000000000000000
+            )
+            .filter(User.lastlogin_ts >= thirty_minutes_ago)
+            .all()
         )
-        .all()
-    )
 
-    worker = Thread(
-        target=send_nearby_notifications,
-        args=(nearby_users, template, content, address)
-    )
-    worker.daemon = True  
-    worker.start()
+        worker = Thread(
+            target=send_nearby_notifications,
+            args=(nearby_users, template, content, address)
+        )
+        worker.daemon = True  
+        worker.start()
 
-    return jsonify({
-        "desc": "Notifications scheduled",
-        "code": "0",
-        "users_found": len(nearby_users)
-    }), 200
+        return jsonify({
+            "desc": "Notifications scheduled",
+            "code": "0",
+            "users_found": len(nearby_users)
+        }), 200
+    
+    except Exception as e:
+        return jsonify({
+            'desc': f"Error: {e}", 
+            'code': "99"
+        })
 
 
 @app.route("/notifications/reservation_accepted", methods=["POST"])
@@ -250,61 +312,27 @@ def notify_account_disabled():
     data = request.get_json()
 
     if not data or "user_id" not in data:
-        return jsonify({
-            'desc':"Missing user id", 
-            'code': "1"
-        })
+        return jsonify({"desc": "Missing user id", "code": "1"}), 400
     
-    user_id = data["user_id"]
-    mail_path = "templates/disable_mail.html"
-    
-    user = User.query.filter_by(id = user_id).first()
-    if not user: 
-        return jsonify({
-            'desc': "Invalid user", 
-            'code': "2"
-        }), 404
-    
-    with open(template_path, "r", encoding="utf-8") as f:
-        template = f.read()
-
-    with open(mail_path, "r", encoding="utf-8") as f:
-        content = f.read()
+    user = User.query.filter_by(id=data["user_id"]).first()
+    if not user:
+        return jsonify({"desc": "Invalid user", "code": "2"}), 404
 
     content_vars = {"USER_NAME": user.name}
 
-    filled_content = fill_template(content, content_vars)
-
-    template_vars = {
-        "NOTIFICATION_TYPE": "ACCOUNT ENABLED",
-        "NOTIFICATION_CONTENT": filled_content
-        }
-    
-    filled_template = fill_template(template, template_vars)
-    
-    to_email = user.email
-
-    smtp_server = "smtp.gmail.com"
-    smtp_port = 587
-
-    msg = MIMEMultipart("alternative")
-    msg["From"] = SENDER
-    msg["To"] = to_email
-    msg["Subject"] = "Your account has been disabled!"
-    msg.attach(MIMEText(filled_template, "html"))
-
-    with smtplib.SMTP(smtp_server, smtp_port) as server:
-        server.starttls()
-        server.login(SENDER, APP_PASSWORD)
-        result = server.sendmail(SENDER, to_email, msg.as_string())
-        if result == {}:
-            result = None
+    send_email_async(
+        to_email=user.email,
+        subject="Account Disabled",
+        mail_content_path="templates/disable_mail.html",
+        content_vars=content_vars,
+        main_template_path=template_path 
+    )
 
     return jsonify({
-        'desc': "Mail sent successfully", 
-        'code': "0", 
-        'null_check': result 
+        "desc": "Notification scheduled",
+        "code": "0"
     }), 200
+
 
 @app.route("/notifications/account_enabled", methods=["POST"])
 def notify_account_enabled():
@@ -313,59 +341,30 @@ def notify_account_enabled():
 
     if not data or "user_id" not in data:
         return jsonify({
-            'desc':"Missing user id", 
+            'desc': "Missing user id",
             'code': "1"
-        })
+        }), 400
     
-    user_id = data["user_id"]
-    mail_path = "templates/enable_mail.html"
-    
-    user = User.query.filter_by(id = user_id).first()
-    if not user: 
+    user = User.query.filter_by(id=data["user_id"]).first()
+    if not user:
         return jsonify({
-            'desc': "Invalid user", 
+            'desc': "Invalid user",
             'code': "2"
         }), 404
-    
-    with open(template_path, "r", encoding="utf-8") as f:
-        template = f.read()
-
-    with open(mail_path, "r", encoding="utf-8") as f:
-        content = f.read()
 
     content_vars = {"USER_NAME": user.name}
 
-    filled_content = fill_template(content, content_vars)
-
-    template_vars = {
-        "NOTIFICATION_TYPE": "ACCOUNT ENABLED",
-        "NOTIFICATION_CONTENT": filled_content
-        }
-    
-    filled_template = fill_template(template, template_vars)
-    
-    to_email = user.email
-
-    smtp_server = "smtp.gmail.com"
-    smtp_port = 587
-
-    msg = MIMEMultipart("alternative")
-    msg["From"] = SENDER
-    msg["To"] = to_email
-    msg["Subject"] = "Your account has been enabled!"
-    msg.attach(MIMEText(filled_template, "html"))
-
-    with smtplib.SMTP(smtp_server, smtp_port) as server:
-        server.starttls()
-        server.login(SENDER, APP_PASSWORD)
-        result = server.sendmail(SENDER, to_email, msg.as_string())
-        if result == {}:
-            result = None
+    send_email_async(
+        to_email=user.email,
+        subject="Account Enabled",
+        mail_content_path="templates/enable_mail.html",
+        content_vars=content_vars,
+        main_template_path=template_path 
+    )
 
     return jsonify({
-        'desc': "Mail sent successfully", 
-        'code': "0", 
-        'null_check': result 
+        'desc': "Notification scheduled",
+        'code': "0"
     }), 200
 # ------------ NOTIFICATIONS ------------
 
