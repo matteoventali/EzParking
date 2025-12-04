@@ -135,7 +135,6 @@ def update_user(user_id):
 
 
 # ------------ NOTIFICATIONS ------------
-
 def send_email(to_email, subject, mail_content_path, content_vars, main_template_path):
 
     try:
@@ -278,32 +277,277 @@ def notify_nearby_users():
 
 @app.route("/notifications/reservation_accepted", methods=["POST"])
 def notify_reservation_accepted():
-    pass
+
+    data = request.get_json()
+
+    required = ["spot_name", "date", "resident_id", "driver_id", "start_time", "end_time", "plate", "cost", "address"]
+    if not all(k in data for k in required):
+        return jsonify({
+            "desc": "Missing parameters",
+            "code": "1"
+        }), 400
+
+    spot_name = data["spot_name"]
+    date = data["date"]
+    resident_id = int(data["resident_id"])
+    driver_id = int(data["driver_id"])
+    end_time = data["end_time"]
+    start_time = data["start_time"]
+    plate = data["plate"]
+    cost = float(data["cost"])
+    address = data["address"]
+
+    resident = User.query.filter_by(id=resident_id).first()
+    if not resident:
+        return jsonify({
+            "desc": "Invalid resident_id",
+            "code": "2"
+        }), 404
+
+    driver = User.query.filter_by(id=driver_id).first()
+    if not driver:
+        return jsonify({
+            "desc": "Invalid driver_id",
+            "code": "3"
+        }), 404
+
+    content_vars = {
+        "RESIDENT_EMAIL": resident.email,
+        "RESIDENT_NAME": resident.name,
+        "DRIVER_NAME": driver.name,
+        "DATE": date,
+        "END_TIME": end_time, 
+        "START_TIME": start_time, 
+        "PLATE": plate, 
+        "TOT_COST": cost,
+        "SPOT_NAME": spot_name,
+        "SPOT_ADDRESS": address
+    }
+
+    send_email_async(
+        to_email=driver.email,
+        subject="Reservation Accepted",
+        mail_content_path="templates/reservation_accepted_mail.html",
+        content_vars=content_vars,
+        main_template_path=template_path
+    )
+
+    return jsonify({
+        "desc": "Reservation acceptance notification scheduled",
+        "code": "0"
+    }), 200
 
 
 @app.route("/notifications/reservation_rejected", methods=["POST"])
 def notify_reservation_rejected():
-    pass
+
+    data = request.get_json()
+
+    required = ["user_id", "resident_id", "spot_name", "date"]
+    if not all(k in data for k in required):
+        return jsonify({
+            "desc": "Missing parameters",
+            "code": "1"
+        }), 400
+
+    user_id = int(data["user_id"])
+    resident_id = int(data["resident_id"])
+    spot_name = data["spot_name"]
+    date = data["date"]
+
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        return jsonify({
+            "desc": "Invalid user",
+            "code": "2"
+        }), 404
+
+    resident = User.query.filter_by(id=resident_id).first()
+    if not resident:
+        return jsonify({
+            "desc": "Invalid resident",
+            "code": "3"
+        }), 404
+
+    content_vars = {
+        "USER_NAME": user.name,
+        "RESIDENT_NAME": resident.name,
+        "SPOT_NAME": spot_name,
+        "DATE": date
+    }
+
+    send_email_async(
+        to_email=user.email,
+        subject="Reservation Rejected",
+        mail_content_path="templates/reservation_rejected_mail.html",
+        content_vars=content_vars,
+        main_template_path=template_path
+    )
+
+    return jsonify({
+        "desc": "Reservation rejected notification scheduled",
+        "code": "0"
+    }), 200
 
 
 @app.route("/notifications/reservation_cancelled", methods=["POST"])
 def notify_reservation_cancelled():
-    pass
+
+    data = request.get_json()
+
+    required = ["user_id", "date", "spot_name"]
+    if not all(k in data for k in required):
+        return jsonify({
+            "desc": "Missing parameters",
+            "code": "1"
+        }), 400
+
+    user_id = int(data["user_id"])
+    date = data["date"]
+    spot_name = data["spot_name"]
+
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        return jsonify({
+            "desc": "Invalid user",
+            "code": "2"
+        }), 404
+
+    content_vars = {
+        "USER_NAME": user.name,
+        "DATE": date,
+        "SPOT_NAME": spot_name
+    }
+
+    send_email_async(
+        to_email=user.email,
+        subject="Reservation Cancelled",
+        mail_content_path="templates/reservation_cancelled_mail.html",
+        content_vars=content_vars,
+        main_template_path=template_path
+    )
+
+    return jsonify({
+        "desc": "Reservation cancelled notification scheduled",
+        "code": "0"
+    }), 200
 
 
 @app.route("/notifications/reservation_request", methods=["POST"])
 def notify_reservation_request():
-    pass
+
+    data = request.get_json()
+
+    if not data or "user_id" not in data:
+        return jsonify({
+            "desc": "Missing user_id",
+            "code": "1"
+        }), 400
+
+    user_id = int(data["user_id"])
+
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        return jsonify({
+            "desc": "Invalid user",
+            "code": "2"
+        }), 404
+
+    content_vars = {
+        "USER_NAME": user.name
+    }
+
+    send_email_async(
+        to_email=user.email,
+        subject="Reservation Request",
+        mail_content_path="templates/new_request_mail.html",
+        content_vars=content_vars,
+        main_template_path=template_path
+    )
+
+    return jsonify({
+        "desc": "Reservation request notification scheduled",
+        "code": "0"
+    }), 200
 
 
 @app.route("/notifications/registration_successfull", methods=["POST"])
 def notify_registration_successfull():
-    pass
+
+    data = request.get_json()
+
+    if not data or "user_id" not in data:
+        return jsonify({
+            "desc": "Missing user_id",
+            "code": "1"
+        }), 400
+
+    user_id = int(data["user_id"])
+
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        return jsonify({
+            "desc": "Invalid user",
+            "code": "2"
+        }), 404
+
+    content_vars = {
+        "USER_NAME": user.name
+    }
+
+    send_email_async(
+        to_email=user.email,
+        subject="Welcome to EzParking!",
+        mail_content_path="templates/registration_mail.html",
+        content_vars=content_vars,
+        main_template_path=template_path 
+    )
+
+    return jsonify({
+        "desc": "Registration email scheduled",
+        "code": "0"
+    }), 200
 
 
 @app.route("/notifications/received_review", methods=["POST"])
 def notify_received_review():
-    pass
+
+    data = request.get_json()
+
+    required = ["reviewer_id", "spot_name", "user_id"]
+    if not all(k in data for k in required):
+        return jsonify({"desc": "Missing parameters", "code": "1"}), 400
+
+    reviewer_id = int(data["reviewer_id"])
+    user_id = int(data["user_id"])
+    spot_name = data["spot_name"]
+
+    target_user = User.query.filter_by(id=user_id).first()
+    if not target_user:
+        return jsonify({"desc": "Invalid target user", "code": "2"}), 404
+
+    reviewer = User.query.filter_by(id=reviewer_id).first()
+    if not reviewer:
+        return jsonify({"desc": "Invalid reviewer user", "code": "3"}), 404
+
+    content_vars = {
+        "USER_NAME": target_user.name,
+        "REVIEWER_NAME": reviewer.name,
+        "SPOT_NAME": spot_name,
+    }
+
+    send_email_async(
+        to_email=target_user.email,
+        subject="You Received a New Review",
+        mail_content_path="templates/new_review_mail.html",
+        content_vars=content_vars,
+        main_template_path=template_path 
+    )
+
+    return jsonify({
+        "desc": "Notification scheduled",
+        "code": "0"
+    }), 200
 
 
 @app.route("/notifications/account_disabled", methods=["POST"])
