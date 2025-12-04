@@ -182,16 +182,15 @@ def send_email_async(to_email, subject, mail_content_path, content_vars, main_te
     worker.daemon = True
     worker.start()
 
-def send_nearby_notifications(users, template, content, address):
+def send_nearby_notifications(users, template, content, content_vars):
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
 
     for user in users:
         try:
-            content_vars = {
-                "USER_NAME": user.name,
-                "ADDRESS": address
-            }
+            
+            content_vars["USER_NAME"] = user.name
+            
             filled_content = fill_template(content, content_vars)
 
             template_vars = {
@@ -224,7 +223,7 @@ def notify_nearby_users():
         now = datetime.now(ZoneInfo("Europe/Rome"))
         thirty_minutes_ago = now - timedelta(minutes=30)
 
-        required = ["lat", "lon", "owner_id", "address"]
+        required = ["lat", "lon", "owner_id", "address", "spot_name", "slot_date", "end_time", "start_time"]
         if not all(k in data for k in required):
             return jsonify({"desc": "Missing parameters", "code": "1"}), 400
 
@@ -232,6 +231,21 @@ def notify_nearby_users():
         lat = float(data["lat"])
         lon = float(data["lon"])
         owner_id = int(data["owner_id"])
+        spot_name = data["spot_name"]
+        slot_date = data["slot_date"]
+        end_time = data["end_time"]
+        start_time = data["start_time"]
+
+        resident = User.query.filter_by(id = owner_id).first()
+
+        content_vars = {
+                "ADDRESS": address,
+                "RESIDENT_NAME": resident.name,
+                "SPOT_NAME": spot_name, 
+                "SLOT_DATE": slot_date, 
+                "END_TIME": end_time,
+                "START_TIME": start_time
+            }
 
         content_path = "templates/parking_available_mail.html"
 
@@ -257,7 +271,7 @@ def notify_nearby_users():
 
         worker = Thread(
             target=send_nearby_notifications,
-            args=(nearby_users, template, content, address)
+            args=(nearby_users, template, content, content_vars)
         )
         worker.daemon = True  
         worker.start()
