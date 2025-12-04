@@ -222,7 +222,7 @@ def notify_nearby_users():
         data = request.get_json()
         
         now = datetime.now(ZoneInfo("Europe/Rome"))
-        thirty_minutes_ago = now - timedelta(minutes=1)
+        thirty_minutes_ago = now - timedelta(minutes=30)
 
         required = ["lat", "lon", "owner_id", "address"]
         if not all(k in data for k in required):
@@ -249,7 +249,7 @@ def notify_nearby_users():
                 func.ST_Distance_Sphere(
                     User.last_position,
                     func.Point(lon, lat)
-                ) <= 10000000000000000000000
+                ) <= 1000
             )
             .filter(User.lastlogin_ts >= thirty_minutes_ago)
             .all()
