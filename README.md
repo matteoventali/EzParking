@@ -3,11 +3,12 @@
 Laboratory of Advanced Programming project.
 
 ## Authors
-- Matteo Ventali (1985026)
-- Serena Ragaglia (1941007)
-- Valerio Spagnoli (1973484)
-- Pierluca Grasso (1950186)
-- Federico De Lullo (1935510)
+
+-   Matteo Ventali (1985026)
+-   Serena Ragaglia (1941007)
+-   Valerio Spagnoli (1973484)
+-   Pierluca Grasso (1950186)
+-   Federico De Lullo (1935510)
 
 ## Accounts
 | Email           | Password  |   Role
@@ -18,71 +19,113 @@ Laboratory of Advanced Programming project.
 | pierluca.grasso@gmail.com      | ezparking        |user|
 | federico.delullo@gmail.com     | ezparking        |user|
 
-
+------------------------------------------------------------------------
 
 ## Project Description
-EzParking is a parking management system based on microservices.
-The goal of this system is to create a parking sharing application that enables
-users to find and share parking spaces in urban areas in order to reduce traffic congestion 
-and environmental impact, and promoting collaboration among users.
-It includes modules for user accounts, notifications, payments, and parking management, with a web-based user interface.
+
+EzParking is a parking management system based on microservices. The
+goal of this system is to create a parking sharing application that
+enables users to find and share parking spaces in urban areas in order
+to reduce traffic congestion and environmental impact, promoting
+collaboration among users.
+
+It includes modules for user accounts, notifications, payments, and
+parking management, with a web-based user interface.
+
+------------------------------------------------------------------------
 
 ## Microservices Structure
-- `account_ms` – user account management.
-- `notification_ms` – notifications management.
-- `park_ms` – parking management.
-- `payment_ms` – payments management.
-- `ui_ms` – web user interface.
-- `dbms` – central database with initialization scripts.
+
+-   `account_ms` -- user account management\
+-   `notification_ms` -- notifications management\
+-   `park_ms` -- parking management\
+-   `payment_ms` -- payments management\
+-   `ui_ms` -- web user interface\
+-   `dbms` -- central database with initialization scripts
+
+------------------------------------------------------------------------
+
+## Generate SSL Keys and Certificate (Required for HTTPS in `ui_ms`)
+
+The web interface (`ui_ms`) uses HTTPS and requires:
+
+-   `ezparking.crt` -- public certificate
+-   `keyfile.key` -- private key
+
+These files **must be placed in**:
+
+    source/ui_ms/ssl/
+
+### Generate Certificate and Key with OpenSSL
+
+Run this command in your terminal:
+
+``` bash
+openssl req -x509 -nodes -newkey rsa:2048   -keyout keyfile.key   -out ezparking.crt   -days 365   -subj "/C=IT/ST=Italy/L=Rome/O=EzParking/OU=Dev/CN=localhost"
+```
+
+After generation, move the files into:
+  `source/ui_ms/ssl/ezparking.crt`
+  `source/ui_ms/ssl/keyfile.key`
+
+They are automatically used by the Apache configuration in
+`ui_ms/conf/default.conf`.
+
+------------------------------------------------------------------------
 
 ## How to Start the System
+
 The project uses Docker and Docker Compose to orchestrate microservices.
 
-1. Ensure Docker and Docker Compose are installed.
+1.  Ensure Docker and Docker Compose are installed.
 
-2. From the main project folder, run:
-   
-   ```bash
-   cd source
-   docker-compose up -d
-    ```
+2.  Generate SSL keys and certificates (see section above).
 
-   This command builds (if necessary) and starts all containers in the background.
-   To explicitly build the containers, run:
-   
-   ```bash
-   docker-compose up -d --build
-   ```
+3.  Put the GMAIL password per app inside the file `source/notification_ms/password.key`
 
-3. To check the status of containers:
-   
-   ```bash
-   docker-compose ps -a
-   ```
+4.  From the main project folder, run:
+
+``` bash
+cd source
+docker-compose up -d
+```
+
+To rebuild containers explicitly:
+
+``` bash
+docker-compose up -d --build
+```
+
+5.  Check container status:
+
+``` bash
+docker-compose ps -a
+```
 
 ## How to Stop the System
-To stop all services:
 
-```bash
+Stop and remove containers (data preserved):
+
+``` bash
 docker-compose down
 ```
 
-This command stops and removes the containers but keeps the database data intact in the volume.
-If you want to delete also the data into volumes, run:
+Stop and delete also database volumes:
 
-```bash
+``` bash
 docker-compose down -v
 ```
 
-
 ## Rebuilding After Updates
-If microservices or Dockerfiles are updated, rebuild the images before restarting:
 
-```bash
+If microservices or Dockerfiles are updated:
+
+``` bash
 docker-compose build
 docker-compose up -d
 ```
 
+------------------------------------------------------------------------
 ## System IP Topology
 Docker Compose manages a private internal network for the microservices. Each container can be accessed using its service name:
 
