@@ -72,7 +72,7 @@
                     
                 <!-- Distance select -->
                 <select class="dropdown-toggle" id="distanceSelect" name="distance" style="min-width:120px;">
-                    <option value="">Distance</option>
+                    <option value="100">100 m</option>
                     <option value="500">500 m</option>
                     <option value="1000">1 km</option>
                     <option value="5000">5 km</option>
