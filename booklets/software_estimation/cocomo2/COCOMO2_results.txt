@@ -1,0 +1,36 @@
+startCOCOMO, 1
+MonteCarlo, MonteCarlo_Off
+AutoCalculate, Off
+size_type, Function Points
+function_points, 140
+language, 3rd Generation Language
+prec, Nominal
+flex, Nominal
+rely, Nominal
+data, Nominal
+cplx, Nominal
+ruse, Nominal
+docu, Nominal
+resl, Nominal
+team, Nominal
+acap, Nominal
+pcap, Nominal
+pcon, Nominal
+apex, Nominal
+pexp, Nominal
+ltex, Nominal
+pmat, Nominal
+time, Nominal
+stor, Nominal
+pvol, Nominal
+tool, Nominal
+site, Nominal
+sced, Nominal
+software_maintenance, Off
+software_labor_cost_per_PM, 1800
+submit2, Calculate
+software_EAF, 1.00
+size_exponent, 1.0997
+schedule_exponent, 0.318
+software_effort, 41.9
+software_schedule, 12.0
