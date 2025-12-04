@@ -1,0 +1,68 @@
+erDiagram
+    USER {
+        int id PK
+        string name
+        string surname
+        string role
+        string phone
+        string password
+        string mail
+        timestamp lastlogin_ts
+        geo last_position
+        string cc_number
+        string session_token
+        bool status
+    }
+
+    PARKING_SPOT {
+        int id PK
+        string name
+        geo location
+        float slot_price
+        int rep_threshold
+    }
+
+    AVAILABILITY_SLOT {
+        int id PK
+        date date
+        time start_time
+        time end_time
+    }
+
+    RESERVATION {
+        int id PK
+        string plate
+        string status
+        timestamp timestamp
+    }
+
+    PAYMENT {
+        int id PK
+        string status
+        float amount
+        string method
+    }
+
+    REVIEW {
+        int id PK
+        date date
+        int star
+        string description
+    }
+
+    LABEL {
+        int id PK
+        string name
+        string description
+    }
+
+    %% Relazioni
+    USER ||--o{ PARKING_SPOT : OWN
+    USER ||--o{ REVIEW : WRITE
+    USER }|--|{ REVIEW : HIT
+    USER ||--o{ PAYMENT : DO
+    PAYMENT |{--|| RESERVATION : OF
+    RESERVATION ||--o{ REVIEW : ON
+    RESERVATION ||--|| AVAILABILITY_SLOT : FOR
+    PARKING_SPOT ||--|{ AVAILABILITY_SLOT : WITH
+    PARKING_SPOT }|--|{ LABEL : IS
