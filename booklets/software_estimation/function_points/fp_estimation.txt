@@ -1,0 +1,107 @@
+# FUNCTION POINT ANALYSIS
+
+=============================================================================
+1. FILES
+=============================================================================
+Entities derived from the ER Diagram.
+
+[ILF 01] USER (Average - 10 FP)
+         Attributes: id, name, surname, role, phone, pass, mail, 
+         lastlogin_ts, last_pos, occ_num.
+
+[ILF 02] PARKING_SPOT (Average - 10 FP)
+         Attributes: id, name, location, slot_price, rep_threshold.
+
+[ILF 03] RESERVATION (High - 15 FP)
+         Reasoning: High complexity due to lifecycle (Pending -> Accepted/
+         Rejected -> Paid -> Completed/Cancelled) and links to Payment/Review.
+
+[ILF 04] AVAILABILITY_SLOT (Low - 7 FP)
+         Attributes: date, start, end.
+
+[ILF 05] PAYMENT (Low - 7 FP)
+         Attributes: amount, method, status.
+
+[ILF 06] REVIEW (Low - 7 FP)
+         Attributes: star, description, date.
+
+[ILF 07] LABEL (Low - 7 FP)
+         Attributes: name, description.
+
+-----------------------------------------------------------------------------
+SUBTOTAL DATA FUNCTIONS: 63 FP
+-----------------------------------------------------------------------------
+
+=============================================================================
+3. FUNCTIONS (Based on User Stories)
+=============================================================================
+
+--- A. ADMIN FUNCTIONS ---
+1.  View Microservices Status (EQ - Low): 3 FP
+2.  View User List (EQ - Low): 3 FP
+3.  Search Users (EQ - Low): 3 FP
+4.  Access User Details (EQ - Low): 3 FP
+5.  Enable/Disable Account (EI - Low): 3 FP
+6.  Send Notification (Account Status) (EO - Low): 4 FP
+
+--- B. AUTH & USER MANAGEMENT ---
+7.  User Registration (EI - Average): 4 FP
+    (Includes validation and DB write)
+8.  Send Reg. Confirmation Email (EO - Low): 4 FP
+9.  Login (EQ - Low): 3 FP
+10. Logout (EQ - Low): 3 FP
+11. Edit Personal Data (EI - Low): 3 FP
+12. View User Dashboard (EQ - Average): 4 FP
+    (Aggregates personal data + history)
+13. View Homepage (EQ - Low): 3 FP
+14. Notification Account Change (EO - Low): 4 FP
+
+--- C. DRIVER FUNCTIONS ---
+15. Map/Search Available Spots (EQ - High): 6 FP
+    (Complex logic: Geo-location + filters + labels + availability check)
+16. Filter by Distance/Features (Input to Search - included above)
+17. Reserve Spot (EI - High): 6 FP
+    (Creates Reservation, checks Availability Slot, links User)
+18. Process Payment (EI - Average): 4 FP
+    (External payment gateway integration + Update Payment status)
+19. View Reservation Requests (EQ - Low): 3 FP
+20. Cancel Reservation Request (EI - Low): 3 FP
+21. Receive Confirmation Email (EO - Low): 4 FP
+22. Receive Rejection Notification (EO - Low): 4 FP
+23. Rate/Review Parking (EI - Average): 4 FP
+    (Updates Review table + Recalculates Reputation)
+24. View Personal Reputation (EQ - Low): 3 FP
+25. View Received Reviews (EQ - Low): 3 FP
+26. Calendar View of Bookings (EQ - Average): 4 FP
+    (Data formatting required)
+27. Access Resident Data (Post-confirm) (EQ - Low): 3 FP
+
+--- D. RESIDENT FUNCTIONS ---
+28. Insert New Parking Spot (EI - Average): 4 FP
+29. Assign Labels to Spot (EI - Low): 3 FP
+30. View Parking List (EQ - Low): 3 FP
+31. Add Availability Time Slots (EI - Low): 3 FP
+32. View Reservation Requests (EQ - Average): 4 FP
+    (Shows incoming requests with Driver details)
+33. Accept/Reject Request (EI - Low): 3 FP
+34. Notification: New Request (EO - Low): 4 FP
+35. Notification: Cancellation (EO - Low): 4 FP
+36. Set Reputation Threshold (EI - Low): 3 FP
+37. Rate Driver (EI - Average): 4 FP
+38. View Received Reviews (EQ - Low): 3 FP
+
+-----------------------------------------------------------------------------
+SUBTOTAL TRANSACTION FUNCTIONS: 110 FP
+-----------------------------------------------------------------------------
+
+=============================================================================
+4. CALCULATION & CONCLUSION
+=============================================================================
+
+Formula: UFP = Sum(ILF) + Sum(Transaction Functions)
+
+Data Functions Score:        63
+Transaction Functions Score: 110
+-----------------------------------
+TOTAL UNADJUSTED FP:        173
+-----------------------------------
