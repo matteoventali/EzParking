@@ -1456,7 +1456,7 @@ def update_reservation(res_id):
         new_status = data["new_status"].lower().strip()
         user_id = data["user_id"]
 
-        valid_statuses = ["pending", "confirmed", "cancelled", "completed"]
+        valid_statuses = ["pending", "confirmed", "cancelled", "completed", "rejected"]
         if new_status not in valid_statuses:
             return jsonify({
                 'desc': f"Invalid reservation_status value: '{new_status}'",

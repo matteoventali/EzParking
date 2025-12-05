@@ -102,7 +102,7 @@ def update_user(user_id):
         if "lat" not in data or "lon" not in data:
             return jsonify({
                 "desc": "missing position coordinates",
-                "code": 1
+                "code": "1"
             }), 400
 
         lat = float(data["lat"])
@@ -118,7 +118,7 @@ def update_user(user_id):
 
         return jsonify({
             'desc': "User login info updated",
-            'code': 0,
+            'code': "0",
             'info': {
                 'lastposition': (lat, lon), 
                 'last_login': user.lastlogin_ts
@@ -129,7 +129,7 @@ def update_user(user_id):
         db.session.rollback()
         return jsonify({
             'desc': f'Database error: {str(e)}',
-            'code': 99
+            'code': "99"
         }), 500
 # ------------ USERS ------------
 

@@ -33,7 +33,7 @@ def add_user():
         if not data or not all(f in data for f in ["id", "name", "surname"]):
             return jsonify({
                 'desc': "Missing required fields", 
-                'code': 1
+                'code': "1"
             }), 404
 
         id = data["id"]
@@ -51,7 +51,7 @@ def add_user():
 
         return jsonify({
             'desc': "New user successfully inserted", 
-            'code': 0, 
+            'code': "0", 
             'user': {
                 'name': new_user.name,
                 'surname': new_user.surname,

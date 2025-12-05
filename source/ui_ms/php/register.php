@@ -59,7 +59,7 @@
                     'surname' => $surname,
                 ];
                 $api_url = compose_url($protocol, $socket_park_ms, '/users');
-                $response = perform_rest_request('POST', $api_url, $payload);
+                $response_park = perform_rest_request('POST', $api_url, $payload);
 
                 // 2. Notification_ms
                 $payload = [
@@ -69,7 +69,7 @@
                     'email' => $email
                 ];
                 $api_url = compose_url($protocol, $socket_notification_ms, '/notifications/users');
-                $response = perform_rest_request('POST', $api_url, $payload);
+                $response_notification = perform_rest_request('POST', $api_url, $payload);
 
                 // 3. Payment_ms
                 $payload = [
@@ -78,8 +78,19 @@
                     'surname' => $surname
                 ];
                 $api_url = compose_url($protocol, $socket_payment_ms, '/payments/users');
-                $response = perform_rest_request('POST', $api_url, $payload);
-            }   
+                $response_payment = perform_rest_request('POST', $api_url, $payload);
+
+                // Send a notification email
+                if ( $response_notification["body"]["code"] === "0" && $response_payment["body"]["code"] === "0" 
+                                && $response_park["body"]["code"] === "0" ) 
+                {
+                    $payload = [
+                        'user_id' => $last_id,
+                    ];
+                    $api_url = compose_url($protocol, $socket_notification_ms, '/notifications/registration_successfull');
+                    $response_email = perform_rest_request('POST', $api_url, $payload, null);
+                }
+            }
             else
                 $error_message = $response["body"]["desc"];
         } catch (Exception $e) 

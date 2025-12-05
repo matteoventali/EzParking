@@ -267,7 +267,7 @@
     // Function to change the status of a reservation
     function change_status_reservation($id_reservation, $new_status)
     {
-        global $protocol, $socket_park_ms, $socket_payment_ms;
+        global $protocol, $socket_park_ms, $socket_payment_ms, $socket_notification_ms;
 
         // Perform the status change
         $payload = [
@@ -276,6 +276,12 @@
         ];
         $api_url = compose_url($protocol, $socket_park_ms, '/reservations/' . $id_reservation. "/status");
         $response = perform_rest_request('PUT', $api_url, $payload, null);
+
+        if ( $response["body"]["code"] !== "0" )
+            return $response;
+
+        // Extracting the reservations info
+        $reservation = $response["body"]["reservation"];
 
         $payment_status = '';
         if ( $new_status === 'confirmed' )
@@ -291,7 +297,10 @@
         $response = perform_rest_request('PUT', $api_url, $payload, null);
 
         // Call notification_ms to notify the driver!
-        // TODO!!s
+        if ( $response["body"]["code"] === "0" )
+        {
+            
+        }
 
         return $response;
     }

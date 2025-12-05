@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS Parking_Spot_Labels (
 CREATE TABLE IF NOT EXISTS Reservations (
     id                          INT AUTO_INCREMENT PRIMARY KEY,
     reservation_ts              TIMESTAMP NOT NULL,
-    reservation_status          ENUM('pending', 'confirmed', 'cancelled', 'completed') DEFAULT 'pending',
+    reservation_status          ENUM('pending', 'confirmed', 'cancelled', 'completed', 'rejected') DEFAULT 'pending',
     car_plate                   CHAR(7) NOT NULL,
     slot_id                     INT NOT NULL,
     user_id                     INT NOT NULL,

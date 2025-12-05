@@ -1,11 +1,5 @@
 Notification Service POST Parameters
 
-/notifications/nearby_alert
-- lat (float)
-- lon (float)
-- owner_id (int)
-- address (string)
-
 /notifications/reservation_accepted
 - spot_name (string)
 - date (string)
@@ -28,19 +22,3 @@ Notification Service POST Parameters
 - date (string)
 - spot_name (string)
 
-/notifications/reservation_request
-- user_id (int)
-
-/notifications/registration_successfull
-- user_id (int)
-
-/notifications/received_review
-- reviewer_id (int)
-- spot_name (string)
-- user_id (int)
-
-/notifications/account_disabled
-- user_id (int)
-
-/notifications/account_enabled
-- user_id (int)

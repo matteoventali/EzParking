@@ -44,6 +44,8 @@
         // If the target id is determined we submit the review
         if ( $target_id )
         {
+            $reservation = $response["body"]["reservation"];
+            
             // Preparing the data
             $payload = [
                 'reservation_id' => $_POST["reservation_id"],
@@ -57,7 +59,13 @@
             $response = perform_rest_request('POST', $api_url, $payload, $_SESSION["session_token"]);
 
             // Call the notification_ms to notify the received review to the target!
-            // TODO!!
+            $api_url = compose_url($protocol, $socket_notification_ms, '/notifications/received_review');
+            $notification_payload = [
+                "user_id" => $target_id,
+                "reviewer_id" => $_SESSION["user"]["id"],
+                "spot_name" => $reservation["parking_spot_name"]
+            ];
+            $response_notification = perform_rest_request('POST', $api_url, $notification_payload, null);
         }
     }
     else

@@ -131,6 +131,13 @@
                 "payment_id" => $id_payment
             ];
             $response_update = perform_rest_request('PUT', $api_url, $payload, null);
+
+            // Sends a notification to the resident about the new booking
+            $notification_payload = [
+                "user_id" => $spot["user"]["id"],
+            ];
+            $api_url = compose_url($protocol, $socket_notification_ms, '/notifications/reservation_request');
+            $response_notification = perform_rest_request('POST', $api_url, $notification_payload, null);
             
             // Changing pages
             header("Location: ../php/manage_my_bookings.php");
