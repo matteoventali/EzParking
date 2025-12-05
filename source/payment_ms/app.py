@@ -195,6 +195,9 @@ def get_tot_earnings(user_id):
             else:
                 modality = "received"
 
+            if payment.payment_status != "completed":
+                continue
+
             payments_json.append({
                 'id': payment.id,
                 'amount': payment.amount,

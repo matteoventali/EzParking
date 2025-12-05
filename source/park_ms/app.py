@@ -1248,6 +1248,7 @@ def get_reservation(res_id):
                 "ts": res.reservation_ts.isoformat(),
                 "status": res.reservation_status,
                 "slot_id": res.slot_id,
+                "plate": res.car_plate,
                 "start_time": slot.start_time.strftime("%H:%M") if slot else None,
                 "end_time": slot.end_time.strftime("%H:%M") if slot else None,
                 "slot_date": slot.slot_date.isoformat() if slot else None,
@@ -1512,15 +1513,22 @@ def update_reservation(res_id):
         return jsonify({
             'desc': 'Reservation status updated successfully',
             'code': '0',
-            'reservation': {
-                'id': reservation.id,
-                'slot_id': reservation.slot_id,
-                'user_id': reservation.user_id,
-                'car_plate': reservation.car_plate,
-                'previous_status': current_status,
-                'new_status': reservation.reservation_status,
-                'payment_id': reservation.payment_id,
-                'reservation_ts': reservation.reservation_ts.isoformat()
+            "reservation": {
+                "res_id": reservation.id,
+                "driver_id": reservation.user_id,
+                "resident_id": slot.parking_spot.user_id if slot else None,
+                "ts": reservation.reservation_ts.isoformat(),
+                "status": reservation.reservation_status,
+                "slot_id": reservation.slot_id,
+                "plate": reservation.car_plate,
+                "start_time": slot.start_time.strftime("%H:%M") if slot else None,
+                "payment_id": reservation.payment_id,
+                "end_time": slot.end_time.strftime("%H:%M") if slot else None,
+                "slot_date": slot.slot_date.isoformat() if slot else None,
+                "parking_spot_name": slot.parking_spot.name if slot else None,
+                "parking_spot_latitude": to_shape(slot.parking_spot.spot_location).y if slot else None,
+                "parking_spot_longitude": to_shape(slot.parking_spot.spot_location).x if slot else None,
+                "cost": slot.parking_spot.slot_price if slot else None 
             }
         }), 200
 

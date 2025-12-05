@@ -293,15 +293,37 @@
             'payment_status' => $payment_status
         ];
 
+        // Updating the payment status
         $api_url = compose_url($protocol, $socket_payment_ms, '/payments/' . $response["body"]["reservation"]["payment_id"]);
         $response = perform_rest_request('PUT', $api_url, $payload, null);
 
-        // Call notification_ms to notify the driver!
-        if ( $response["body"]["code"] === "0" )
-        {
+        // Obtatining the address
+        $address = get_address_from_coordinates($reservation["parking_spot_latitude"], $reservation["parking_spot_longitude"]);
+        
+        // Call notification_ms to notify the driver
+        $notification_payload = [
+            'user_id' => $reservation["driver_id"],
+            "resident_id" => $reservation["resident_id"],
+            "start_time" => $reservation["start_time"],
+            "end_time" => $reservation["end_time"],
+            "plate" => $reservation["plate"],
+            "cost" => $reservation["cost"],
+            "date" => $reservation["slot_date"],
+            "spot_name" => $reservation["parking_spot_name"],
+            "address" => $address
+        ];
             
-        }
-
+        if ( $new_status === 'confirmed' )
+            $api_url = compose_url($protocol, $socket_notification_ms, '/notifications/reservation_accepted');
+        else if ( $new_status === 'rejected' )
+            $api_url = compose_url($protocol, $socket_notification_ms, '/notifications/reservation_rejected');
+        else if ( $new_status === 'cancelled' )
+            $api_url = compose_url($protocol, $socket_notification_ms, '/notifications/reservation_cancelled');
+        
+        // Send notification
+        if ( !empty($notification_payload) )
+            perform_rest_request('POST', $api_url, $notification_payload, null);
+        
         return $response;
     }
 ?>

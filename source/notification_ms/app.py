@@ -174,6 +174,7 @@ def send_email(to_email, subject, mail_content_path, content_vars, main_template
     except Exception as e:
         print(f"[EMAIL ERROR] Cannot send mail to {to_email}: {e}")
 
+
 def send_email_async(to_email, subject, mail_content_path, content_vars, main_template_path):
     worker = Thread(
         target=send_email,
@@ -181,6 +182,7 @@ def send_email_async(to_email, subject, mail_content_path, content_vars, main_te
     )
     worker.daemon = True
     worker.start()
+
 
 def send_nearby_notifications(users, template, content, content_vars):
     smtp_server = "smtp.gmail.com"
@@ -213,6 +215,7 @@ def send_nearby_notifications(users, template, content, content_vars):
         except Exception as e:
             print(f"[ERROR] Cannot send mail to {user.email}: {e}")
             continue
+        
 
 @app.route("/notifications/nearby_alert", methods=["POST"])
 def notify_nearby_users():
@@ -295,7 +298,7 @@ def notify_reservation_accepted():
 
     data = request.get_json()
 
-    required = ["spot_name", "date", "resident_id", "driver_id", "start_time", "end_time", "plate", "cost", "address"]
+    required = ["spot_name", "date", "resident_id", "user_id", "start_time", "end_time", "plate", "cost", "address"]
     if not all(k in data for k in required):
         return jsonify({
             "desc": "Missing parameters",
@@ -305,7 +308,7 @@ def notify_reservation_accepted():
     spot_name = data["spot_name"]
     date = data["date"]
     resident_id = int(data["resident_id"])
-    driver_id = int(data["driver_id"])
+    driver_id = int(data["user_id"])
     end_time = data["end_time"]
     start_time = data["start_time"]
     plate = data["plate"]

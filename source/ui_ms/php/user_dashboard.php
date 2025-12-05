@@ -148,13 +148,6 @@
 
 		foreach ($list_transactions as $i => $l)
 		{
-			// Filter payment failed
-			if ( $l["payment_status"] === "failed" )
-			{
-				unset($list_transactions[$i]);
-				continue;
-			}
-			
 			if ( $l["modality"] === "made" )
 				$list_transactions[$i]["amount"] = "-" . $l["amount"];
 		}
