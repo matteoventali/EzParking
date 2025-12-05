@@ -171,6 +171,11 @@ main {
     border: 1px solid var(--cancelled-color);
 }
 
+.booking-card.rejected .status-indicator {
+    background-color: var(--cancelled-bg);
+    color: var(--cancelled-color);
+    border: 1px solid var(--cancelled-color);
+}
 
 .booking-card.completed .status-indicator {
     background-color: var(--completed-bg);

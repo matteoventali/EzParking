@@ -286,7 +286,7 @@
         $payment_status = '';
         if ( $new_status === 'confirmed' )
             $payment_status = 'completed';
-        else if ( $new_status === 'cancelled' )
+        else if ( $new_status === 'cancelled' || $new_status === 'rejected' )
             $payment_status = 'failed';
         
         $payload = [

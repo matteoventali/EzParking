@@ -24,15 +24,26 @@ function manageRequest(requestId, action)
 {
     // Fetching the info of the driver associated to the parking request
     xhr = new XMLHttpRequest();
-    xhr.open("POST", "../php/manage_request.php", true);
+    xhr.open("POST", "../php/change_status_reservations.php", true);
     
+    new_status = "";
+    if ( action === "accept" )
+        new_status = "confirmed";
+    else if ( action === "reject" )
+        new_status = "rejected";
+    else
+    {
+        alert("Unknown action: " + action);
+        return;
+    }
+        
     // Enconding the paylaod to send
     const params = new URLSearchParams();
-    params.append('request_id', requestId);
-    params.append('action', action);
+    params.append('reservation_id', requestId);
+    params.append('new_status', new_status);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    xhr.onload = function() 
+    xhr.onload = function()
     {
         if (this.status === 200) 
         {
@@ -41,7 +52,7 @@ function manageRequest(requestId, action)
             {
                 // Successfully managed the request, remove the card from the list
                 removeCard(requestId, action);
-            } 
+            }
             else
                 alert("Error managing request: " + response.body.desc);
         }

@@ -8,31 +8,6 @@
     else if ( $_SESSION['role'] != 'user' ) // Redirect the user to the correct homepage
         header("Location: " . $homepage);
 
-    // Check if there is a request to manage a single request
-    if ( isset($_POST["request_id"]) && isset($_POST["action"]) )
-    {
-        $new_status = '';
-        
-        // Composing the status
-        if ( $_POST["action"] === "accept")
-            $new_status = 'confirmed';
-        else if ( $_POST["action"] === "reject" )
-            $new_status = 'cancelled';
-
-        // Request to the microservice
-        $response = change_status_reservation($_POST["request_id"], $new_status);
-
-        // If the request has been fine send a notification to the driver
-        // TODO!!!!
-
-        // Output the response
-        header('Content-Type: application/json');
-        echo json_encode($response);
-    
-        // No need to load the page
-        exit();
-    }
-
     // Get the request for parking spot of the user logged in
     $api_url = compose_url($protocol, $socket_park_ms, '/requests/' . $_SESSION["user"]["id"]);
     $response = perform_rest_request('GET', $api_url, null, null);

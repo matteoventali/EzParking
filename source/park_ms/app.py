@@ -1178,7 +1178,7 @@ def add_payment_id(res_id):
 def get_reservations(user_id):
 
     try:
-        reservations = Reservation.query.filter_by(user_id=user_id).order_by(Reservation.reservation_status, Reservation.reservation_ts.desc()).all()
+        reservations = Reservation.query.filter_by(user_id=user_id).order_by(Reservation.reservation_ts.desc()).all()
         if not reservations:
             return jsonify({
                 "desc": "No reservations found for this user",
@@ -1464,8 +1464,8 @@ def update_reservation(res_id):
             }), 400
 
         allowed_transitions = {
-            "pending": ["confirmed", "rejected"],
-            "confirmed": ["completed", "cancelled"],
+            "pending": ["confirmed", "rejected", "cancelled"],
+            "confirmed": ["completed"],
             "cancelled": [],
             "completed": []
         }
