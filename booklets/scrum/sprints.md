@@ -14,7 +14,7 @@ The following section describes the sprint-based organization of the EzParking p
 
 ---
 
-## 2nd Sprint - Account managment and admin dashboard
+## 2nd Sprint - Account managment
 > Enable users to create and manage their accounts, while providing the admin with basic visibility.
 
 **Involved user stories:**
@@ -51,7 +51,7 @@ The following section describes the sprint-based organization of the EzParking p
 **Dependencies:** User sessions must be available and functional (_Sprint 2_).
 ---
 
-## 4th Sprint - Parking search
+## 4th Sprint - Parking search and drivers' functionalites
 
 > #### Sprint goal
 > Enable drivers to effectively find available parking spots using search and filtering features.
