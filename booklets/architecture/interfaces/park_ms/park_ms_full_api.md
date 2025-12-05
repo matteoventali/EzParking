@@ -61,6 +61,35 @@ http://10.5.0.12:5002/
 
 ---
 
+### `GET /users/{user_id}/statistics`
+**Description:** Retrieve statistics for a specific user including owned parking spots, total reservations, active reservations, and bookings on owned spots.  
+**Authentication:** None  
+**Responses:**
+```json
+// 200 OK
+{
+  "desc": "Statistics retrieved succesfully",
+  "code": "0",
+  "statistics": {
+    "id": 0,
+    "name": "",
+    "surname": "",
+    "spot_counter": 0,
+    "res_counter": 0,
+    "booked_counter": 0,
+    "active_counter": 0
+  }
+}
+
+// 404 Not Found
+{ "desc": "Invalid user id", "code": "1" }
+
+// 500 Internal Server Error
+{ "desc": "Database error: <error>", "code": "99" }
+```
+
+---
+
 ## PARKING SPOTS
 
 ### `GET /parking_spots/{spot_id}`
