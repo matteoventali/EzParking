@@ -35,7 +35,8 @@ http://10.5.0.11:5000/
   "surname": "",
   "email": "",
   "password": "",
-  "phone": ""
+  "phone": "",
+  "cc_number": ""
 }
 ```
 **Responses:**
@@ -50,6 +51,7 @@ http://10.5.0.11:5000/
     "surname": "",
     "email": "",
     "phone": "",
+    "cc_number": "",
     "role": ""
   }
 }

@@ -1,8 +1,10 @@
-#### REST API of the *Park microservice*
+## REST API of the *Park microservice*
+### Endpoints list
 
 | Method | Endpoint | Description |
 |:--------|:----------|:-------------|
 | **POST** | `/users` | Add a user in the park_ms db. |
+| **GET** | `/users/{user_id}/statistics` | Retrieve statistics for a specific user (owned spots, reservations, etc.). |
 | **GET** | `/parking_spots/{id}` | Retrieve details of a specific parking spot. |
 | **GET** | `/parking_spots/users/{user_id}` | Retrieve details of all parking spots of a specific user. |
 | **POST** | `/parking_spots` | Create a new parking spot owned by the authenticated user. |
