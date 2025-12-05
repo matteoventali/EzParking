@@ -132,7 +132,7 @@ class Reservation(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     reservation_ts = db.Column(db.TIMESTAMP, nullable=False)
     reservation_status = db.Column(
-        db.Enum('pending', 'confirmed', 'cancelled', 'completed'),
+        db.Enum('pending', 'confirmed', 'cancelled', 'completed', 'rejected'),
         default='pending'
     )
     car_plate = db.Column(db.String(7), nullable=False)

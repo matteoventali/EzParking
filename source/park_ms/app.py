@@ -1464,7 +1464,7 @@ def update_reservation(res_id):
             }), 400
 
         allowed_transitions = {
-            "pending": ["confirmed", "cancelled"],
+            "pending": ["confirmed", "rejected"],
             "confirmed": ["completed", "cancelled"],
             "cancelled": [],
             "completed": []
