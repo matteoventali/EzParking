@@ -1,0 +1,37 @@
+@startuml
+
+title Account Microservice - Class Diagram
+
+class Users {
+    + id : INT <<PK>>
+    + lastlogin_ts : TIMESTAMP
+    + account_status : BOOLEAN
+    --
+    + name : VARCHAR(50)
+    + surname : VARCHAR(50)
+    + password_hash : VARCHAR(255)
+    + email : VARCHAR(100) <<UNIQUE>>
+    + cc_number : VARCHAR(16) <<UNIQUE>>
+    + session_token : CHAR(32)
+    + phone : VARCHAR(15) <<UNIQUE>>
+    + user_role : ENUM('admin','user')
+}
+
+class Review {
+    + id : INT <<PK>>
+    + review_date : DATE
+    + star : INT (1..5)
+    + review_description : TEXT
+    + writer_id : INT <<FK>>
+    + target_id : INT <<FK>>
+    + reservation_id : INT
+    --
+    + UNIQUE (writer_id, target_id, reservation_id)
+}
+
+
+Users "1" --> "0..*" Review : writer
+
+Review "0..*" --> "1" Users : target
+
+@enduml
