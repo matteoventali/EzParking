@@ -279,7 +279,8 @@ def notify_nearby_users():
         return jsonify({
             "desc": "Notifications scheduled",
             "code": "0",
-            "users_found": len(nearby_users)
+            "users_found": len(nearby_users),
+            "ts": datetime.now(tz=ZoneInfo("Europe/Rome")).isoformat()
         }), 200
     
     except Exception as e:
