@@ -1492,6 +1492,7 @@ def update_reservation(res_id):
                     'desc': "operation not allowed: neither driver nor resident.",
                     'code': '4'
                 }), 400
+            
             current_status = reservation.reservation_status
 
             if new_status == current_status:
