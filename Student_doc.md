@@ -65,21 +65,16 @@ The most important use cases are:
 39.	As a resident I want to receive a notification if a driver cancels their booking request on my parking spot, so I can be updated in real time about the demand for my parking spots.
 40. As a resident I want to see all the reviews I have received from the drivers so that I can evaluate my behaviour.
 
-
-
-
 # CONTAINERS
 
 ## CONTAINER_NAME: dbms
 
 ### DESCRIPTION: 
 Database container running MariaDB. It stores data for all EzParking microservices and initializes schemas on startup.
+This container provides the persistent storage layer of the application. It provides access to data through SQL connections.
 
-### PORTS: 
+### PORTS:
 3306:3306
-
-### DESCRIPTION:
-This container provides the persistent storage layer of the application. It initializes all required schemas for the microservices and provides access to data through SQL connections.
 
 ### PERSISTENCE EVALUATION
 Persistent — data stored in volume `mariadb_data` is preserved across container restarts.
@@ -93,6 +88,8 @@ None. It is accessed internally by the backend microservices via the Docker netw
 
 ### DESCRIPTION: 
 Backend microservice handling user accounts, authentication, personal data management, and review system between users.
+Implements all account-related operations through RESTful APIs, including signup, login, profile management, and submit of reviews. 
+Communicates with the MariaDB instance inside `dbms` for persistence.
 
 ### USER STORIES:
 - As an administrator I want to view all the users and search for them so I can manage their accounts.
@@ -113,9 +110,6 @@ Backend microservice handling user accounts, authentication, personal data manag
 
 ### PORTS: 
 5000:5000
-
-### DESCRIPTION:
-Implements all account-related operations through RESTful APIs, including signup, login, profile management, and reviews. Communicates with the MariaDB instance inside `dbms` for persistence.
 
 ### PERSISTENCE EVALUATION
 Stateless container. All persistent data is stored in `dbms`.
@@ -164,6 +158,7 @@ Connects to the MariaDB service hosted in `dbms` (IP 10.5.0.10).
 
 ### DESCRIPTION: 
 Backend microservice responsible for sending emails to users regarding their reservations and account activities.
+Listens for triggers from other microservices (like reservation confirmations or account alerts) to send notifications.
 
 ### USER STORIES:
 - As a user I want to receive a confirmation mail after I registered so that I know that all has gone fine.
@@ -175,9 +170,6 @@ Backend microservice responsible for sending emails to users regarding their res
 
 ### PORTS: 
 5001:5001
-
-### DESCRIPTION:
-Listens for triggers from other microservices (like reservation confirmations or account alerts) to send notifications.
 
 ### PERSISTENCE EVALUATION
 Stateless container. Persistent user's contact info are mantained into the dbms.
@@ -221,6 +213,7 @@ Connects to the MariaDB service hosted in `dbms` (IP 10.5.0.10).
 
 ### DESCRIPTION: 
 Core backend microservice managing parking spots, availability, and reservation logic.
+Handles the inventory of parking spots and the logic for booking them. It ensures no double bookings occur and serves search requests.
 
 ### USER STORIES:
 - As a driver I want a map in the homepage that displays all the available parking spots so that I can precisely choose the parking spot position.
@@ -243,9 +236,6 @@ Core backend microservice managing parking spots, availability, and reservation 
 
 ### PORTS: 
 5002:5002
-
-### DESCRIPTION:
-Handles the inventory of parking spots and the logic for booking them. It ensures no double bookings occur and serves search requests.
 
 ### PERSISTENCE EVALUATION
 Stateless container. Parking data and reservations are stored in `dbms`.
@@ -308,15 +298,13 @@ Connects to the MariaDB service hosted in `dbms` (IP 10.5.0.10).
 
 ### DESCRIPTION: 
 Backend microservice handling financial transactions payments for reservations and get analytics about that.
+Processes payments for bookings created in `park_ms`. It ensures transactions are recorded.
 
 ### USER STORIES:
 - As a driver I want to choose the payment method so that I can pay the parking spot in several digital ways
 
 ### PORTS: 
 5003:5003
-
-### DESCRIPTION:
-Processes payments for bookings created in `park_ms`. It ensures transactions are recorded.
 
 ### PERSISTENCE EVALUATION
 Stateless container. Transaction history is stored in `dbms`.
@@ -354,16 +342,15 @@ Connects to the MariaDB service hosted in `dbms` (IP 10.5.0.10).
 ## CONTAINER_NAME: ui_ms
 
 ### DESCRIPTION: 
-Frontend container serving static web content or a web application for EzParking users.
+Frontend container serving the web application for EzParking users.
+It communicates with backend APIs (like account_ms, park_ms) over HTTP.
 
 ### USER STORIES:
-To be completed in future.
+- As an administrator I want to be able to visualize the status of my application's microservices, so I know if there are some problems.
+- As a user I want to see all the functionalities of the app in my homepage so that I can access easily to them.
 
 ### PORTS: 
 80:80, 443:443
-
-### DESCRIPTION:
-Provides the user interface for accessing EzParking services. It communicates with backend APIs (like account_ms, park_ms) over HTTP.
 
 ### PERSISTENCE EVALUATION
 Stateless. No data persistence; static files are mounted as a volume.
