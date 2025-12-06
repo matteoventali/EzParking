@@ -54,7 +54,10 @@ function manageRequest(requestId, action)
                 removeCard(requestId, action);
             }
             else
-                alert("Error managing request: " + response.body.desc);
+            {
+                alert("Error managing request. \n Try refreshing the page.");
+                location.reload();
+            }
         }
         else
             alert("Error managing request: Server returned status " + this.status);

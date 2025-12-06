@@ -189,7 +189,10 @@ function performDelete()
             // Reload the page after deletion
             window.location.reload();
         else
-            alert("Error cancelling the reservation: " + response.body.desc);
+        {
+            alert("Error cancelling the reservation. \n Try refreshing the page.");
+            location.reload();
+        }
     };
     xhr.send("reservation_id=" + encodeURIComponent(currentReservationId) + "&new_status=cancelled");
 }
