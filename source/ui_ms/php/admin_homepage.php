@@ -27,8 +27,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
-
-    <script src="../js/manage_check_ms.js"></script>
 </head>
 
 <body style="background: linear-gradient(135deg, #f3ecff, #e8dcff);">
@@ -148,7 +146,7 @@
         </div>
     </section>
 
-
+    <script src="../js/manage_check_ms.js"></script>
     <?php
         $footer = file_get_contents(FOOTER);
         echo $footer;

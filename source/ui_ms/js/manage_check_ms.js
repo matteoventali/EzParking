@@ -53,6 +53,8 @@ const TEMPLATE_DOWN = `
 </div>
 `;
 
+let opened = [];
+
 // Wrapper function
 function updateDashboard()
 {
@@ -70,6 +72,14 @@ document.addEventListener('DOMContentLoaded', function ()
         const button = e.target.closest('.expand-btn');
         if (!button) return;
 
+        const name = button.closest('.service-item').querySelector('.service-name').textContent.trim();
+
+        if (opened.includes(name))
+            opened = opened.filter(item => item !== name);
+        else
+            opened.push(name);
+
+            
         e.preventDefault();
         const serviceItem = button.closest('.service-item');
         serviceItem.classList.toggle('expanded');
@@ -100,6 +110,14 @@ function fetchMicroservicesStatus()
 
             // Updating the counter of microservices active
             document.querySelector('.microservices-card .service-count').textContent = activeCount;
+
+            // Reopening the previously opened details
+            opened.forEach(name => {
+                const item = [...container.querySelectorAll('.service-item')]
+                    .find(el => el.querySelector('.service-name').textContent.trim() === name);
+
+                if (item) item.classList.add('expanded');
+            });
         })
         .catch(err => console.error('Error fetching microservices status:', err));
 }
