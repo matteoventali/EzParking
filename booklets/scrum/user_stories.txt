@@ -19,14 +19,14 @@
 18.	As a driver I want to search for a parking spot selecting a distance range so that I can find the parking space in the best possible position.
 19.	As a driver I want to book a parking spot for a specific interval of time and pay for it so that I can easily park my car.
 20.	As a driver I want to see all parking spots available when I search for them, in order to decide myself which I want to book.
-21.	As a driver I want to receive the booking confirmation by email when the resident accepts my request, so that I can check the reservation details.
-22.	As a driver I want to receive a notification when a resident rejects my request, so I can know whether I have to book another parking spot.
+- 21.	As a driver I want to receive the booking confirmation by email when the resident accepts my request, so that I can check the reservation details.
+- 22.	As a driver I want to receive a notification when a resident rejects my request, so I can know whether I have to book another parking spot.
 23.	As a driver I want to choose the payment method so that I can pay the parking spot in several digital ways.
 24.	As a driver I want to see the list of all my reservations requests, so that I can see which are still waiting to be accepted by the resident and which have been already accepted or rejected. 
 25.	As a driver I want to be able to delete a reservation request so that I can free a parking spot if I don’t need it anymore.
 26.	As a driver I want to rate and comment the parking service so that I can share my parking experience with other drivers.
 27.	As a driver I want to access my reputation score on my dashboard so I can know which parking spaces I can book.
-28. As a driver I want to receive the details of the resident after a booking so that I can contact them if needed.
+- 28. As a driver I want to receive the details of the resident after a booking so that I can contact them if needed.
 29.	As a driver I want to see all the reviews I have received from the residents so that I can evaluate my behaviour.
 30.	As a driver I want to rate the resident whose parking spot I booked, so that I can share my experience.
 31. As a user I want to receive a notifcation when other users leave me reviews and ratings so I can check immediately how was their experience.
@@ -39,6 +39,6 @@
 37.	As a resident I want to reject a reservation request so that I can have the full control of my parking spaces.
 38.	As a resident I want to set a reputation treshold to reserve a parking spot, so that I can give priority to higher reputation users.
 39.	As a resident I want to rate a driver that used one of my parking spots, so that I can share the related experience.
-40.	As a resident I want to receive notifications when a driver asks for a booking so that I’m informed about it.
-41.	As a resident I want to receive a notification if a driver cancels their booking request on my parking spot, so I can be updated in real time about the demand for my parking spots.
+- 40.	As  a resident I want to receive notifications when a driver asks for a booking so that I’m informed about it.
+- 41.	As a resident I want to receive a notification if a driver cancels their booking request on my parking spot, so I can be updated in real time about the demand for my parking spots.
 42. As a resident I want to see all the reviews I have received from the drivers so that I can evaluate my behaviour.
