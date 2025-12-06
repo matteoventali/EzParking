@@ -11,4 +11,5 @@ class User(db.Model):
     surname = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     lastlogin_ts = db.Column(db.TIMESTAMP, default=None)
-    last_position = db.Column(Geometry('POINT', srid=4326))  # WGS84 (lat, lon)
+    last_position = db.Column(Geometry('POINT', srid=4326))
+    phone = db.Column(db.String(15), nullable=False, unique=True)
