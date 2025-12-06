@@ -8,6 +8,7 @@ class Users {
     + email : VARCHAR(100) <<UNIQUE>>
     + lastlogin_ts : TIMESTAMP
     + last_position : POINT
+    + phone : VARCHAR(10)
 }
 
 @enduml
