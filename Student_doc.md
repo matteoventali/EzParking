@@ -210,7 +210,7 @@ Connects to the MariaDB service hosted in `dbms` (IP 10.5.0.10).
 	| **POST** | `/notifications/account_enabled` | Send notification when a user's account is re-enabled |
 
 - DB STRUCTURE:
-	**_Users_** : | **_id_** | lastlogin_ts | last_position | name | surname | email |
+	**_Users_** : | **_id_** | lastlogin_ts | last_position | name | surname | email | phone |
 
 ---
 
