@@ -36,11 +36,11 @@ parking management, with a web-based user interface.
 
 ## Microservices Structure
 
--   `account_ms` -- user account management\
--   `notification_ms` -- notifications management\
--   `park_ms` -- parking management\
--   `payment_ms` -- payments management\
--   `ui_ms` -- web user interface\
+-   `account_ms` -- user account management
+-   `notification_ms` -- notifications management
+-   `park_ms` -- parking management
+-   `payment_ms` -- payments management
+-   `ui_ms` -- web user interface
 -   `dbms` -- central database with initialization scripts
 
 ------------------------------------------------------------------------
