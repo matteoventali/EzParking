@@ -59,6 +59,17 @@ function manageRequest(requestId, action)
         else
             alert("Error managing request: Server returned status " + this.status);
     };
+
+    const btn_accept = document.querySelector(`button[data-action="accept"][onclick*="${requestId}"]`);
+    const btn_reject = document.querySelector(`button[data-action="reject"][onclick*="${requestId}"]`);
+    const btn_map = document.getElementById("mapButton_%ID%".replace("%ID%", requestId));
+    const loader = document.getElementById("loader_%ID%".replace("%ID%", requestId));
+    
+    // Hide buttons to prevent multiple clicks
+    btn_accept.style.display = "none";
+    btn_reject.style.display = "none";
+    btn_map.style.display = "none";
+    loader.style.display = "block";
     xhr.send(params.toString());
 }
 

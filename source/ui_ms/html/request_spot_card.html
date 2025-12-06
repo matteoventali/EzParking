@@ -23,10 +23,12 @@
         <button class="btn accept" onclick="manageRequest('%ID%', 'accept')" data-action="accept">Accept</button>
         <button class="btn reject" onclick="manageRequest('%ID%', 'reject')" data-action="reject">Reject</button>
 
-        <button class="btn map-booking-btn"
+        <button id="mapButton_%ID%" class="btn map-booking-btn"
                 data-lat="%LATITUDE%"
                 data-lon="%LONGITUDE%">
             <i class="fa-solid fa-map-location-dot"></i> Map
         </button>
+
+        <div class="loader" id="loader_%ID%" style="display: none"></div> 
     </div>
 </article>
