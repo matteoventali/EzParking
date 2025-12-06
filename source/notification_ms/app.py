@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from config import DB_CONFIG
 from models import db, User
-from sqlalchemy import func, text
+from sqlalchemy import func
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -60,12 +60,14 @@ def add_user():
         name = data["name"] 
         surname = data["surname"]
         email = data["email"]
+        phone = data["phone"]
 
         new_user = User(
             email = email, 
             id = id,
             name = name, 
-            surname = surname
+            surname = surname,
+            phone = phone
         )
 
         db.session.add(new_user)
@@ -78,7 +80,8 @@ def add_user():
                 'name': new_user.name,
                 'surname': new_user.surname,
                 'id': new_user.id,
-                'email': new_user.email 
+                'email': new_user.email, 
+                'phone': new_user.phone 
             }
         }), 201
 
@@ -331,7 +334,9 @@ def notify_reservation_accepted():
 
     content_vars = {
         "RESIDENT_EMAIL": resident.email,
+        "RESIDENT_PHONE": resident.phone, 
         "RESIDENT_NAME": resident.name,
+        "RESIDENT_SURNAME": resident.surname,
         "DRIVER_NAME": driver.name,
         "DATE": date,
         "END_TIME": end_time, 

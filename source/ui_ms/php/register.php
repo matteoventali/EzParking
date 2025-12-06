@@ -66,7 +66,8 @@
                     'id' => $last_id,
                     'name' => $name,
                     'surname' => $surname,
-                    'email' => $email
+                    'email' => $email, 
+                    'phone' => $phone
                 ];
                 $api_url = compose_url($protocol, $socket_notification_ms, '/notifications/users');
                 $response_notification = perform_rest_request('POST', $api_url, $payload);
