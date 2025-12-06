@@ -247,6 +247,7 @@ def notify_nearby_users():
         content_vars = {
                 "ADDRESS": address,
                 "RESIDENT_NAME": resident.name,
+                "RESIDENT_SURNAME": resident.surname,
                 "SPOT_NAME": spot_name, 
                 "SLOT_DATE": slot_date, 
                 "END_TIME": end_time,
@@ -373,13 +374,16 @@ def notify_reservation_rejected():
             "code": "1"
         }), 400
 
-    user_id = int(data["user_id"])
-    resident_id = int(data["resident_id"])
     spot_name = data["spot_name"]
     date = data["date"]
+    resident_id = int(data["resident_id"])
+    driver_id = int(data["user_id"])
+    end_time = data["end_time"]
+    start_time = data["start_time"]
+    address = data["address"]
 
-    user = User.query.filter_by(id=user_id).first()
-    if not user:
+    driver = User.query.filter_by(id=driver_id).first()
+    if not driver:
         return jsonify({
             "desc": "Invalid user",
             "code": "2"
@@ -393,14 +397,18 @@ def notify_reservation_rejected():
         }), 404
 
     content_vars = {
-        "USER_NAME": user.name,
         "RESIDENT_NAME": resident.name,
+        "RESIDENT_SURNAME": resident.surname,
+        "DRIVER_NAME": driver.name,
+        "DATE": date,
+        "END_TIME": end_time, 
+        "START_TIME": start_time, 
         "SPOT_NAME": spot_name,
-        "DATE": date
+        "SPOT_ADDRESS": address
     }
 
     send_email_async(
-        to_email=user.email,
+        to_email=driver.email,
         subject="Reservation Rejected",
         mail_content_path="templates/reservation_rejected_mail.html",
         content_vars=content_vars,
@@ -418,32 +426,48 @@ def notify_reservation_cancelled():
 
     data = request.get_json()
 
-    required = ["user_id", "date", "spot_name"]
+    required = ["user_id", "resident_id", "date", "spot_name"]
     if not all(k in data for k in required):
         return jsonify({
             "desc": "Missing parameters",
             "code": "1"
         }), 400
 
-    user_id = int(data["user_id"])
-    date = data["date"]
     spot_name = data["spot_name"]
+    date = data["date"]
+    resident_id = int(data["resident_id"])
+    driver_id = int(data["user_id"])
+    end_time = data["end_time"]
+    start_time = data["start_time"]
+    address = data["address"]
 
-    user = User.query.filter_by(id=user_id).first()
-    if not user:
+    driver = User.query.filter_by(id=driver_id).first()
+    if not driver:
         return jsonify({
             "desc": "Invalid user",
             "code": "2"
         }), 404
+    
+    resident = User.query.filter_by(id=resident_id).first()
+    if not driver:
+        return jsonify({
+            "desc": "Invalid resident",
+            "code": "3"
+        }), 404
 
     content_vars = {
-        "USER_NAME": user.name,
+        "RESIDENT_NAME": resident.name,
+        "RESIDENT_SURNAME": resident.surname,
+        "DRIVER_NAME": driver.name,
         "DATE": date,
-        "SPOT_NAME": spot_name
+        "END_TIME": end_time, 
+        "START_TIME": start_time, 
+        "SPOT_NAME": spot_name,
+        "SPOT_ADDRESS": address
     }
 
     send_email_async(
-        to_email=user.email,
+        to_email=resident.email,
         subject="Reservation Cancelled",
         mail_content_path="templates/reservation_cancelled_mail.html",
         content_vars=content_vars,
@@ -467,21 +491,21 @@ def notify_reservation_request():
             "code": "1"
         }), 400
 
-    user_id = int(data["user_id"])
+    resident_id = int(data["user_id"])
 
-    user = User.query.filter_by(id=user_id).first()
-    if not user:
+    resident = User.query.filter_by(id=resident_id).first()
+    if not resident:
         return jsonify({
             "desc": "Invalid user",
             "code": "2"
         }), 404
 
     content_vars = {
-        "USER_NAME": user.name
+        "RESIDENT_NAME": resident.name,
     }
 
     send_email_async(
-        to_email=user.email,
+        to_email=resident.email,
         subject="Reservation Request",
         mail_content_path="templates/new_request_mail.html",
         content_vars=content_vars,
@@ -515,7 +539,10 @@ def notify_registration_successfull():
         }), 404
 
     content_vars = {
-        "USER_NAME": user.name
+        "USER_NAME": user.name,
+        "USER_SURNAME": user.surname,  
+        "USER_EMAIL": user.email, 
+        "USER_PHONE": user.phone,
     }
 
     send_email_async(
@@ -556,7 +583,8 @@ def notify_received_review():
     content_vars = {
         "USER_NAME": target_user.name,
         "REVIEWER_NAME": reviewer.name,
-        "SPOT_NAME": spot_name,
+        "REVIEWER_SURNAME": reviewer.surname, 
+        "SPOT_NAME": spot_name
     }
 
     send_email_async(

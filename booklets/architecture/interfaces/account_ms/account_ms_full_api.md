@@ -5,6 +5,7 @@ Comprehensive documentation for all REST endpoints of the **Account Microservice
 ---
 
 ## Base URL
+
 ```
 http://10.5.0.11:5000/
 ```
@@ -12,23 +13,28 @@ http://10.5.0.11:5000/
 ---
 
 ## Root
+
 ### `GET /`
-**Description:** Service health check.  
-**Authentication:** None  
+
+**Description:** Service health check.
+**Authentication:** None
 **Responses:**
+
 ```json
-// 200 OK
 { "message": "Service is active" }
 ```
 
 ---
 
-## AUTHENTICATION
+# AUTHENTICATION
 
-### `POST /auth/signup`
-**Description:** Register a new user.  
-**Authentication:** None  
-**Request JSON:**
+## `POST /auth/signup`
+
+**Description:** Register a new user.
+**Authentication:** None
+
+### Request JSON
+
 ```json
 {
   "name": "",
@@ -39,7 +45,9 @@ http://10.5.0.11:5000/
   "cc_number": ""
 }
 ```
-**Responses:**
+
+### Responses
+
 ```json
 // 201 Created
 {
@@ -69,17 +77,22 @@ http://10.5.0.11:5000/
 
 ---
 
-### `POST /auth/login`
-**Description:** Authenticate user credentials and generate a session token.  
-**Authentication:** None  
-**Request JSON:**
+## `POST /auth/login`
+
+**Description:** Authenticate user credentials and generate a session token.
+**Authentication:** None
+
+### Request JSON
+
 ```json
 {
   "email": "",
   "password": ""
 }
 ```
-**Responses:**
+
+### Responses
+
 ```json
 // 200 OK
 {
@@ -113,10 +126,13 @@ http://10.5.0.11:5000/
 
 ---
 
-### `GET /auth/logout`
-**Description:** Logout the authenticated user and invalidate their session token.  
-**Authentication:** User (requires `Authorization` header)  
-**Responses:**
+## `GET /auth/logout`
+
+**Description:** Logout the authenticated user and invalidate their session token.
+**Authentication:** User
+
+### Responses
+
 ```json
 // 200 OK
 { "desc": "Logout successful", "code": "0" }
@@ -130,10 +146,13 @@ http://10.5.0.11:5000/
 
 ---
 
-### `GET /auth/status`
-**Description:** Check if the session token is still valid.  
-**Authentication:** User  
-**Responses:**
+## `GET /auth/status`
+
+**Description:** Check if the session token is still valid.
+**Authentication:** User
+
+### Responses
+
 ```json
 // 200 OK
 { "desc": "Online", "code": "0" }
@@ -150,12 +169,15 @@ http://10.5.0.11:5000/
 
 ---
 
-## 👤 PERSONAL DATA
+# PERSONAL DATA
 
-### `GET /pdata`
-**Description:** Retrieve personal user data and average score from reviews.  
-**Authentication:** User  
-**Responses:**
+## `GET /pdata`
+
+**Description:** Retrieve personal user data and average review score.
+**Authentication:** User
+
+### Responses
+
 ```json
 // 200 OK
 {
@@ -166,6 +188,7 @@ http://10.5.0.11:5000/
     "surname": "",
     "email": "",
     "phone": "",
+    "cc_number": "",
     "score": 0
   }
 }
@@ -179,19 +202,25 @@ http://10.5.0.11:5000/
 
 ---
 
-### `PUT /pdata`
-**Description:** Update user information (name, surname, phone, password).  
-**Authentication:** User  
-**Request JSON:**
+## `PUT /pdata`
+
+**Description:** Update user information.
+**Authentication:** User
+
+### Request JSON
+
 ```json
 {
   "name": "",
   "surname": "",
   "phone": "",
-  "password": ""
+  "password": "",
+  "cc_number": ""
 }
 ```
-**Responses:**
+
+### Responses
+
 ```json
 // 200 OK
 {
@@ -210,23 +239,27 @@ http://10.5.0.11:5000/
 // 400 Bad Request
 { "desc": "Missing or invalid Authorization header", "code": "1" }
 { "desc": "Missing request body", "code": "3" }
-{ "desc": "No valid fields to update", "code": "5" }
+{ "desc": "No valid fields to update", "code": "6" }
 
 // 401 Unauthorized
 { "desc": "Invalid session token", "code": "2" }
 
 // 409 Conflict
 { "desc": "Phone already registered", "code": "4" }
+{ "desc": "Credit card already registered", "code": "5" }
 ```
 
 ---
 
-## REVIEWS
+# REVIEWS
 
-### `GET /reviews`
-**Description:** Retrieve all reviews written and received by the user.  
-**Authentication:** User  
-**Responses:**
+## `GET /reviews`
+
+**Description:** Retrieve all reviews written and received by the authenticated user.
+**Authentication:** User
+
+### Responses
+
 ```json
 // 200 OK
 {
@@ -248,10 +281,38 @@ http://10.5.0.11:5000/
 
 ---
 
-### `POST /reviews`
-**Description:** Submit a review for another user.  
-**Authentication:** User  
-**Request JSON:**
+## `GET /reviews/{user_id}`
+
+**Description:** Retrieve all reviews for a specific user.
+**Authentication:** User
+
+### Responses
+
+```json
+// 200 OK
+{
+  "desc": "Reviews retrieved successfully",
+  "code": "0",
+  "written_reviews": [],
+  "received_reviews": []
+}
+
+// 400 Bad Request
+{ "desc": "Missing or invalid Authorization header", "code": "1" }
+
+// 401 Unauthorized
+{ "desc": "Invalid session token", "code": "2" }
+```
+
+---
+
+## `POST /reviews`
+
+**Description:** Submit a new review.
+**Authentication:** User
+
+### Request JSON
+
 ```json
 {
   "target_id": 0,
@@ -260,7 +321,9 @@ http://10.5.0.11:5000/
   "review_description": ""
 }
 ```
-**Responses:**
+
+### Responses
+
 ```json
 // 201 Created
 {
@@ -298,14 +361,20 @@ http://10.5.0.11:5000/
 
 ---
 
-## ADMIN ENDPOINTS
+# ADMIN ENDPOINTS
 
-### `GET /users`
-**Description:** Retrieve list of all users.  
-**Authentication:** Admin  
-**Responses:**
-```json
+## `GET /users`
+
+**Description:** Retrieve list of all users.
+**Authentication:** Admin
+
+### Responses
+
+````json
 // 200 OK
+{
+
+```json
 {
   "desc": "Users list retrieved successfully",
   "code": "0",
@@ -320,14 +389,17 @@ http://10.5.0.11:5000/
 
 // 403 Forbidden
 { "desc": "Access denied: admin only", "code": "3" }
-```
+````
 
 ---
 
-### `GET /users/{user_id}`
-**Description:** Retrieve a detailed dashboard for a specific user.  
-**Authentication:** Admin  
-**Responses:**
+## `GET /users/{user_id}`
+
+**Description:** Retrieve dashboard for a specific user.
+**Authentication:** Admin
+
+### Responses
+
 ```json
 // 200 OK
 {
@@ -362,10 +434,13 @@ http://10.5.0.11:5000/
 
 ---
 
-### `GET /users/{user_id}/enable`
-**Description:** Enable a user account.  
-**Authentication:** Admin  
-**Responses:**
+## `GET /users/{user_id}/enable`
+
+**Description:** Enable a user account.
+**Authentication:** Admin
+
+### Responses
+
 ```json
 // 200 OK
 {
@@ -402,10 +477,13 @@ http://10.5.0.11:5000/
 
 ---
 
-### `GET /users/{user_id}/disable`
-**Description:** Disable a user account.  
-**Authentication:** Admin  
-**Responses:**
+## `GET /users/{user_id}/disable`
+
+**Description:** Disable a user account.
+**Authentication:** Admin
+
+### Responses
+
 ```json
 // 200 OK
 {
@@ -440,17 +518,21 @@ http://10.5.0.11:5000/
 { "desc": "<error>", "code": "99" }
 ```
 
-### `GET /users/active_count`
-**Description:** Get the number of users currenty logged into the system
-**Authentication:** Admin  
-**Responses:**
+---
+
+## `GET /users/active_count`
+
+**Description:** Get the number of users currently logged into the system.
+**Authentication:** Admin
+
+### Responses
 
 ```json
 // 200 OK
 {
   "desc": "Active user count retrieved successfully",
-  "code": '0',
-  "active_user_count": active_user_count
+  "code": "0",
+  "active_user_count": 0
 }
 
 // 400 Bad Request
@@ -461,9 +543,7 @@ http://10.5.0.11:5000/
 
 // 403 Forbidden
 { "desc": "Access denied: admin only", "code": "3" }
+```
 
 ---
 
-**Author:** EzParking Development Team  
-**Module:** Account Microservice  
-**Language:** Python (Flask + SQLAlchemy)

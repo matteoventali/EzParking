@@ -1,2 +1,64 @@
-<p>Hello %USER_NAME%, we inform you that your booking request for %SPOT_NAME% on %DATE% has been rejected by %RESIDENT_NAME%</p>
-<p style="font-weight: bolder;">The EZParking Team</p>
+<div style="
+    text-align: center;
+    font-family: 'Poppins', Helvetica, Arial, sans-serif;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.6;
+">
+
+    <p style="margin: 0 0 18px 0;">
+        Hello %DRIVER_NAME%, we inform you that your booking request for  
+        <span style="color: #5e25a5; font-weight: 600;">%SPOT_NAME%</span>
+        on <span style="color: #5e25a5; font-weight: 600;">%DATE%</span>  
+        has been rejected by 
+        <span style="color: #5e25a5; font-weight: 600;">%RESIDENT_NAME% %RESIDENT_SURNAME%</span>.
+    </p>
+
+    <!-- INFO BOX -->
+    <div style="
+        background: #f6f1ff;
+        border-left: 5px solid #4a1788;
+        padding: 16px 18px;
+        margin: 18px auto 0 auto;
+        border-radius: 8px;
+        text-align: left;
+        font-size: 15px;
+        line-height: 1.7;
+        max-width: 480px;
+    ">
+        <div style="margin-bottom: 10px;">
+            <strong style="color:#5e25a5;">Parking Spot:</strong>
+            <span>%SPOT_NAME%</span>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <strong style="color:#5e25a5;">Address:</strong>
+            <span>%SPOT_ADDRESS%</span>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <strong style="color:#5e25a5;">Date:</strong>
+            <span>%DATE%</span>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <strong style="color:#5e25a5;">Time Window:</strong>
+            <span>%START_TIME% → %END_TIME%</span>
+        </div>
+
+        <div>
+            <strong style="color:#5e25a5;">Resident:</strong>
+            <span>%RESIDENT_NAME% %RESIDENT_SURNAME%</span>
+        </div>
+    </div>
+
+    <p style="
+        margin-top: 22px;
+        font-weight: 600;
+        font-size: 17px;
+        color: #5e25a5;
+    ">
+        The EzParking Team 🚗
+    </p>
+
+</div>

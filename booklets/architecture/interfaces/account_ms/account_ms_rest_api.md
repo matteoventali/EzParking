@@ -2,17 +2,18 @@
 ### Endpoints list
 
 | **Method** | **Endpoint** | **Description** |
-|:------------|:-------------|:----------------|
-| **POST** | `/auth/signup` | Signup of a new user |
-| **POST** | `/auth/login` | Login |
-| **GET** | `/auth/logout` | Logout |
-| **GET** | `/auth/status` | Get status of the current session |
-| **PUT** | `/pdata` | Update personal user's data |
-| **GET** | `/pdata` | Obtain personal user's data |
-| **GET** | `/reviews` | Get the list of reviews that hit the invoker |
-| **POST** | `/reviews` | Add a new review from the invoker  |
-| **GET** | `/users` | Get the list of all users in the system **_ONLY FOR ADMIN_** |
-| **GET** | `/users/{user_id}` | Get the dashboard of the selected user **_ONLY FOR ADMIN_** |
-| **GET** | `/users/{user_id}/enable` | Enable the account of the selected user **_ONLY FOR ADMIN_** |
-| **GET** | `/users/{user_id}/disable` | Disable the account of the selected user **_ONLY FOR ADMIN_** |
-| **GET** | `/users/active_count` | Get the numbers of users currently logged into the system **_ONLY FOR ADMIN_** |
+|:----------:|:-------------|:----------------|
+| **POST**   | `/auth/signup`                    | Register a new user |
+| **POST**   | `/auth/login`                     | Authenticate user and generate session token |
+| **GET**    | `/auth/logout`                    | Logout the user and invalidate session token |
+| **GET**    | `/auth/status`                    | Check validity of the session token |
+| **GET**    | `/pdata`                          | Retrieve personal user data and score |
+| **PUT**    | `/pdata`                          | Update personal user data |
+| **GET**    | `/reviews`                        | Retrieve reviews written and received by the user |
+| **GET**    | `/reviews/{user_id}`              | Retrieve reviews for a specific user |
+| **POST**   | `/reviews`                        | Submit a new review |
+| **GET**    | `/users`                          | Retrieve list of all users (admin only) |
+| **GET**    | `/users/{user_id}`                | Retrieve dashboard for a specific user |
+| **GET**    | `/users/{user_id}/enable`         | Enable a user account (admin only) |
+| **GET**    | `/users/{user_id}/disable`        | Disable a user account (admin only) |
+| **GET**    | `/users/active_count`             | Count users currently logged in (admin only) |

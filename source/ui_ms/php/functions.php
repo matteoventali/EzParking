@@ -302,7 +302,7 @@
         
         // Call notification_ms to notify the driver
         $notification_payload = [
-            'user_id' => $reservation["driver_id"],
+            "user_id" => $reservation["driver_id"],
             "resident_id" => $reservation["resident_id"],
             "start_time" => $reservation["start_time"],
             "end_time" => $reservation["end_time"],

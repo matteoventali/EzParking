@@ -1,15 +1,123 @@
-<p>Hello %DRIVER_NAME%, your booking request has been accepted by %RESIDENT_NAME% Here are the details:</p>
-<div class="details">
-    <ul class="details-list">
-        <li>Parking Spot: <span>%SPOT_NAME%</span></li>                        
-        <li>Address: <span>%SPOT_ADDRESS%</span></li>
-        <li>Parking Spot Owner: <span>%RESIDENT_NAME%</span></li>                        
-        <li>Reservation Date: <span>%DATE%</span></li>
-        <li>Start Time: <span>%START_TIME%</span></li>
-        <li>End Time: <span>%END_TIME%</span></li>
-        <li>License plate: <span>%PLATE%</span></li>
-        <li>Total Cost: <span>%TOT_COST%</span></li>
-    </ul>                       
+<div style="
+    max-width: 800px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+    font-family: 'Poppins', Helvetica, Arial, sans-serif;
+    text-align: center;
+    padding: 28px 22px;
+">
+
+    <!-- TITLE -->
+    <div style="
+        color: #333;
+        font-size: 17px;
+        font-weight: 500;
+        margin-bottom: 22px;
+        line-height: 1.45;
+    ">
+        Hello %DRIVER_NAME%, your booking request has been accepted by  
+        <strong style="color:#5e25a5;">%RESIDENT_NAME% %RESIDENT_SURNAME%</strong>!
+        <br>Here are the details:
+    </div>
+
+    <!-- BOX 1 — PARKING SPOT DETAILS -->
+    <div style="
+        background: #f6f1ff;
+        border-left: 5px solid #4a1788;
+        padding: 16px 18px;
+        margin-top: 12px;
+        border-radius: 8px;
+        text-align: left;
+        font-size: 15px;
+        line-height: 1.7;
+    ">
+        <div style="margin-bottom: 10px;">
+            <strong style="color:#5e25a5;">Parking Spot:</strong>
+            <span>%SPOT_NAME%</span>
+        </div>
+
+        <div style="margin-bottom: 0;">
+            <strong style="color:#5e25a5;">Address:</strong>
+            <span>%SPOT_ADDRESS%</span>
+        </div>
+    </div>
+
+    <!-- BOX 2 — RESIDENT / OWNER DETAILS -->
+    <div style="
+        background: #f6f1ff;
+        border-left: 5px solid #4a1788;
+        padding: 16px 18px;
+        margin-top: 18px;
+        border-radius: 8px;
+        text-align: left;
+        font-size: 15px;
+        line-height: 1.7;
+    ">
+        <div style="margin-bottom: 10px;">
+            <strong style="color:#5e25a5;">Owner:</strong>
+            <span>%RESIDENT_NAME% %RESIDENT_SURNAME%</span>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <strong style="color:#5e25a5;">Email:</strong>
+            <span>%RESIDENT_EMAIL%</span>
+        </div>
+
+        <div style="margin-bottom: 0;">
+            <strong style="color:#5e25a5;">Phone:</strong>
+            <span>%RESIDENT_PHONE%</span>
+        </div>
+    </div>
+
+    <!-- BOX 3 — RESERVATION DETAILS -->
+    <div style="
+        background: #f6f1ff;
+        border-left: 5px solid #4a1788;
+        padding: 16px 18px;
+        margin-top: 18px;
+        border-radius: 8px;
+        text-align: left;
+        font-size: 15px;
+        line-height: 1.7;
+    ">
+        <div style="margin-bottom: 10px;">
+            <strong style="color:#5e25a5;">Reservation Date:</strong>
+            <span>%DATE%</span>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <strong style="color:#5e25a5;">Start Time:</strong>
+            <span>%START_TIME%</span>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <strong style="color:#5e25a5;">End Time:</strong>
+            <span>%END_TIME%</span>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <strong style="color:#5e25a5;">License Plate:</strong>
+            <span>%PLATE%</span>
+        </div>
+
+        <div style="margin-bottom: 0;">
+            <strong style="color:#5e25a5;">Total Cost:</strong>
+            <span>%TOT_COST% €</span>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="
+        margin-top: 26px;
+        font-weight: 600;
+        color: #5e25a5;
+        font-size: 16px;
+    ">
+        Thank you for choosing EzParking!  
+        <br>We hope to see you again soon 🚗
+    </div>
+
 </div>
-<p>Thank you for choosing us! We hope to see you soon again.</p>
-<p style="font-weight: bolder;">The EZParking Team</p>
