@@ -136,20 +136,22 @@ Connects to the MariaDB service hosted in `dbms` (IP 10.5.0.10).
 
 - ENDPOINTS:
 	| **Method** | **Endpoint** | **Description** |
-	|------------|-------------|----------------|
-	| **POST** | `/auth/signup` | Signup of a new user |
-	| **POST** | `/auth/login` | Login |
-	| **GET** | `/auth/logout` | Logout |
-	| **GET** | `/auth/status` | Get status of the current session |
-	| **PUT** | `/pdata` | Update personal user's data |
-	| **GET** | `/pdata` | Obtain personal user's data |
-	| **GET** | `/reviews` | Get the list of reviews that hit the invoker |
-	| **POST** | `/reviews` | Add a new review from the invoker  |
-	| **GET** | `/users` | Get the list of all users in the system **_ONLY FOR ADMIN_** |
-	| **GET** | `/users/{user_id}` | Get the dashboard of the selected user **_ONLY FOR ADMIN_** |
-	| **GET** | `/users/{user_id}/enable` | Enable the account of the selected user **_ONLY FOR ADMIN_** |
-	| **GET** | `/users/{user_id}/disable` | Disable the account of the selected user **_ONLY FOR ADMIN_** |
-	| **GET** | `/users/active_count` | Get the numbers of users currently logged into the system **_ONLY FOR ADMIN_** |
+	|:----------:|:-------------|:----------------|
+	| **POST**   | `/auth/signup`                    | Register a new user |
+	| **POST**   | `/auth/login`                     | Authenticate user and generate session token |
+	| **GET**    | `/auth/logout`                    | Logout the user and invalidate session token |
+	| **GET**    | `/auth/status`                    | Check validity of the session token |
+	| **GET**    | `/pdata`                          | Retrieve personal user data and score |
+	| **PUT**    | `/pdata`                          | Update personal user data |
+	| **GET**    | `/reviews`                        | Retrieve reviews written and received by the user |
+	| **GET**    | `/reviews/{user_id}`              | Retrieve reviews for a specific user |
+	| **POST**   | `/reviews`                        | Submit a new review |
+	| **GET**    | `/users`                          | Retrieve list of all users (admin only) |
+	| **GET**    | `/users/{user_id}`                | Retrieve dashboard for a specific user |
+	| **GET**    | `/users/{user_id}/enable`         | Enable a user account (admin only) |
+	| **GET**    | `/users/{user_id}/disable`        | Disable a user account (admin only) |
+	| **GET**    | `/users/active_count`             | Count users currently logged in (admin only) |
+
 
 - DB STRUCTURE:
 	**_Users_** : | **_id_** | name | surname | password_hash | email | lastlogin_ts | session_token | phone | user_role | cc_number |
@@ -196,7 +198,7 @@ Connects to the MariaDB service hosted in `dbms` (IP 10.5.0.10).
 
 - ENDPOINTS:
 	| **Method** | **Endpoint** | **Description** |
-	|:-----------|-------------|----------------|
+	|:------------|:-------------|:----------------|
 	| **POST** | `/notifications/users` | Insert a new user when registration occurs |
 	| **PUT** | `/user/{user_id}` | Update user's last login timestamp and last known position |
 	| **POST** | `/notifications/nearby_alert` | Send notifications to users near a newly available parking spot |
@@ -208,6 +210,7 @@ Connects to the MariaDB service hosted in `dbms` (IP 10.5.0.10).
 	| **POST** | `/notifications/received_review` | Send notification when a user receives a new review |
 	| **POST** | `/notifications/account_disabled` | Send notification when a user's account is disabled |
 	| **POST** | `/notifications/account_enabled` | Send notification when a user's account is re-enabled |
+
 
 - DB STRUCTURE:
 	**_Users_** : | **_id_** | lastlogin_ts | last_position | name | surname | email | phone |
@@ -263,7 +266,7 @@ Connects to the MariaDB service hosted in `dbms` (IP 10.5.0.10).
 
 - ENDPOINTS:
 	| Method | Endpoint | Description |
-	|--------|----------|-------------|
+	|:--------|:----------|:-------------|
 	| **POST** | `/users` | Add a user in the park_ms db. |
 	| **GET** | `/users/{user_id}/statistics` | Retrieve statistics for a specific user (owned spots, reservations, etc.). |
 	| **GET** | `/parking_spots/{id}` | Retrieve details of a specific parking spot. |
@@ -334,7 +337,7 @@ Connects to the MariaDB service hosted in `dbms` (IP 10.5.0.10).
 
 - ENDPOINTS:
 	| **Method** | **Endpoint** | **Description** |
-	|------------|-------------|----------------|
+	|:------------|:-------------|:----------------|
 	| **POST** | `/payments/users` | Add a user in the payment_ms database |
 	| **POST** | `/payments/request` | Register a new payment for a reservation made by a user |
 	| **GET** | `/payments/user/{user_id}/earnings` | Retrieve total earnings and payment history for a specific user |
