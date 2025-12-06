@@ -267,7 +267,7 @@
     // Function to change the status of a reservation
     function change_status_reservation($id_reservation, $new_status)
     {
-        global $protocol, $socket_park_ms, $socket_payment_ms, $socket_notification_ms;
+        global $protocol, $socket_park_ms, $socket_payment_ms, $socket_notification_ms, $socket_account_ms;
 
         // Perform the status change
         $payload = [
@@ -299,11 +299,19 @@
 
         // Obtatining the address
         $address = get_address_from_coordinates($reservation["parking_spot_latitude"], $reservation["parking_spot_longitude"]);
+
+        // Obtaining the resident info
+        $api_url = compose_url($protocol, $socket_account_ms, '/users/' . $reservation["resident_id"]);
+        $resident_response = perform_rest_request('GET', $api_url, null, $_SESSION['session_token']);
         
         // Call notification_ms to notify the driver
         $notification_payload = [
             'user_id' => $reservation["driver_id"],
             "resident_id" => $reservation["resident_id"],
+            "resident_email" => $resident_response["body"]["user"]["email"],
+            "resident_phone" => $resident_response["body"]["user"]["phone"],
+            "resident_name" => $resident_response["body"]["user"]["name"],
+            "resident_surname" => $resident_response["body"]["user"]["surname"],
             "start_time" => $reservation["start_time"],
             "end_time" => $reservation["end_time"],
             "plate" => $reservation["plate"],

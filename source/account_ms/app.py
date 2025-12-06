@@ -301,6 +301,52 @@ def update_personal_data():
     }), 200
 
 
+@app.route("/users/<int:user_id>", methods=["GET"])
+def get_user_dashboard(user_id):
+    auth_header = request.headers.get('Authorization')
+
+    if not auth_header:
+        return jsonify({'desc': 'Missing or invalid Authorization header',
+                        'code': '1'}), 400
+
+    session_token = auth_header
+    admin_user = User.query.filter_by(session_token=session_token).first()
+
+    if not admin_user:
+        return jsonify({'desc': 'Invalid session token',
+                        'code': '2'}), 401
+
+    target_user = User.query.filter_by(id=user_id).first()
+
+    if not target_user:
+        return jsonify({'desc': 'User not found',
+                        'code': '4'}), 404
+
+    reviews = list_reviews(target_user.id)
+    received_reviews = reviews["received_reviews"]
+
+    if ( len(received_reviews) == 0 ):
+        score = 0
+    else:
+        score = statistics.mean([r["star"] for r in received_reviews])
+    
+    return jsonify({
+        'desc': 'User dashboard retrieved successfully',
+        'code': '0',
+        'user': {
+            'id': target_user.id,
+            'name': target_user.name,
+            'surname': target_user.surname,
+            'email': target_user.email,
+            'phone': target_user.phone,
+            'role': target_user.user_role,
+            'score': score,
+            'status': target_user.account_status
+        },
+        'received_reviews': reviews["received_reviews"],
+        'written_reviews': reviews["written_reviews"]
+    }), 200
+
 
 # ------------ REVIEWS ------------
 def list_reviews(user_id):
@@ -344,6 +390,7 @@ def list_reviews(user_id):
             'written_reviews': written_reviews,
             'received_reviews': received_reviews
             }
+
 
 @app.route("/reviews", methods=["GET"])
 def get_review():
@@ -509,55 +556,6 @@ def get_users_list():
         'users': users_list
     }), 200
 
-@app.route("/users/<int:user_id>", methods=["GET"])
-def get_user_dashboard(user_id):
-    auth_header = request.headers.get('Authorization')
-
-    if not auth_header:
-        return jsonify({'desc': 'Missing or invalid Authorization header',
-                        'code': '1'}), 400
-
-    session_token = auth_header
-    admin_user = User.query.filter_by(session_token=session_token).first()
-
-    if not admin_user:
-        return jsonify({'desc': 'Invalid session token',
-                        'code': '2'}), 401
-
-    #if admin_user.user_role != 'admin':
-    #    return jsonify({'desc': 'Access denied: admin only',
-    #                    'code': '3'}), 403
-
-    target_user = User.query.filter_by(id=user_id).first()
-
-    if not target_user:
-        return jsonify({'desc': 'User not found',
-                        'code': '4'}), 404
-
-    reviews = list_reviews(target_user.id)
-    received_reviews = reviews["received_reviews"]
-
-    if ( len(received_reviews) == 0 ):
-        score = 0
-    else:
-        score = statistics.mean([r["star"] for r in received_reviews])
-    
-    return jsonify({
-        'desc': 'User dashboard retrieved successfully',
-        'code': '0',
-        'user': {
-            'id': target_user.id,
-            'name': target_user.name,
-            'surname': target_user.surname,
-            'email': target_user.email,
-            'phone': target_user.phone,
-            'role': target_user.user_role,
-            'score': score,
-            'status': target_user.account_status
-        },
-        'received_reviews': reviews["received_reviews"],
-        'written_reviews': reviews["written_reviews"]
-    }), 200
 
 @app.route("/users/<int:user_id>/enable", methods=["GET"])
 def enable_user_account(user_id):
@@ -615,6 +613,7 @@ def enable_user_account(user_id):
         return jsonify({'desc': f'{str(e)}',
                         'code': '99',}), 500
 
+
 @app.route("/users/<int:user_id>/disable", methods=["GET"])
 def disable_user_account(user_id):
     auth_header = request.headers.get('Authorization')
@@ -670,6 +669,7 @@ def disable_user_account(user_id):
         db.session.rollback()
         return jsonify({'desc': f'{str(e)}',
                         'code': '99',}), 500 
+
 
 @app.route("/users/active_count", methods=["GET"])
 def get_count_user():
