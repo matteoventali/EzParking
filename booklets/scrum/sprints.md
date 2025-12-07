@@ -15,7 +15,7 @@ The following section describes the sprint-based organization of the EzParking p
 ---
 
 ## 2nd Sprint - Account managment
-> Enable users to create and manage their accounts, while providing the admin with basic visibility.
+> Enable users to create and manage their accounts.
 
 **Involved user stories:**
 
@@ -40,11 +40,11 @@ The following section describes the sprint-based organization of the EzParking p
 
 **Involved user stories:**
 
-- Insertion of a parking spot (#30)
+- Insertion of a parking spot (#32)
 
-- Assignment of labels to parking spots (#31)
+- Assignment of labels to parking spots (#33)
 
-- Possibility to add availability time slots to parking spot (#32)
+- Possibility to add availability time slots to parking spot (#34)
 
 - Resident real time dashboard to visualize status of their parking spots (#11, #32)
 
@@ -60,11 +60,11 @@ The following section describes the sprint-based organization of the EzParking p
 
 - Search for available parking spots (#15)
 
-- Search filtering by labels (#16)
+- Search filtering by labels (#17)
 
-- Search parking spots according to a distance range (#17)
+- Search parking spots according to a distance range (#18)
 
-- View all available parking spots when searching (#19)
+- View all available parking spots when searching (#20)
 
 - Homepage with functionalities list (#10)
 
@@ -81,21 +81,21 @@ The following section describes the sprint-based organization of the EzParking p
 
 - View parking spots from map (#14)
 
-- Booking parking spots for specific time intervals (#18)  
+- Booking parking spots for specific time intervals (#19)  
 
-- Resident's booking request queue to manage the incoming reservations (#33)
+- Resident's booking request queue to manage the incoming reservations (#35)
 
-- Possibility for resident to reject a reservation request from a driver (#35)
+- Possibility for resident to reject a reservation request from a driver (#37)
 
-- Drivers' info inside the reservation request (#34)
+- Drivers' info inside the reservation request (#36)
 
-- Allowing drivers to cancel reservations requests (#24)  
+- Allowing drivers to cancel reservations requests (#25)  
 
-- Implementing payment system (#22) 
+- Implementing payment system (#19, #23) 
 
 - Calendar view for parking spots availability and bookings (#13)
 
-- List driver's reservation requests (#23)
+- List driver's reservation requests (#24)
 
 **Dependencies:** User sessions must be available and functional (_Sprint 2_), Parking spots must be searchable and present(_Sprint 3_, _Sprint 4_).
 
@@ -108,17 +108,23 @@ The following section describes the sprint-based organization of the EzParking p
 
 **Involved user stories:**
 
-- Notification of new booking request (#38) 
+- Notification of new booking request (#40) 
 
-- Sending booking confirmation emails to drivers (#20)  
+- Booking confirmation emails to drivers (#21)  
 
-- Providing resident contact details after a confirmed booking (#20, #27)
+- Providing resident contact details after a confirmed booking (#21, #28)
 
-- Notification of rejected booking request (#21)
+- Notification of rejected booking request (#22)
 
-- Notification of cancelled booking request (#39)
+- Notification of cancelled booking request (#41)
+
+- Notification for near parking spot available (#16)
 
 - Confirmation of sign up  (#5)
+
+- Notify users if their account has been disabled/enabled (#12)
+
+- Notification when receiving a review and rating from other users (#31)
 
 **Dependencies:** User sessions must be available and functional (_Sprint 2_), 
 Parking spots must be searchable, bookable and residents must be able to accept the reservation's requests ( _Sprint 3_, _Sprint 4_, _Sprint 5_).
@@ -132,19 +138,21 @@ Parking spots must be searchable, bookable and residents must be able to accept 
 
 **Involved user stories:**
 
-- Drivers can rate the parking service (#29, #25)
+- Drivers can rate the parking service (#26, #30)
 
-- Residents can rate the drivers (#37)
+- Residents can rate the drivers (#39)
 
-- Reputation threshold to perform reservations (#36)
+- Reputation threshold to perform reservations (#38)
 
-- Reputation score available into the user's dashboard (#26)
+- Reputation score available into the user's dashboard (#27)
 
-- Received reviews available to read on user's dashboard (#28, #40)
+- Received reviews available to read on user's dashboard (#29, #42)
+
+- Notification for received review and rating (#39)
 
 - Finalization of users dashboard view with statistics (#11)
 
-**Dependencies:** User sessions must be available and functional (_Sprint 2_), Parking spots must be bookable and residents must be able to accept the reservation's requests (_Sprint 3, Sprint 4_).
+**Dependencies:** User sessions must be available and functional (_Sprint 2_), Parking spots must be bookable and residents must be able to accept the reservation's requests (_Sprint 3, Sprint 4_), Notification service must be available (_Sprint 5_).
 
 ---
 
@@ -163,7 +171,7 @@ Parking spots must be searchable, bookable and residents must be able to accept 
 
 - Allowing admins to enable and disable users (#3)
 
-- Notify users if their account has been disabled/enabled (#12)
+
 
 **Dependencies:** User sessions must be available and functional (_Sprint 2_), Notifications, reviews and reputation have to be available (_Sprint 6_, _Sprint 7_).
 
