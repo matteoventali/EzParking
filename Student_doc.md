@@ -22,7 +22,7 @@ The most important use cases are:
 
 # USER STORIES
 | No | User story |
-|---|---|
+|:---:|---|
 | 1 | As an administrator I want to be able to visualize the status of my application's microservices, so I know if there are some problems. |
 | 2 | As an administrator I want to view all the users and search for them so I can manage their accounts. |
 | 3 | As an administrator I want to have access to a user’s information so I can decide to disable or enable their account. |
