@@ -128,7 +128,7 @@ Parking spots must be searchable, bookable and residents must be able to accept 
 ## 7th Sprint — Reputation and rating system
 
 > #### Sprint goal
-> Enable users to rate parking spots and drivers, and provide access to a reputation system.
+> Enable users to rate other users based on their sharing experience, and provide access to a reputation system.
 
 **Involved user stories:**
 
