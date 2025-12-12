@@ -56,7 +56,7 @@ erDiagram
         string description
     }
 
-    %% Relazioni
+    %% Relationships
     USER ||--o{ PARKING_SPOT : OWN
     USER ||--o{ REVIEW : WRITE
     USER }|--|{ REVIEW : HIT
