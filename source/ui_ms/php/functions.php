@@ -297,6 +297,9 @@
         $api_url = compose_url($protocol, $socket_payment_ms, '/payments/' . $response["body"]["reservation"]["payment_id"]);
         $response = perform_rest_request('PUT', $api_url, $payload, null);
 
+        if ( $response["body"]["code"] !== "0" )
+            return $response;
+
         // Obtatining the address
         $address = get_address_from_coordinates($reservation["parking_spot_latitude"], $reservation["parking_spot_longitude"]);
         
@@ -307,7 +310,7 @@
             "start_time" => $reservation["start_time"],
             "end_time" => $reservation["end_time"],
             "plate" => $reservation["plate"],
-            "cost" => $reservation["cost"],
+            "cost" => $response["body"]["payment"]["cost"],
             "date" => $reservation["slot_date"],
             "spot_name" => $reservation["parking_spot_name"],
             "address" => $address

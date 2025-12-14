@@ -265,7 +265,8 @@ def update_payment_status(payment_id):
                 'payment_status': payment.payment_status,
                 'payment_ts': payment.payment_ts.isoformat(),
                 'reservation_id': payment.reservation_id,
-                'user_id': payment.user_id
+                'user_id': payment.user_id,
+                'cost': payment.amount
             }
         }), 200
         
